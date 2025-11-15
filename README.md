@@ -20,7 +20,6 @@
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
-- [Team](#team)
 
 ## About The Project
 
