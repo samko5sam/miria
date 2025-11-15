@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Product Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<button class="flex size-12 shrink-0 items-center justify-center rounded-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<span class="material-symbols-outlined text-zinc-900 dark:text-white">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="flex size-12 shrink-0 items-center justify-center rounded-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<span class="material-symbols-outlined text-zinc-900 dark:text-white">favorite_border</span>
+</button>
+<button class="flex size-12 shrink-0 items-center justify-center rounded-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+<span class="material-symbols-outlined text-zinc-900 dark:text-white">share</span>
+</button>
+</div>
+</div>
+<!-- Carousel -->
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch px-4 gap-3">
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[85vw] sm:min-w-80">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="A vibrant abstract gradient showcasing the color palette of the icon pack." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7Y4jeG-vZ_eO1oFChdntolKUtM-UL_588w8uzF8MVS3AZ6mqYjpJCSynUVhSJsQ4KEthHl6RmtJcIWi1q74LqLDmaScgmUbMnZEDPRqmGEOeQQ4AhzNBqhmaR7Y9V5Pd8UPu3gP0hNqs38NTTODDmTfjshW41UQQsoZsQ7-I0Mk0URocd85QzORx4RNWR9pfx8pqh0dWt9uFkH2PRXjUuT2_5gUCM_NSApQp2CEcDs__VMwWNCNksOWQS0v1b9WaMm66kctVnrw7p");'></div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[85vw] sm:min-w-80">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="Close-up of several icons from the pack, demonstrating their detail and design." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCusHCsUkOjBTvqhg_-3DX_Nze8fOI8RAfXsTfoSlqEQ9u2Y1-Wg0FmIWtdund_5epQKFFFPWUTCk657DXKJsRhANoKyvoEjW4lD_DCpySf7myxuwk_fqQaFJ_FD3xvnCKxYUPMv_N1N95_Mp9X7_tq4tuu9Jxrf8pvusVlW_SIk5ADcYnxiJXLJxkNqEFlo-FygSjp-0RJ33AEaQEu9ZfqxylT0XyxOFgx-ETXmy5xqKxkLdZBUG41PBWwPgFfbgauL_aMqxH6anI0");'></div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[85vw] sm:min-w-80">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col" data-alt="The icon pack shown in use on a mock-up of a mobile app screen." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB-o382jj_NfXolq4-lF0dLGI13QQgYaMpHVU-YffmVH5T2LFSGvY6OIdvQyJyQE7tyuryO9jmPQrbRli9DcP1bxfY6UNfiofxMrxMUj49QjGeXC4zI9sIdLbaDfy7iWe8tS3-O5CiqgFURo9xFY1OTvTbNTYSsvlR0x6saaU-tTGyk665vKGGc38VYV8uKtkJri0E3wNjEmS1x-9pOUqKYHXexqVLDSeRtHD_PBOeOwy3DZ-bqyZf-O4wtvoDFxMWgdataoTobbqjy");'></div>
+</div>
+</div>
+</div>
+<!-- Page Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2 py-4">
+<div class="h-1.5 w-6 rounded-full bg-primary"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-zinc-300 dark:bg-zinc-700"></div>
+</div>
+<!-- Product Info Block -->
+<div class="flex flex-col gap-4 px-4 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+<h1 class="text-zinc-900 dark:text-white tracking-tight text-[32px] font-bold leading-tight text-left">Ultimate Creator Icon Pack</h1>
+<div class="flex items-center gap-4 bg-background-light dark:bg-background-dark justify-between">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-10 w-10" data-alt="Profile picture of Alex, the creator." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC2I510QKHgBIrJ9u0iYQ8rZS0Nfn2aKudBg3C_zEpZyYXjXG16uuJUHb3pY3Gxmvjc85Wbmzzm9MjHvC7uZ5SBwEWf-V7yskz8d1uJ2u9lxJFgfpKR09g8nX8FU70-gvFWcBmha0xNM7IGENrMsTcgDGt9VzUc42qxGxTGDkUjtcxkRyhYxpGeFLKQLdn7qDAieIHw0xOIVOzrTryPH41EF0Ng7zv-C6UmV-UhFqV0u2rQl97GhFpx5DJbY4FtysfC9qvdrUiGkX57");'></div>
+<p class="text-zinc-800 dark:text-white text-base font-medium leading-normal flex-1 truncate">Alex Creations</p>
+</div>
+<div class="shrink-0"><p class="text-zinc-900 dark:text-white text-2xl font-bold leading-normal">$49.99</p></div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined !text-xl">star</span>
+<span class="material-symbols-outlined !text-xl">star</span>
+<span class="material-symbols-outlined !text-xl">star</span>
+<span class="material-symbols-outlined !text-xl">star</span>
+<span class="material-symbols-outlined !text-xl text-zinc-400 dark:text-zinc-600">star_half</span>
+</div>
+<p class="text-sm font-medium text-zinc-600 dark:text-zinc-400">4.8 (2,491 reviews)</p>
+</div>
+</div>
+<!-- Collapsible Sections -->
+<div class="flex flex-col gap-2 p-4">
+<div class="flex flex-col gap-2">
+<h2 class="text-lg font-bold text-zinc-900 dark:text-white">Description</h2>
+<p class="text-zinc-600 dark:text-zinc-400 text-base leading-relaxed">
+                    Elevate your digital projects with the Ultimate Creator Icon Pack. This collection features over 2,000 meticulously crafted, vector-based icons perfect for apps, websites, presentations, and more. Fully customizable and infinitely scalable.
+                </p>
+</div>
+<div class="py-4">
+<h2 class="text-lg font-bold text-zinc-900 dark:text-white mb-2">What's Included</h2>
+<ul class="list-disc list-inside space-y-2 text-zinc-600 dark:text-zinc-400">
+<li>2,000+ vector icons (.SVG, .FIG)</li>
+<li>Organized in 24 logical categories</li>
+<li>Light, Regular, and Bold weights</li>
+<li>Lifetime free updates</li>
+<li>PDF guide for easy use</li>
+</ul>
+</div>
+</div>
+<!-- Customer Reviews Section -->
+<div class="px-4 py-6 border-t border-zinc-200 dark:border-zinc-800">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-xl font-bold text-zinc-900 dark:text-white">Reviews (2,491)</h2>
+<a class="text-sm font-bold text-primary" href="#">See All</a>
+</div>
+<div class="flex flex-col gap-6">
+<!-- Review Item 1 -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-10 w-10 shrink-0" data-alt="Profile picture of Jane Doe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAa68usSCp1ByYVbQPf_b5ldli5YK2EunYqBbwYfYxM1_bpzzFM8esedVAX67s-alDrApstHMB7s_e2dDBIA_iG4e3za_3ZYlgIx9iPtoh8VOz70wo8Y6rhSzozjA3u6DHUzjgHbLlj4fmiWvUjx76ejstgNWn9SJ1EdVjVH34AbqEWSYKCZSITIEZYWHLbU7gZXx6S0q6u_KhtXSyswS8IgqAqg9tlm5-jLIoGkcCVrEQuqK9BayfUPiYyf_St2baFLLhDlSFEmuV3");'></div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<p class="text-zinc-900 dark:text-white font-semibold">Jane D.</p>
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+</div>
+</div>
+<p class="text-zinc-600 dark:text-zinc-400 text-sm mt-1">An absolutely essential toolkit for any designer. The quality is top-notch and saved me hours of work. Highly recommend!</p>
+</div>
+</div>
+<!-- Review Item 2 -->
+<div class="flex items-start gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-10 w-10 shrink-0" data-alt="Profile picture of Mike P." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdjFLS0Oemh36WzGqIOdy3FeQYsZ1uTcrEr3-s8IJvsOPJv16xo5GDEU__2r5LyrF8NWkldD65_obxKjvTAIy7ADOCpiQ0l14gN1Q7syKyoSje-r6Wqtkm6AnlD22FV1mt-rcu0neJXbGnUJcd8XJ2jeoGzCO_cZL5E8eFZxaET6yeCKCir5jjASN52L12USGjdqyoiXCvgrhmNuwqSboTUFeRCmlcCj-GDdjYVrSmA3mSmrD9ZoX8X3vxClGQMEFBceahWdh3JWxI");'></div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<p class="text-zinc-900 dark:text-white font-semibold">Mike P.</p>
+<div class="flex items-center text-amber-400">
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+<span class="material-symbols-outlined !text-base">star</span>
+</div>
+</div>
+<p class="text-zinc-600 dark:text-zinc-400 text-sm mt-1">Incredible value for the price. The icons are clean, modern, and very easy to customize in Figma.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Spacer for sticky footer -->
+<div class="h-28"></div>
+<!-- Sticky CTA Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-t border-zinc-200 dark:border-zinc-800">
+<div class="flex items-center gap-3">
+<button class="flex-1 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 bg-primary/20 text-primary gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0">
+                    Add to Cart
+                </button>
+<button class="flex-1 flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 bg-primary text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0">
+                    Buy Now
+                </button>
+</div>
+</div>
+</div>
+</body></html>

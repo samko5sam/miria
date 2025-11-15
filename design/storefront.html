@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7f13ec",
+                        "background-light": "#f7f6f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center p-4 pb-2 justify-between bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center text-slate-800 dark:text-white">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-transparent text-slate-800 dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-2xl">share</span>
+</button>
+</div>
+</div>
+<!-- Profile Header -->
+<div class="flex p-4 @container">
+<div class="flex w-full flex-col gap-4 items-center">
+<div class="flex gap-4 flex-col items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-32 w-32" data-alt="A portrait of a smiling woman with blonde hair." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCyUlYMghTs1v3FC-gH1sQBP9awlT4sTNJIc4_WIintnHIt6Bp6DZKophuUcqI8aNVQ1vUh1uCV-4IP9_qYzn2539tjrMfa0uRDlDKe_20-qNaGeiDIZ0wX8MIT4EdT0SWohPUl_7KxwZqAI7JQjVyze0KcSxy0whnoOD63VA3xn-4lT1fssUkGnUQVvCdPGpTbKIIUBa63RgrE-KW6qVqMp_nuOu0zKOMHMZfqxoag8pbiYeg8TwwMOXygK49PYmTJyRY5UtK1PGYS");'></div>
+<div class="flex flex-col items-center justify-center">
+<p class="text-slate-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">Eliza Monroe</p>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal text-center">@elizamonroe</p>
+</div>
+</div>
+<div class="flex w-full max-w-[480px] gap-3">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-800/10 dark:bg-white/10 text-slate-800 dark:text-white text-sm font-bold leading-normal tracking-[0.015em] flex-1">
+<span class="truncate">Follow</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] flex-1">
+<span class="truncate">Contact</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Profile Stats -->
+<div class="flex flex-wrap gap-3 px-4 py-3">
+<div class="flex min-w-[111px] flex-1 basis-[fit-content] flex-col gap-1 rounded-xl border border-slate-200 dark:border-white/10 p-3 items-center text-center">
+<p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">18.2k</p>
+<div class="flex items-center gap-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Followers</p>
+</div>
+</div>
+<div class="flex min-w-[111px] flex-1 basis-[fit-content] flex-col gap-1 rounded-xl border border-slate-200 dark:border-white/10 p-3 items-center text-center">
+<p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold leading-tight">48</p>
+<div class="flex items-center gap-2">
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Products</p>
+</div>
+</div>
+</div>
+<!-- Bio Text -->
+<p class="text-slate-800 dark:text-slate-300 text-base font-normal leading-normal pb-3 pt-1 px-4">
+            Digital creator &amp; designer helping you build beautiful brands. I offer custom templates, presets, and e-books to streamline your creative workflow.
+        </p>
+<!-- Filter Chips -->
+<div class="flex gap-3 p-4 overflow-x-auto">
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-primary pl-4 pr-4">
+<p class="text-white text-sm font-medium leading-normal">All</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-white/10 pl-4 pr-4">
+<p class="text-slate-800 dark:text-white text-sm font-medium leading-normal">Templates</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-white/10 pl-4 pr-4">
+<p class="text-slate-800 dark:text-white text-sm font-medium leading-normal">Presets</p>
+</div>
+<div class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-slate-200 dark:bg-white/10 pl-4 pr-4">
+<p class="text-slate-800 dark:text-white text-sm font-medium leading-normal">E-books</p>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-2 gap-4 px-4 pb-6">
+<!-- Product Card 1 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="A modern website template shown on a laptop screen with a blue and white color scheme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwnd7hTpuUnO0BUFPb_ZUkYBNWbvUNvzxEWgwvnkpavOAA61cCGeYvdboAIxYUuCzjVZpF5aDTPciyhJBKQ6ndq65rFD4_BHMDFMWFsqekWgI8ez6pP1j_7KRi-EpXGXlAQpw1k1juwPHsK5Zo5jEsuv8OzPbotSbJhpFoMKZ-3hOik-ApX1Yat8fZ3113UTShHbU1gr8n1MifC3dV4Dg6Dfg_oUVPr6RKYEF5_AlVgLrU2zXn3gEwGgWOju02SWHbHf-kLJ_YHSQx"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">Minimalist Portfolio</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$35.00</p>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="A collection of presets for photo editing, showing before and after examples of a landscape photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDNb_16VIE4l6xY4TzSdzGJminEknyo6zq8SF598RmAPTlQcUhX6mQthABQ0D9SyNgHqQx4kBSapdQYTqEokbUYy8tUipZ40OyowEIgRTIIlYGR6cwNGtf4zhIvzdGcX1zWbH9xaXxi9HdQPL3FLfuN4x_cmiCXQ7evhuOaEb03_xpfxOgGAEb-fHnLWFFIXFTftH1i33AJgtBIjqZLoEoahjt8GRy-L3NXsOOZwz_mRE6GeRarv9qKEDRs29hQEVP5JU__liaSDR-"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">Autumn Preset Pack</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$19.99</p>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="An e-book cover titled 'The Art of Branding' with a minimalist abstract design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVBzf3GXzG1qJ0t_NlZDnczYarcOo9rNWAQxYO7CMaGn3YYfLujpBXNUbezxLf_WlNZxXdH6Vr1lGw_kykGX16AEWI0924M9T9HgXrhreCcy2pw8X_aBKQcYPzrnPOYP77dsrpTM14zjGcsaadTMdVQGERkZp1K-S2PkElXrujQEHyyMwZVvP_fiY8sU9AIXw6dBRtLm95cSBs813-ruGqShXd33XUG6A7qGZvBSlOXKKAMvmdcnlB_B1gNUyemtPHArHnzsd85DfN"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">E-book: Brand Identity</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$25.00</p>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="A social media template kit with various post layouts for Instagram in a pastel color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpAmiSi86lufd1x3JW7EsqJ__XHqvuGn--jkg9Ocwaxwq-UoNrSwWH0eHj1OL5kF4C19Z3JuwrIe7yVPeW-lRTWaSABlgD7_WLLfOm1SH1ohABeyjr3O5CCIKt4gQ9VnmVF_Va79fCQiiep-UbmksnDKPfgdS1D5WBo2VT8xlXd9khUycVqnxtWFohha8WcmCbTfr6qtfPuOE1Q0i7cvB0Nh6-l3GZHBBD5aERrGRD5qtWwVnfMuDDuMGRyH8DrUKxD0KwgrrAZ-2d"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">Social Media Kit</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$40.00</p>
+</div>
+</div>
+<!-- Product Card 5 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="A vibrant preset pack showing a dramatic, colorful edit on a city night photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ_pHz5rcQomD8FmYgJAV7ejYN38H7lFTB01UtQk2povIq1lOmt5P1Pc9VRBuRxSo4oGz027d-5RkGLtNRiZRxR9cIPt6YWHS8-JnVLRbRbU9w8W2cNNN8loAXzYUBiBCzSf9lUni9T_2gCzMYq5Uv6znBvQ28t9hGUM82oLp1QaRe_hHejqrh96r_R7MXaPvkhIIw0OH8KKMKQNKlYDTqOwng4HYNLCy1wGih7V7YJLjDrEc5l18yDnRmjliHxWDeVXXO6p2nFJEI"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">Cyberpunk Presets</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$19.99</p>
+</div>
+</div>
+<!-- Product Card 6 -->
+<div class="flex flex-col gap-2">
+<div class="aspect-square w-full overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800">
+<img class="h-full w-full object-cover" data-alt="A clean and professional resume template displayed on a tablet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAk_e2vQylYldF1t1NSkC9zRdrflgqImNmFSyD2WWla7IY_SeHspHoOunuIirFXy_ms3f_8WpPy17rmUIWk527kKnngoY8mPwm2LSeBqJdR9UpAf6sepLS7k-69ThO8ivwSmvK7T-9kC6XA4XzzY3tDWfbzG7pq6X84lVbsfcs2i8IdwysLUidNQLpz_QENhNkO2ULw498oSaUMaYtpBVU9EAO8NAYJnrPHyWIAiCMOsvabiujdow1HX3d6Osq7ar3WlNYRxISWC0bk"/>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-base leading-snug text-slate-900 dark:text-white">Professional CV Template</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">$15.00</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

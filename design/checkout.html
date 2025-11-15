@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7f13ec",
+              "background-light": "#f7f6f8",
+              "background-dark": "#191022",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex h-16 items-center border-b border-white/10 bg-background-light/80 px-4 backdrop-blur-sm dark:bg-background-dark/80">
+<button class="text-slate-800 dark:text-white">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="flex-1 text-center text-lg font-bold text-slate-900 dark:text-white">Checkout</h1>
+<div class="w-8"></div> <!-- Spacer -->
+</header>
+<main class="flex-grow px-4 pb-32">
+<!-- Express Checkout Options -->
+<section class="py-6">
+<div class="flex flex-col space-y-3">
+<button class="flex h-12 w-full items-center justify-center rounded-lg bg-black text-white transition-opacity hover:opacity-90">
+<img class="h-6" data-alt="Apple Pay logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClWRlpfe1LqRbGS4TLi---Bl_7NK_VZ1-Yuiho6gw_CDYv8IANv6CrPImI0mbr6qjMzOcdu6zGJp4FkAQmCR4bCbNOvjafApUuNo2F3iKY37rZauhnc7rvDeKQ6q0GPC5FzVoB7fCRhs0zzn6-X2jcyQQkRTR4rdApVq-wLBqrlO1-rSGS_DFQhcp-5MUCTE3ZjJyGqRsu4rlc6VJoiKQ5n_nRWoj_wqA4Q3501LgrZbcn_waBnvz8ZIWRe_euuBfUpfyzks3AWz0U"/>
+</button>
+<button class="flex h-12 w-full items-center justify-center rounded-lg bg-white text-black transition-opacity hover:opacity-90">
+<img class="h-6" data-alt="Google Pay logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHGlkFUmwKXpFHyc-YuokwVqyQ7pFBr4228yvd61BNYrCm_EbDpZxtYSo54gqOUVM9tzNPh8inyjlzLNwNwS0Qhva6HDi-ZV5PBfLWFya0tKwaw-Zj7GKpZgqgbaJLEmuzumhCC_HzIpvLDpOXP5RV_1U8KHfF42-DBTP04Ctqn3yTYn1a8oAjYKVkLS0NMoNDwM5Jzv5gvVDJWhsLDCaKVAVe3Fvrhoqpp6y8_Rjp6tH4fDShljebIPvehLOp4Dujt34Vy7fmzmJj"/>
+</button>
+</div>
+<div class="relative my-6 flex items-center justify-center">
+<div class="absolute w-full border-t border-slate-300 dark:border-slate-700"></div>
+<span class="relative bg-background-light px-2 text-sm text-slate-500 dark:bg-background-dark dark:text-slate-400">OR</span>
+</div>
+</section>
+<!-- Contact Information Section -->
+<section>
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Where should we send your files?</h2>
+<div class="mt-4">
+<label class="flex w-full flex-col">
+<p class="pb-2 text-base font-medium text-slate-700 dark:text-slate-200">Email Address</p>
+<input class="form-input h-14 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-slate-300 bg-white p-4 text-base font-normal leading-normal text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 dark:focus:border-primary" placeholder="you@example.com" value="sandra.adams@example.com"/>
+</label>
+<p class="px-1 pt-2 text-sm font-normal text-slate-500 dark:text-slate-400">Your download links and receipt will be sent here.</p>
+</div>
+</section>
+<!-- Payment Method Section -->
+<section class="pt-8">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Payment</h2>
+<div class="mt-4 flex flex-col space-y-3">
+<div class="rounded-lg border-2 border-primary bg-primary/10 p-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="flex size-5 items-center justify-center rounded-full border-2 border-primary">
+<div class="size-2.5 rounded-full bg-primary"></div>
+</div>
+<label class="ml-3 font-medium text-slate-900 dark:text-white" for="card">Credit/Debit Card</label>
+</div>
+<div class="flex items-center space-x-1">
+<img class="h-6" data-alt="Visa card logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyQevac8NTYZuqtD7Q3kV467n4lWlIDDTUF6Waq0iIol6CnHYBdqkfvRD8jOdWia1ravvJET-_5Tn8ai5ovGuJlPeG50CIEvtF0NLMsqLe9Xmlz0YsqILzUdoe7IJD098_JWwnpn7tI7edm1eAIhrncHVr_VsJjVW5mZ4pNY7IJE8Iz8nzc2NSxdTod_nDfcidktrty5_2JokngDqRwYJk7A9VrN3OPRwdhsHPtyiae3Z5_d8aL0AwGwnGbtGmiGw3NvCg_Lo7VLQQ"/>
+<img class="h-6" data-alt="Mastercard logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5WN1yDKjuvC8CgfMUz7jSRkdG8GYFWrBuq3QK4S1g1Zpd-ISr_ay2EBkXGNFO9i7it-s64XWYNNIGRmQdIhRad6f4EQYNQ8LxsSK9Ai-6JCwyqOSy_X35E1WYpJlPzBzbEOcAd6qK8-DPZ2cSVEpO17kEvaPLp6OPkaD8zCls77eqz4oXZ-fXSnrjCnO839Q-2Pd9S3ODp02SrIwYuakj_k5PHVp2yEtLN0wMxqDZCn1JaslCwBrn59Fz9qcP0kmNKu7ILif1R-Vx"/>
+<img class="h-6" data-alt="American Express logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz7PtrMnm8liHWS69Fo1wcbMSNfDG3rInKWXFSmZQBFY0sw5434jwbRQIkoWkEaaPTlrt1sXGBMhaViNx0luNfHq6QJqEYLlWCxlShKfFukmFVT9vHAiW7AkZEDW-j4651tt_pwIF09zzDRxZ85BcUPPAFmet_VpBhoJj-VPEsMBvBuTbMDgfVFO-KkIStYQC2aiH8Qbc0Qo-5Qa4GsEsmiQIKZkiOj7MMilcUcdupWMFBKxc5BSxI7M3-VvfoBEKJrDf_jcIyyY8g"/>
+</div>
+</div>
+<div class="mt-4 space-y-4">
+<div class="relative">
+<input class="form-input h-14 w-full rounded-lg border border-slate-300 bg-white p-4 pr-12 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:placeholder:text-slate-500" placeholder="Card Number"/>
+<span class="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">credit_card</span>
+</div>
+<div class="flex space-x-4">
+<input class="form-input h-14 w-full rounded-lg border border-slate-300 bg-white p-4 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:placeholder:text-slate-500" placeholder="MM / YY"/>
+<div class="relative flex-1">
+<input class="form-input h-14 w-full rounded-lg border border-slate-300 bg-white p-4 pr-12 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:placeholder:text-slate-500" placeholder="CVC"/>
+<span class="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500">lock</span>
+</div>
+</div>
+</div>
+</div>
+<button class="flex h-14 w-full items-center justify-between rounded-lg border border-slate-300 bg-white p-4 text-slate-900 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
+<div class="flex items-center">
+<div class="flex size-5 items-center justify-center rounded-full border border-slate-400 dark:border-slate-500"></div>
+<span class="ml-3 font-medium">PayPal</span>
+</div>
+<img class="h-6" data-alt="PayPal logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0tVdF6yUsTYVjqGm_cDo0NaU3cefKgcsumbRwicZHhjmxP-MqTujkR7SVBsW1A7SYDdxCYOUhDiWZaP7rY5RQvIKsc7PvP6xAbN8XK_DFoBJdxk9he5J1C9mAtnyCHA0YZ2NpdTGFW5EkaZyAOVhNS7jrP2mRwLjZvIY0fFg7Lb_z_qry-A5k0oG8iUa4otzi6pYY8tJmVpx70B8_X5MhBqyq1VsK3XBpckkBeWH1GUileFy02Ri_OnIKhwLLcb2abYa8GGhux9OD"/>
+</button>
+</div>
+</section>
+<!-- Order Summary Section -->
+<section class="pt-8">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Order Summary</h2>
+<div class="mt-4 rounded-xl border border-slate-300 bg-white p-4 dark:border-slate-700 dark:bg-slate-800">
+<div class="flex items-center space-x-4">
+<img class="size-16 rounded-lg object-cover" data-alt="Abstract gradient design thumbnail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuNmQzisFbXBqgvS8LEEDbLutUQqDP274qXw1dACHkBLBqf4eT8_Mb5CZTDBNtTkyUHIIS1Wdt_rS4YTMBdWW1EChlOCDfL5Zv5hSScnHLM-TLDayNqv6MZfaiDM9g1nHxy3I_K4Ngxd26EE6P5F2YOd8I2NNDm3x9QhrJYSg5lTi3_hiGKLbKBnYjGQIr-eei988w-oWgg9IlzYbiejMnfpXcJlypRUdUY18LL_fonURwFbn86M-wGGYDk4k-iPBe7up_0ca0sSBm"/>
+<div>
+<h3 class="font-semibold text-slate-900 dark:text-white">Aura Gradient Pack</h3>
+<p class="text-sm text-slate-500 dark:text-slate-400">Digital Product</p>
+</div>
+<p class="ml-auto font-medium text-slate-900 dark:text-white">$49.00</p>
+</div>
+<div class="my-4 border-t border-dashed border-slate-300 dark:border-slate-700"></div>
+<div class="space-y-2">
+<div class="flex justify-between text-slate-600 dark:text-slate-300">
+<span>Subtotal</span>
+<span>$49.00</span>
+</div>
+<div class="flex justify-between text-slate-600 dark:text-slate-300">
+<span>Taxes</span>
+<span>$3.43</span>
+</div>
+</div>
+<div class="my-4 border-t border-dashed border-slate-300 dark:border-slate-700"></div>
+<div class="flex items-end space-x-2">
+<label class="flex-grow">
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Discount Code</span>
+<input class="form-input mt-1 h-12 w-full rounded-lg border border-slate-300 bg-white p-3 text-slate-900 placeholder:text-slate-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-slate-600 dark:bg-slate-700 dark:text-white" placeholder="Enter code"/>
+</label>
+<button class="h-12 flex-shrink-0 rounded-lg bg-slate-200 px-4 font-semibold text-slate-700 transition-colors hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600">Apply</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Footer / CTA -->
+<footer class="fixed bottom-0 left-0 z-10 w-full border-t border-white/10 bg-background-light/80 p-4 backdrop-blur-sm dark:bg-background-dark/80">
+<div class="flex items-center justify-between pb-3">
+<span class="font-semibold text-slate-600 dark:text-slate-300">Total</span>
+<span class="text-2xl font-bold text-slate-900 dark:text-white">$52.43</span>
+</div>
+<button class="flex h-14 w-full items-center justify-center rounded-xl bg-primary font-bold text-white transition-opacity hover:opacity-90">
+                Pay $52.43
+            </button>
+<div class="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>Secure SSL Encrypted Payment</span>
+</div>
+<div class="mt-2 flex justify-center gap-4 text-center text-xs text-slate-500 underline dark:text-slate-400">
+<a href="#">Terms of Service</a>
+<a href="#">Privacy Policy</a>
+</div>
+</footer>
+</div>
+</body></html>

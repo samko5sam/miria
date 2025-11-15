@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#7f13ec",
+              "background-light": "#f7f6f8",
+              "background-dark": "#191022",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-size: 24px;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Main Content -->
+<main class="flex-1 pb-24">
+<!-- Sticky Header -->
+<div class="sticky top-0 z-10 flex flex-col bg-background-light dark:bg-background-dark pt-4">
+<div class="flex items-center gap-4 px-4 pb-2">
+<h1 class="text-2xl font-bold text-slate-900 dark:text-white">Discover</h1>
+<div class="flex-1"></div>
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-slate-200/50 dark:bg-white/10 text-slate-900 dark:text-white">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Category Tags -->
+<div class="flex gap-2 overflow-x-auto whitespace-nowrap p-4 pt-2 hide-scrollbar">
+<button class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white">All</button>
+<button class="rounded-full bg-slate-200 dark:bg-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">Templates</button>
+<button class="rounded-full bg-slate-200 dark:bg-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">LUTs</button>
+<button class="rounded-full bg-slate-200 dark:bg-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">Brushes</button>
+<button class="rounded-full bg-slate-200 dark:bg-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">UI Kits</button>
+<button class="rounded-full bg-slate-200 dark:bg-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300">E-books</button>
+</div>
+</div>
+<!-- Image Grid -->
+<div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-4 p-4">
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Ultimate LUT Pack</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator One - $49</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Notion Template Kit</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator Two - $25</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Procreate Brush Set</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator Three - $15</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Minimalist eBook Layout</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator Four - $30</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Gradient Wallpaper Pack</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator Five - $10</p>
+</div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="relative w-full overflow-hidden rounded-xl bg-center bg-no-repeat aspect-[3/4] bg-cover group" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDLjKlaOCJfc85OGlGEZH6-y7xN0gkJRbPX238_WIxF-uiWAcpdoddGJCK7hPnwWxElaRk5UQLtEP23ZOS_E_PIh3RFexKANL5Xd4Qqlya7B6FFz7MmBsQGC-Qb2FnAZlrjkl5ACg7ltV6FNX0hZ2gR7EYlDu8DWLa_nUnfsfPP1z4Klcd20mfxSvetnfiZ2aQxQ-LUn6AAzb1SliXLM8KpTyYeMLQ4hDW3skGCjy4N_RNguukdPrnT79221J6if_pJHSQ8g4CtYQq6");'>
+<button class="absolute top-2 right-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/30 text-white backdrop-blur-sm transition-colors group-hover:bg-black/50">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white text-base font-medium leading-normal truncate">Icon Set Vol. 3</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">by Creator Six - $20</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-20">
+<div class="flex border-t border-slate-200 dark:border-white/10 bg-background-light/80 dark:bg-background-dark/80 px-4 pb-3 pt-2 backdrop-blur-lg">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-primary" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined fill">storefront</span>
+</div>
+<p class="text-primary text-xs font-medium leading-normal tracking-[0.015em]">Discover</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium leading-normal tracking-[0.015em]">Saved</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">group</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium leading-normal tracking-[0.015em]">Creators</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 text-slate-500 dark:text-slate-400" href="#">
+<div class="flex h-8 items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium leading-normal tracking-[0.015em]">Profile</p>
+</a>
+</div>
+</div>
+</div>
+<style>
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+</body></html>
