@@ -1,0 +1,11 @@
+{
+  "home": "Home",
+  "about": "About",
+  "login": "Login",
+  "register": "Register",
+  "admin": "Admin",
+  "logout": "Logout",
+  "welcome_home": "Welcome to the home page!",
+  "welcome_about": "This is the about page.",
+  "welcome_admin": "Welcome, admin! You have the power to manage the platform."
+}
