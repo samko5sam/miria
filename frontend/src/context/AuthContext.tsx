@@ -19,8 +19,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(loggedInUser);
   };
 
-  const register = async (email: string, password: string) => {
-    const newUser = await authService.register(email, password);
+  const register = async (username: string, email: string, password: string) => {
+    const newUser = await authService.register(username, email, password);
     // Or handle as needed, maybe direct login
   };
 

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { register } = useContext(AuthContext);
@@ -11,7 +12,7 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(email, password);
+      await register(username, email, password);
       navigate('/login');
     } catch (error) {
       console.error('Failed to register', error);
@@ -34,6 +35,23 @@ const RegisterPage: React.FC = () => {
           </p>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-white/80">
+              Username
+            </label>
+            <div className="mt-1">
+              <input
+                id="username"
+                name="username"
+                type="text"
+                autoComplete="username"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+              />
+            </div>
+          </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-white/80">
               Email address
