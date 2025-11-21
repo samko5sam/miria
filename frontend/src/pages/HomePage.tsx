@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 const FeatureItem: React.FC<{
   icon: string;
@@ -18,7 +17,6 @@ const FeatureItem: React.FC<{
 );
 
 const HomePage: React.FC = () => {
-  const { t } = useTranslation();
   return (
     <>
       <main className="flex-1">

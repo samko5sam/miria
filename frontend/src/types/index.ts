@@ -1,8 +1,8 @@
-export interface User {
+export type User = {
   id: string;
   email: string;
-  role: "user" | "admin";
-}
+  role: "buyer" | "seller" | "admin";
+};
 
 export type AuthContextType = {
   user: User | null;

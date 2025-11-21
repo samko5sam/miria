@@ -12,7 +12,7 @@ export const authService = {
     });
     if (response.data.access_token) {
       localStorage.setItem("token", response.data.access_token);
-      return authService.getCurrentUser();
+      return authService.getCurrentUser()!;
     }
     return Promise.reject("Invalid credentials");
   },
@@ -39,10 +39,15 @@ export const authService = {
     if (token) {
       const decoded: { sub: string; email: string; role: string } =
         jwtDecode(token);
+      const allowedRoles = ["seller", "buyer", "admin"] as const;
+      type AllowedRole = typeof allowedRoles[number];
+
       const user: User = {
         id: decoded.sub,
         email: decoded.email,
-        role: decoded.role,
+        role: allowedRoles.includes(decoded.role as AllowedRole)
+          ? (decoded.role as AllowedRole)
+          : "buyer", // Default to 'buyer' if the decoded role is not one of the allowed roles
       };
       return user;
     }

@@ -5,3 +5,4 @@ python-dotenv
 Flask-JWT-Extended
 psycopg2-binary
 Flask-Cors
+gunicorn
