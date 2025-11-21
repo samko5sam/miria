@@ -14,15 +14,21 @@ def register():
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')
+        role = 'buyer'
 
         if not username or not email or not password:
             return jsonify({"message": "Username, email, and password are required"}), 400
+
+        # Validate role
+        valid_roles = ['admin', 'seller', 'buyer']
+        if role not in valid_roles:
+            return jsonify({"message": f"Invalid role. Must be one of: {', '.join(valid_roles)}"}), 400
 
         if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
             return jsonify({"message": "User already exists"}), 400
 
         hashed_password = generate_password_hash(password)
-        new_user = User(username=username, email=email, password_hash=hashed_password)
+        new_user = User(username=username, email=email, password_hash=hashed_password, role=role)
         print(f"Creating new user: {new_user}")
         db.session.add(new_user)
         db.session.commit()
@@ -56,4 +62,5 @@ def login():
 def profile():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
-    return jsonify(username=user.username, email=user.email)
+    return jsonify(username=user.username, email=user.email, role=user.role)
+
