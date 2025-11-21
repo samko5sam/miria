@@ -17,8 +17,7 @@ const RegisterPage: React.FC = () => {
       await register(username, email, password);
       navigate('/login');
     } catch (error) {
-      console.error('Failed to register', error);
-      // Handle registration error
+      // Error toast is shown in AuthContext
     } finally {
       setIsLoading(false);
     }

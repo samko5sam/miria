@@ -16,8 +16,7 @@ const LoginPage: React.FC = () => {
       await login(username, password);
       navigate('/');
     } catch (error) {
-      console.error('Failed to login', error);
-      // Handle login error (e.g., show a message)
+      // Error toast is shown in AuthContext
     } finally {
       setIsLoading(false);
     }

@@ -4,5 +4,12 @@
   "login": "Login",
   "register": "Register",
   "admin": "Admin",
-  "logout": "Logout"
+  "logout": "Logout",
+  "toast": {
+    "loginSuccess": "Successfully logged in!",
+    "loginError": "Failed to login. Please check your credentials.",
+    "registerSuccess": "Registration successful! Please log in.",
+    "registerError": "Failed to register. Username or email may already exist.",
+    "logoutSuccess": "Successfully logged out!"
+  }
 }
