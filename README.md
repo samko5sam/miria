@@ -121,13 +121,21 @@ Make sure you have the following software installed on your machine:
     ```
 
 4.  **Set up Environment Variables**
-    -   In the `backend` directory, create a `.env` file. Add your configuration details:
+    -   **Backend**: In the `backend` directory, create a `.env` file. Add your configuration details:
         ```
         DATABASE_URL="postgresql://user:password@localhost/miria_db"
         SECRET_KEY="your_flask_secret_key"
         JWT_SECRET_KEY="your_jwt_secret_key"
         TAPPAY_PARTNER_KEY="your_tappay_partner_key"
         TAPPAY_MERCHANT_ID="your_tappay_merchant_id"
+        ```
+    -   **Frontend**: In the `frontend` directory, create a `.env.development` file for local development:
+        ```
+        VITE_API_URL=http://localhost:5000/api
+        ```
+        For production deployment, create a `.env.production` file with your production API URL:
+        ```
+        VITE_API_URL=https://your-backend-api-url.com/api
         ```
 
 5.  **Set up the PostgreSQL Database**
@@ -156,3 +164,70 @@ Make sure you have the following software installed on your machine:
         npm run dev
         ```
     -   The React application will open in your browser, typically at `http://localhost:5173`.
+
+## Deployment
+
+### Environment Configuration
+
+The application uses environment variables to configure the API endpoint, making it easy to deploy to any cloud service.
+
+**Frontend Environment Variables:**
+- `VITE_API_URL`: The URL of your backend API (e.g., `https://api.yourdomain.com/api`)
+
+**Backend Environment Variables:**
+- `DATABASE_URL`: PostgreSQL connection string
+- `SECRET_KEY`: Flask secret key
+- `JWT_SECRET_KEY`: JWT secret key for authentication
+- `TAPPAY_PARTNER_KEY`: TapPay partner key
+- `TAPPAY_MERCHANT_ID`: TapPay merchant ID
+
+### Deploying to Cloud Services
+
+#### Backend Deployment (Flask)
+
+Popular options for deploying the Flask backend:
+
+1. **Render / Railway / Fly.io**
+   - Connect your GitHub repository
+   - Set environment variables in the platform dashboard
+   - The platform will automatically detect and deploy your Flask app
+
+2. **Heroku**
+   - Create a `Procfile` in the backend directory:
+     ```
+     web: gunicorn run:app
+     ```
+   - Install gunicorn: `pip install gunicorn`
+   - Deploy using Heroku CLI or GitHub integration
+
+3. **AWS / Google Cloud / Azure**
+   - Use container services (ECS, Cloud Run, App Service)
+   - Or use platform-specific app services
+
+#### Frontend Deployment (Vite/React)
+
+Popular options for deploying the frontend:
+
+1. **Vercel / Netlify**
+   - Connect your GitHub repository
+   - Set build command: `npm run build`
+   - Set output directory: `dist`
+   - Add environment variable: `VITE_API_URL=https://your-backend-url.com/api`
+
+2. **Cloudflare Pages**
+   - Similar to Vercel/Netlify
+   - Great for global CDN distribution
+
+3. **Static Hosting (S3, Firebase Hosting, etc.)**
+   - Build locally: `npm run build`
+   - Upload the `dist` folder to your hosting service
+   - Configure environment variables before building
+
+### Important Notes for Production
+
+- Always use HTTPS for production deployments
+- Update CORS settings in `backend/app.py` to allow only your frontend domain
+- Use strong, unique values for `SECRET_KEY` and `JWT_SECRET_KEY`
+- Ensure your PostgreSQL database is properly secured
+- Never commit `.env` files to version control
+
