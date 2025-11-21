@@ -6,17 +6,21 @@ const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await register(username, email, password);
       navigate('/login');
     } catch (error) {
       console.error('Failed to register', error);
       // Handle registration error
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,9 +50,10 @@ const RegisterPage: React.FC = () => {
                 type="text"
                 autoComplete="username"
                 required
+                disabled={isLoading}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -63,9 +68,10 @@ const RegisterPage: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 required
+                disabled={isLoading}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -84,9 +90,10 @@ const RegisterPage: React.FC = () => {
                 type="password"
                 autoComplete="new-password"
                 required
+                disabled={isLoading}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+                className="block w-full appearance-none rounded-md border-0 bg-white/5 px-3 py-2 text-white placeholder-white/40 shadow-sm focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               />
             </div>
           </div>
@@ -94,9 +101,15 @@ const RegisterPage: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="flex w-full justify-center rounded-lg bg-primary py-2 px-4 text-base font-bold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-transform hover:scale-[1.02] active:scale-[0.98]"
+              disabled={isLoading}
+              className="flex w-full justify-center items-center gap-2 rounded-lg bg-primary py-2 px-4 text-base font-bold text-white shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              Register
+              {isLoading && (
+                <span className="material-symbols-outlined animate-spin">
+                  progress_activity
+                </span>
+              )}
+              {isLoading ? 'Registering...' : 'Register'}
             </button>
           </div>
         </form>
