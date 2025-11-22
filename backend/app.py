@@ -24,10 +24,8 @@ def create_app():
         allowed_origins = "*"
     else:
         # Only allow specific origins in production
-        allowed_origins = [
-            "https://miria.zeabur.app",
-            os.getenv("FRONTEND_URL", "https://miria.zeabur.app")
-        ]
+        frontend_url = os.getenv("FRONTEND_URL", "https://miria.zeabur.app")
+        allowed_origins = [frontend_url]
 
     # Initialize extensions with app
     db.init_app(app)
