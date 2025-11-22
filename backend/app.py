@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
-from .extensions import db, jwt, migrate, cors
+from extensions import db, jwt, migrate, cors
 
 # Load environment variables
 load_dotenv()
@@ -41,8 +41,8 @@ def create_app():
     })
 
     with app.app_context():
-        from . import models
-        from .routes import api_bp
+        import models
+        from routes import api_bp
 
         # A simple welcome route
         @app.route('/')

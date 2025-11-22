@@ -153,7 +153,7 @@ Make sure you have the following software installed on your machine:
     -   Navigate to the `backend` directory and ensure your virtual environment is activated.
     -   Run the Flask application:
         ```sh
-        flask run
+        python wsgi.py
         ```
     -   The server will start, typically on `http://127.0.0.1:5000`.
 
