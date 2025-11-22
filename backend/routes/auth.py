@@ -10,7 +10,7 @@ from ..models import User
 def register():
     try:
         data = request.get_json()
-        print(f"Received registration request with data: {data}")
+        # print(f"Received registration request with data: {data}")
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')

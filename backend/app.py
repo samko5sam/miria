@@ -17,11 +17,30 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    # Determine CORS origins based on environment
+    flask_env = os.getenv("FLASK_ENV", "production")
+    if flask_env == "development":
+        # Allow all origins in development
+        allowed_origins = "*"
+    else:
+        # Only allow specific origins in production
+        allowed_origins = [
+            "https://miria.zeabur.app",
+            os.getenv("FRONTEND_URL", "https://miria.zeabur.app")
+        ]
+
     # Initialize extensions with app
     db.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app, db)
-    cors.init_app(app, resources={r"/api/*": {"origins": "*"}}) # Allow CORS for /api/ routes
+    cors.init_app(app, resources={
+        r"/api/*": {
+            "origins": allowed_origins,
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": False
+        }
+    })
 
     with app.app_context():
         from . import models
