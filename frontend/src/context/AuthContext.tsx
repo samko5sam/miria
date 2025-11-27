@@ -12,15 +12,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { t } = useTranslation();
 
   useEffect(() => {
-    const currentUser = authService.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
+    const loadUser = async () => {
+      const currentUser = await authService.getCurrentUser();
+      if (currentUser) {
+        setUser(currentUser);
+      }
+    };
+    loadUser();
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const loggedInUser = await authService.login(email, password);
+      await authService.login(email, password);
+      const loggedInUser = await authService.getCurrentUser();
       setUser(loggedInUser);
       toast.success(t('toast.loginSuccess'));
     } catch (error) {
@@ -50,4 +54,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = () => {
+  const context = React.useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };

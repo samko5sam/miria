@@ -8,6 +8,7 @@ import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminPage from './pages/AdminPage';
+import ProfilePage from './pages/ProfilePage';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import './i18n';
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="about" element={<AboutPage />} />
             <Route path="login" element={<LoginPage />} />
             <Route path="register" element={<RegisterPage />} />
+            <Route path="profile/:username" element={<ProfilePage />} />
             <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route path="admin" element={<AdminPage />} />
             </Route>

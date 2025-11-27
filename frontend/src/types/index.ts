@@ -1,7 +1,10 @@
 export type User = {
   id: string;
+  username?: string;
   email: string;
   role: "buyer" | "seller" | "admin";
+  profilePicture?: string;
+  createdAt?: string;
 };
 
 export type AuthContextType = {

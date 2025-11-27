@@ -8,6 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False, default='buyer')  # admin, seller, buyer
+    profile_picture = db.Column(db.Text, nullable=True)  # Store base64 or URL
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     products = db.relationship('Product', backref='user', lazy=True)
 

@@ -54,13 +54,69 @@ def login():
     if not user or not check_password_hash(user.password_hash, password):
         return jsonify({"message": "Invalid credentials"}), 401
 
-    access_token = create_access_token(identity=user.id)
+    access_token = create_access_token(identity=str(user.id))
     return jsonify(access_token=access_token)
 
 @api_bp.route('/profile')
 @jwt_required()
 def profile():
     current_user_id = get_jwt_identity()
+    user = User.query.get(int(current_user_id))
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    return jsonify(
+        id=user.id,
+        username=user.username, 
+        email=user.email, 
+        role=user.role,
+        profile_picture=user.profile_picture,
+        created_at=user.created_at.isoformat() if user.created_at else None
+    )
+
+@api_bp.route('/profile/<username>', methods=['GET'])
+def get_user_profile(username):
+    """Get public profile information for a user by username"""
+    user = User.query.filter_by(username=username).first()
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    return jsonify({
+        "username": user.username,
+        "role": user.role,
+        "profile_picture": user.profile_picture,
+        "created_at": user.created_at.isoformat() if user.created_at else None
+    })
+
+@api_bp.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    """Update the current user's profile"""
+    current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
-    return jsonify(username=user.username, email=user.email, role=user.role)
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    data = request.get_json()
+    
+    # Update profile picture if provided
+    if 'profile_picture' in data:
+        user.profile_picture = data['profile_picture']
+    
+    try:
+        db.session.commit()
+        return jsonify({
+            "message": "Profile updated successfully",
+            "username": user.username,
+            "email": user.email,
+            "role": user.role,
+            "profile_picture": user.profile_picture,
+            "created_at": user.created_at.isoformat() if user.created_at else None
+        })
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to update profile"}), 500
 
