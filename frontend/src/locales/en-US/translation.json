@@ -5,6 +5,7 @@
   "register": "Register",
   "admin": "Admin",
   "logout": "Logout",
+  "profile": "Profile",
   "toast": {
     "loginSuccess": "Successfully logged in!",
     "loginError": "Failed to login. Please check your credentials.",

@@ -8,6 +8,7 @@ const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const { user, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -39,11 +40,46 @@ const Navbar: React.FC = () => {
           />
         </nav>
 
-        <div className="hidden md:flex items-center justify-end gap-6"> {/* 調整 gap */}
+        <div className="hidden md:flex items-center justify-end gap-6">
           {user ? (
-            <button onClick={logout} className={navLinkClasses}>
-              {t('logout')}
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)} 
+                className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white transition-colors focus:outline-none"
+              >
+                {user.profilePicture ? (
+                  <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold text-lg">
+                    {user.username?.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </button>
+
+              {isProfileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="px-4 py-3 border-b border-white/10 mb-2">
+                    <p className="text-white font-bold truncate">{user.username}</p>
+                  </div>
+                  <Link
+                    to={`/profile/${user.username}`}
+                    className="block px-4 py-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                    onClick={() => setIsProfileMenuOpen(false)}
+                  >
+                    {t('profile')}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsProfileMenuOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2 text-red-400 hover:bg-white/10 hover:text-red-300 transition-colors"
+                  >
+                    {t('logout')}
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <>
               <Link to="/login" className={navLinkClasses}>
@@ -87,9 +123,35 @@ const Navbar: React.FC = () => {
             <hr className="w-3/4 border-white/20 my-4" />
 
             {user ? (
-              <button onClick={logout} className={`text-lg ${navLinkClasses}`}>
-                {t('logout')}
-              </button>
+              <div className="flex flex-col items-center gap-4 w-full">
+                <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/20 mb-2">
+                  {user.profilePicture ? (
+                    <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold text-3xl">
+                      {user.username?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div className="text-white font-bold text-xl mb-4">{user.username}</div>
+                
+                <Link 
+                  to={`/profile/${user.username}`} 
+                  className={`text-lg ${navLinkClasses}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t('profile')}
+                </Link>
+                <button 
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }} 
+                  className={`text-lg ${navLinkClasses} text-red-400 hover:text-red-300`}
+                >
+                  {t('logout')}
+                </button>
+              </div>
             ) : (
               <div className="flex flex-col items-center gap-4 w-full px-8">
                 <Link to="/login" className={`text-lg ${navLinkClasses} w-full text-center py-2`}>
