@@ -8,7 +8,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False, default='buyer')  # admin, seller, buyer
-    profile_picture = db.Column(db.Text, nullable=True)  # Store base64 or URL
+    profile_picture = db.Column(db.Text, nullable=True)  # Store URL from MinIO
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     products = db.relationship('Product', backref='user', lazy=True)
 
@@ -19,8 +19,19 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
     price = db.Column(db.Float, nullable=False)
-    file_path = db.Column(db.String(255), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    files = db.relationship('ProductFile', backref='product', lazy=True, cascade='all, delete-orphan')
     orders = db.relationship('Order', backref='product', lazy=True)
+
+class ProductFile(db.Model):
+    __tablename__ = 'product_files'
+    id = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
+    file_url = db.Column(db.String(500), nullable=False)
+    filename = db.Column(db.String(255), nullable=False)
+    file_size = db.Column(db.Integer, nullable=False)  # Size in bytes
+    content_type = db.Column(db.String(100), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Order(db.Model):
     __tablename__ = 'orders'

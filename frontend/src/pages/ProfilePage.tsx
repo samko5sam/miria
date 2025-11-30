@@ -38,7 +38,7 @@ export default function ProfilePage() {
     fetchProfile();
   }, [username, navigate]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       // Check file size (max 5MB)
@@ -47,30 +47,24 @@ export default function ProfilePage() {
         return;
       }
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        setLoading(true);
+        // Upload to MinIO
+        const imageUrl = await authService.uploadProfilePicture(file);
+
+        // Update local state
+        setProfileUser(prev => prev ? { ...prev, profilePicture: imageUrl } : null);
+        setSelectedImage(imageUrl);
+        setIsEditing(false);
+        toast.success("Profile picture updated successfully!");
+      } catch (error) {
+        toast.error("Failed to upload image");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
-  const handleSaveProfile = async () => {
-    if (!selectedImage) {
-      toast.error("Please select an image");
-      return;
-    }
-
-    try {
-      const updatedUser = await authService.updateProfile(selectedImage);
-      setProfileUser(updatedUser);
-      setSelectedImage(null);
-      setIsEditing(false);
-      toast.success("Profile updated successfully!");
-    } catch (error) {
-      toast.error("Failed to update profile");
-    }
-  };
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Unknown";
@@ -172,6 +166,7 @@ export default function ProfilePage() {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
+                    disabled={loading}
                     className="block w-full text-sm text-gray-400
                       file:mr-4 file:py-3 file:px-6
                       file:rounded-full file:border-0
@@ -179,26 +174,18 @@ export default function ProfilePage() {
                       file:bg-gradient-to-r file:from-blue-500 file:to-purple-500
                       file:text-white
                       hover:file:from-blue-600 hover:file:to-purple-600
-                      file:cursor-pointer file:transition-all file:duration-300"
+                      file:cursor-pointer file:transition-all file:duration-300
+                      file:disabled:opacity-50 file:disabled:cursor-not-allowed"
                   />
-                  <div className="flex gap-3">
-                    <button
-                      onClick={handleSaveProfile}
-                      disabled={!selectedImage}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 disabled:from-gray-600 disabled:to-gray-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 disabled:hover:scale-100 disabled:cursor-not-allowed"
-                    >
-                      Save Changes
-                    </button>
-                    <button
-                      onClick={() => {
-                        setIsEditing(false);
-                        setSelectedImage(null);
-                      }}
-                      className="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => {
+                      setIsEditing(false);
+                      setSelectedImage(null);
+                    }}
+                    className="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             )}

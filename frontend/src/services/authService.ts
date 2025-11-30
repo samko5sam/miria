@@ -97,4 +97,18 @@ export const authService = {
       createdAt: response.data.created_at,
     };
   },
+
+  uploadProfilePicture: async (file: File): Promise<string> => {
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await axios.post(`${API_URL}/profile/picture`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data.profile_picture_url;
+  },
 };
