@@ -11,6 +11,26 @@
     "loginError": "Failed to login. Please check your credentials.",
     "registerSuccess": "Registration successful! Please log in.",
     "registerError": "Failed to register. Username or email may already exist.",
-    "logoutSuccess": "Successfully logged out!"
+    "logoutSuccess": "Successfully logged out!",
+    "imageCompressed": "Image compressed: {{original}} → {{compressed}} ({{percent}}% smaller)",
+    "profilePictureUpdated": "Profile picture updated successfully!",
+    "uploadFailed": "Failed to upload image",
+    "imageTooLarge": "Image size should be less than 5MB",
+    "onlyImagesAllowed": "Only image files are allowed"
+  },
+  "profilePage": {
+    "cropModal": {
+      "title": "Crop Profile Picture",
+      "description": "Adjust the crop area to create a square profile picture",
+      "cancel": "Cancel",
+      "cropAndContinue": "Crop & Continue",
+      "processing": "Processing..."
+    },
+    "edit": {
+      "updateProfilePicture": "Update Profile Picture",
+      "cancel": "Cancel"
+    },
+    "memberSince": "Member Since",
+    "accountType": "Account Type"
   }
 }

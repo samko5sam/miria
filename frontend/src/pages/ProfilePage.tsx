@@ -4,8 +4,12 @@ import { authService } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import type { User } from "../types";
+import ImageCropModal from "../components/ImageCropModal";
+import { compressImage, formatFileSize } from "../utils/imageCompression";
+import { useTranslation } from "react-i18next";
 
 export default function ProfilePage() {
+  const { t } = useTranslation();
   const { username } = useParams<{ username: string }>();
   const { user: currentUser } = useAuth();
   const navigate = useNavigate();
@@ -13,6 +17,8 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [fileToCrop, setFileToCrop] = useState<File | null>(null);
 
   const isOwnProfile = currentUser?.username === username;
 
@@ -41,28 +47,65 @@ export default function ProfilePage() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check file size (max 5MB)
+      // Check file size (max 5MB for original file)
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size should be less than 5MB");
+        toast.error(t('toast.imageTooLarge'));
         return;
       }
 
-      try {
-        setLoading(true);
-        // Upload to MinIO
-        const imageUrl = await authService.uploadProfilePicture(file);
-
-        // Update local state
-        setProfileUser(prev => prev ? { ...prev, profilePicture: imageUrl } : null);
-        setSelectedImage(imageUrl);
-        setIsEditing(false);
-        toast.success("Profile picture updated successfully!");
-      } catch (error) {
-        toast.error("Failed to upload image");
-      } finally {
-        setLoading(false);
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error(t('toast.onlyImagesAllowed'));
+        return;
       }
+
+      // Show crop modal
+      setFileToCrop(file);
+      setShowCropModal(true);
     }
+  };
+
+  const handleCropComplete = async (croppedBlob: Blob) => {
+    try {
+      setShowCropModal(false);
+      setLoading(true);
+
+      const originalSize = croppedBlob.size;
+
+      // Compress the cropped image
+      const compressedFile = await compressImage(croppedBlob, 800, 800, 0.85);
+
+      const compressedSize = compressedFile.size;
+      const savedPercentage = Math.round(((originalSize - compressedSize) / originalSize) * 100);
+
+      toast.success(
+        t('toast.imageCompressed', {
+          original: formatFileSize(originalSize),
+          compressed: formatFileSize(compressedSize),
+          percent: savedPercentage
+        }),
+        { duration: 4000 }
+      );
+
+      // Upload to MinIO
+      const imageUrl = await authService.uploadProfilePicture(compressedFile);
+
+      // Update local state
+      setProfileUser(prev => prev ? { ...prev, profilePicture: imageUrl } : null);
+      setSelectedImage(imageUrl);
+      setIsEditing(false);
+      setFileToCrop(null);
+      toast.success(t('toast.profilePictureUpdated'));
+    } catch (error) {
+      toast.error(t('toast.uploadFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCropCancel = () => {
+    setShowCropModal(false);
+    setFileToCrop(null);
   };
 
 
@@ -103,6 +146,15 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+      {/* Image Crop Modal */}
+      {showCropModal && fileToCrop && (
+        <ImageCropModal
+          imageFile={fileToCrop}
+          onCropComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+        />
+      )}
+
       <div className="max-w-4xl mx-auto">
         {/* Profile Card */}
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700">
@@ -159,7 +211,7 @@ export default function ProfilePage() {
             {isEditing && isOwnProfile && (
               <div className="mb-8 p-6 bg-gray-800 rounded-2xl border border-gray-700">
                 <h3 className="text-xl font-semibold mb-4 text-white">
-                  Update Profile Picture
+                  {t('profilePage.edit.updateProfilePicture')}
                 </h3>
                 <div className="flex flex-col gap-4">
                   <input
@@ -184,7 +236,7 @@ export default function ProfilePage() {
                     }}
                     className="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
                   >
-                    Cancel
+                    {t('profilePage.edit.cancel')}
                   </button>
                 </div>
               </div>
@@ -227,7 +279,7 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm font-medium">
-                      Member Since
+                      {t('profilePage.memberSince')}
                     </p>
                     <p className="text-white text-xl font-bold">
                       {formatDate(profileUser.createdAt)}
@@ -257,7 +309,7 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <p className="text-gray-400 text-sm font-medium">
-                      Account Type
+                      {t('profilePage.accountType')}
                     </p>
                     <p className="text-white text-xl font-bold capitalize">
                       {profileUser.role}
