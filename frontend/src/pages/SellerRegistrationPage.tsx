@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { storeService } from '../services/storeService';
 import toast from 'react-hot-toast';
@@ -8,7 +7,6 @@ const SellerRegistrationPage: React.FC = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
