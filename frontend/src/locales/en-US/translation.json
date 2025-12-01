@@ -34,6 +34,25 @@
     "memberSince": "Member Since",
     "accountType": "Account Type"
   },
+  "loginPage": {
+    "title": "Sign in to your account",
+    "createAccountPrompt": "Or",
+    "createAccountLink": "create a new account.",
+    "usernameLabel": "Username",
+    "passwordLabel": "Password",
+    "signingIn": "Signing in...",
+    "signIn": "Sign in"
+  },
+  "registerPage": {
+    "title": "Create a new account",
+    "loginPrompt": "Already have an account?",
+    "loginLink": "Sign in here",
+    "usernameLabel": "Username",
+    "emailLabel": "Email address",
+    "passwordLabel": "Password",
+    "registering": "Registering...",
+    "register": "Register"
+  },
   "seller": {
     "registration": {
       "title": "Become a Creator",

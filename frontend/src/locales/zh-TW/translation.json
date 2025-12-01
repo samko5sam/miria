@@ -34,6 +34,25 @@
     "memberSince": "加入時間",
     "accountType": "帳戶類型"
   },
+  "loginPage": {
+    "title": "登入您的帳戶",
+    "createAccountPrompt": "或",
+    "createAccountLink": "建立一個新帳戶。",
+    "usernameLabel": "使用者名稱",
+    "passwordLabel": "密碼",
+    "signingIn": "登入中...",
+    "signIn": "登入"
+  },
+  "registerPage": {
+    "title": "建立一個新帳戶",
+    "loginPrompt": "已經有帳戶了？",
+    "loginLink": "在此登入",
+    "usernameLabel": "使用者名稱",
+    "emailLabel": "電子郵件地址",
+    "passwordLabel": "密碼",
+    "registering": "註冊中...",
+    "register": "註冊"
+  },
   "seller": {
     "registration": {
       "title": "成為創作者",

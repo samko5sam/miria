@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 
 const LoginPage: React.FC = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -15,7 +17,7 @@ const LoginPage: React.FC = () => {
     try {
       await login(username, password);
       navigate('/');
-    } catch (error) {
+    } catch (_error) {
       // Error toast is shown in AuthContext
     } finally {
       setIsLoading(false);
@@ -27,19 +29,19 @@ const LoginPage: React.FC = () => {
       <div className="w-full max-w-md space-y-8 bg-black/20 p-8 rounded-xl">
         <div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-white">
-            Sign in to your account
+            {t('loginPage.title')}
           </h2>
           <p className="mt-2 text-center text-sm text-white/70">
-            Or{' '}
+            {t('loginPage.createAccountPrompt')}{' '}
             <Link to="/register" className="font-medium text-primary hover:text-primary/90">
-              create a new account.
+              {t('loginPage.createAccountLink')}
             </Link>
           </p>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-white/80">
-              Username
+              {t('loginPage.usernameLabel')}
             </label>
             <div className="mt-1">
               <input
@@ -61,7 +63,7 @@ const LoginPage: React.FC = () => {
               htmlFor="password"
               className="block text-sm font-medium text-white/80"
             >
-              Password
+              {t('loginPage.passwordLabel')}
             </label>
             <div className="mt-1">
               <input
@@ -89,7 +91,7 @@ const LoginPage: React.FC = () => {
                   progress_activity
                 </span>
               )}
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? t('loginPage.signingIn') : t('loginPage.signIn')}
             </button>
           </div>
         </form>

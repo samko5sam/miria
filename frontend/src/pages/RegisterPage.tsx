@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 
 const RegisterPage: React.FC = () => {
+  const { t } = useTranslation();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +18,7 @@ const RegisterPage: React.FC = () => {
     try {
       await register(username, email, password);
       navigate('/login');
-    } catch (error) {
+    } catch (_error) {
       // Error toast is shown in AuthContext
     } finally {
       setIsLoading(false);
@@ -28,19 +30,19 @@ const RegisterPage: React.FC = () => {
       <div className="w-full max-w-md space-y-8 bg-black/20 p-8 rounded-xl">
         <div>
           <h2 className="text-center text-3xl font-bold tracking-tight text-white">
-            Create a new account
+            {t('registerPage.title')}
           </h2>
           <p className="mt-2 text-center text-sm text-white/70">
-            Already have an account?{' '}
+            {t('registerPage.loginPrompt')}{' '}
             <Link to="/login" className="font-medium text-primary hover:text-primary/90">
-              Sign in here
+              {t('registerPage.loginLink')}
             </Link>
           </p>
         </div>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-white/80">
-              Username
+              {t('registerPage.usernameLabel')}
             </label>
             <div className="mt-1">
               <input
@@ -58,7 +60,7 @@ const RegisterPage: React.FC = () => {
           </div>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-white/80">
-              Email address
+              {t('registerPage.emailLabel')}
             </label>
             <div className="mt-1">
               <input
@@ -80,7 +82,7 @@ const RegisterPage: React.FC = () => {
               htmlFor="password"
               className="block text-sm font-medium text-white/80"
             >
-              Password
+              {t('registerPage.passwordLabel')}
             </label>
             <div className="mt-1">
               <input
@@ -108,7 +110,7 @@ const RegisterPage: React.FC = () => {
                   progress_activity
                 </span>
               )}
-              {isLoading ? 'Registering...' : 'Register'}
+              {isLoading ? t('registerPage.registering') : t('registerPage.register')}
             </button>
           </div>
         </form>
