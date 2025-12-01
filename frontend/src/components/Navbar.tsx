@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
       <div className="flex items-center justify-between">
         {/* Left Icon & Title */}
         <div className="flex items-center gap-3">
-          <span className="material-symbols-outlined text-white text-3xl">widgets</span>
+          <img src="/logo.png" alt="Miria Logo" className="w-8 h-8 object-contain rounded-sm" />
           <Link to="/" className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             Miria
           </Link>
