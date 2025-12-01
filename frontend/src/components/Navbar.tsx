@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
-  
+
   const navLinkClasses = "text-white/80 font-bold hover:text-white transition-colors";
   const activeNavLinkClasses = "text-white font-bold";
   return (
@@ -32,19 +32,19 @@ const Navbar: React.FC = () => {
         {/* Desktop Navigation */}
         {/* ======================================= */}
         <nav className="hidden md:flex items-center gap-6">
-          <NavLinks 
-            navLinkClasses={navLinkClasses} 
+          <NavLinks
+            navLinkClasses={navLinkClasses}
             activeNavLinkClasses={activeNavLinkClasses}
-            t={t} 
-            user={user} 
+            t={t}
+            user={user}
           />
         </nav>
 
         <div className="hidden md:flex items-center justify-end gap-6">
           {user ? (
             <div className="relative">
-              <button 
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)} 
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white transition-colors focus:outline-none"
               >
                 {user.profilePicture ? (
@@ -61,6 +61,15 @@ const Navbar: React.FC = () => {
                   <div className="px-4 py-3 border-b border-white/10 mb-2">
                     <p className="text-white font-bold truncate">{user.username}</p>
                   </div>
+                  {(user.role === 'seller' || user.role === 'admin') && (
+                    <Link
+                      to="/dashboard"
+                      className="block px-4 py-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      {t('dashboard')}
+                    </Link>
+                  )}
                   <Link
                     to={`/profile/${user.username}`}
                     className="block px-4 py-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
@@ -98,28 +107,28 @@ const Navbar: React.FC = () => {
         {/* Mobile Menu Button */}
         {/* ======================================= */}
         <div className="md:hidden flex items-center gap-4">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open navigation menu">
-                <span className="material-symbols-outlined text-3xl">
-                {isMenuOpen ? 'close' : 'menu'}
-                </span>
-            </button>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open navigation menu">
+            <span className="material-symbols-outlined text-3xl">
+              {isMenuOpen ? 'close' : 'menu'}
+            </span>
+          </button>
         </div>
       </div>
-      
+
       {/* ======================================= */}
       {/* Mobile Menu Panel */}
       {/* ======================================= */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background-dark shadow-lg z-50">
           <nav className="flex flex-col items-center gap-6 py-8">
-            <NavLinks 
-              isMobile={true} 
-              navLinkClasses={navLinkClasses} 
+            <NavLinks
+              isMobile={true}
+              navLinkClasses={navLinkClasses}
               activeNavLinkClasses={activeNavLinkClasses}
-              t={t} 
-              user={user} 
+              t={t}
+              user={user}
             />
-            
+
             <hr className="w-3/4 border-white/20 my-4" />
 
             {user ? (
@@ -134,19 +143,28 @@ const Navbar: React.FC = () => {
                   )}
                 </div>
                 <div className="text-white font-bold text-xl mb-4">{user.username}</div>
-                
-                <Link 
-                  to={`/profile/${user.username}`} 
+
+                {(user.role === 'seller' || user.role === 'admin') && (
+                  <Link
+                    to="/dashboard"
+                    className={`text-lg ${navLinkClasses}`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t('dashboard')}
+                  </Link>
+                )}
+                <Link
+                  to={`/profile/${user.username}`}
                   className={`text-lg ${navLinkClasses}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {t('profile')}
                 </Link>
-                <button 
+                <button
                   onClick={() => {
                     logout();
                     setIsMenuOpen(false);
-                  }} 
+                  }}
                   className={`text-lg ${navLinkClasses} text-red-400 hover:text-red-300`}
                 >
                   {t('logout')}
@@ -162,7 +180,7 @@ const Navbar: React.FC = () => {
                 </Link>
               </div>
             )}
-            
+
             <LanguageSwitcher />
           </nav>
         </div>
@@ -171,23 +189,23 @@ const Navbar: React.FC = () => {
   );
 };
 
-const NavLinks: React.FC<{ isMobile?: boolean; navLinkClasses: string; activeNavLinkClasses: string; t: any; user: any }> = ({ 
-  isMobile = false, 
-  navLinkClasses, 
-  activeNavLinkClasses, 
-  t, 
-  user 
+const NavLinks: React.FC<{ isMobile?: boolean; navLinkClasses: string; activeNavLinkClasses: string; t: any; user: any }> = ({
+  isMobile = false,
+  navLinkClasses,
+  activeNavLinkClasses,
+  t,
+  user
 }) => (
   <>
-    <NavLink 
-      to="/about" 
+    <NavLink
+      to="/about"
       className={({ isActive }) => `${isMobile ? 'text-lg' : ''} ${isActive ? activeNavLinkClasses : navLinkClasses}`}
     >
       {t('about')}
     </NavLink>
     {user?.role === 'admin' && (
-      <NavLink 
-        to="/admin" 
+      <NavLink
+        to="/admin"
         className={({ isActive }) => `${isMobile ? 'text-lg' : ''} ${isActive ? activeNavLinkClasses : navLinkClasses}`}
       >
         {t('admin')}

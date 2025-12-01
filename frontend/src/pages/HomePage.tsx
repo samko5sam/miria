@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const FeatureItem: React.FC<{
   icon: string;
@@ -49,9 +50,9 @@ const HomePage: React.FC = () => {
             <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="truncate">Explore Products</span>
             </button>
-            <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white/10 text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <Link to="/dashboard" className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-white/10 text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="truncate">Become a Creator</span>
-            </button>
+            </Link>
           </div>
         </div>
       </main>

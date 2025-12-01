@@ -7,7 +7,17 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-background-dark">
+        <span className="material-symbols-outlined animate-spin text-primary text-4xl">
+          progress_activity
+        </span>
+      </div>
+    );
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;

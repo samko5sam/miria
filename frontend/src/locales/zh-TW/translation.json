@@ -5,6 +5,7 @@
   "register": "註冊",
   "admin": "管理員",
   "logout": "登出",
+  "dashboard": "儀表板",
   "profile": "個人檔案",
   "toast": {
     "loginSuccess": "登入成功！",
@@ -32,5 +33,31 @@
     },
     "memberSince": "加入時間",
     "accountType": "帳戶類型"
+  },
+  "seller": {
+    "registration": {
+      "title": "成為創作者",
+      "subtitle": "立即開始銷售您的數位產品。",
+      "storeName": "商店名稱",
+      "description": "描述",
+      "submit": "建立商店",
+      "submitting": "建立商店中...",
+      "success": "商店建立成功！",
+      "error": "建立商店失敗"
+    },
+    "dashboard": {
+      "title": "賣家儀表板",
+      "welcome": "歡迎回來 <1>{{storeName}}</1>",
+      "addNewProduct": "新增產品",
+      "stats": {
+        "totalSales": "總銷售額",
+        "totalOrders": "總訂單數",
+        "products": "產品數量"
+      },
+      "recentOrders": {
+        "title": "最近訂單",
+        "empty": "尚無訂單。"
+      }
+    }
   }
 }

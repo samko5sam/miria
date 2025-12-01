@@ -5,6 +5,7 @@
   "register": "Register",
   "admin": "Admin",
   "logout": "Logout",
+  "dashboard": "Dashboard",
   "profile": "Profile",
   "toast": {
     "loginSuccess": "Successfully logged in!",
@@ -32,5 +33,31 @@
     },
     "memberSince": "Member Since",
     "accountType": "Account Type"
+  },
+  "seller": {
+    "registration": {
+      "title": "Become a Creator",
+      "subtitle": "Start selling your digital products today.",
+      "storeName": "Store Name",
+      "description": "Description",
+      "submit": "Create Store",
+      "submitting": "Creating Store...",
+      "success": "Store created successfully!",
+      "error": "Failed to create store"
+    },
+    "dashboard": {
+      "title": "Seller Dashboard",
+      "welcome": "Welcome back to <1>{{storeName}}</1>",
+      "addNewProduct": "Add New Product",
+      "stats": {
+        "totalSales": "Total Sales",
+        "totalOrders": "Total Orders",
+        "products": "Products"
+      },
+      "recentOrders": {
+        "title": "Recent Orders",
+        "empty": "No orders yet."
+      }
+    }
   }
 }

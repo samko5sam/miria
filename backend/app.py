@@ -43,6 +43,7 @@ def create_app():
     with app.app_context():
         import models
         from routes import api_bp
+        from routes.store import store_bp
 
         # A simple welcome route
         @app.route('/')
@@ -50,5 +51,6 @@ def create_app():
             return jsonify({"message": "Welcome to the Miria Backend!"})
 
         app.register_blueprint(api_bp, url_prefix='/api')
+        app.register_blueprint(store_bp, url_prefix='/api/stores')
 
         return app
