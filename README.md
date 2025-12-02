@@ -111,8 +111,6 @@ Make sure you have the following software installed on your machine:
 
     # Install Python dependencies
     pip install -r requirements.txt
-    ```
-    *Note: Create a `requirements.txt` file using `pip freeze > requirements.txt` after installing your packages (e.g., `pip install Flask Flask-SQLAlchemy ...`).*
 
 3.  **Setup Frontend (Vite + React)**
     ```sh
@@ -121,13 +119,27 @@ Make sure you have the following software installed on your machine:
     ```
 
 4.  **Set up Environment Variables**
-    -   **Backend**: In the `backend` directory, create a `.env` file. Add your configuration details:
+    -   **Backend**: In the `backend` directory, create a `.env` file by copying `.env.template`. Add your configuration details:
         ```
+        # Flask and database settings
         DATABASE_URL="postgresql://user:password@localhost/miria_db"
         SECRET_KEY="your_flask_secret_key"
         JWT_SECRET_KEY="your_jwt_secret_key"
+        FLASK_ENV="development"
+
+        # Frontend URL for CORS configuration in production
+        FRONTEND_URL="https://your-frontend-url.com"
+
+        # Payment gateway (TapPay)
         TAPPAY_PARTNER_KEY="your_tappay_partner_key"
         TAPPAY_MERCHANT_ID="your_tappay_merchant_id"
+
+        # File storage (MinIO)
+        MINIO_ENDPOINT="your_minio_endpoint" # e.g., localhost:9000
+        MINIO_ACCESS_KEY="your_minio_access_key"
+        MINIO_SECRET_KEY="your_minio_secret_key"
+        MINIO_PUBLIC_BUCKET="your_public_bucket_name"
+        MINIO_PRIVATE_BUCKET="your_private_bucket_name"
         ```
     -   **Frontend**: In the `frontend` directory, create a `.env.development` file for local development:
         ```
@@ -143,7 +155,11 @@ Make sure you have the following software installed on your machine:
     -   Create a new database: `CREATE DATABASE miria_db;`
     -   Run the database migrations to create the tables:
         ```sh
-        # Make sure you are in the server directory with venv activated
+        # Make sure you are in the backend directory with venv activated
+        # Set the FLASK_APP environment variable
+        $ENV:FLASK_APP="wsgi.py" # For Windows PowerShell
+        # export FLASK_APP=wsgi.py # For Linux/macOS bash
+
         flask db upgrade
         ```
 
@@ -151,11 +167,17 @@ Make sure you have the following software installed on your machine:
 
 1.  **Start the Backend Server**
     -   Navigate to the `backend` directory and ensure your virtual environment is activated.
-    -   Run the Flask application:
+    -   Set the `FLASK_APP` environment variable:
         ```sh
-        python wsgi.py
+        $ENV:FLASK_APP="wsgi.py" # For Windows PowerShell
+        # export FLASK_APP=wsgi.py # For Linux/macOS bash
+        ```
+    -   Run the Flask development server:
+        ```sh
+        flask run
         ```
     -   The server will start, typically on `http://127.0.0.1:5000`.
+    -   *Note: `python wsgi.py` is primarily intended for production deployments with WSGI servers like Gunicorn, not for local development.*
 
 2.  **Start the Frontend Development Server**
     -   Navigate to the `frontend` directory.
@@ -178,8 +200,15 @@ The application uses environment variables to configure the API endpoint, making
 - `DATABASE_URL`: PostgreSQL connection string
 - `SECRET_KEY`: Flask secret key
 - `JWT_SECRET_KEY`: JWT secret key for authentication
+- `FLASK_ENV`: Set to `production` for deployments
+- `FRONTEND_URL`: The URL of your deployed frontend (for CORS)
 - `TAPPAY_PARTNER_KEY`: TapPay partner key
 - `TAPPAY_MERCHANT_ID`: TapPay merchant ID
+- `MINIO_ENDPOINT`: The endpoint URL of your MinIO or S3-compatible storage
+- `MINIO_ACCESS_KEY`: Access key for your storage bucket
+- `MINIO_SECRET_KEY`: Secret key for your storage bucket
+- `MINIO_PUBLIC_BUCKET`: Name of the public bucket (for profile pictures)
+- `MINIO_PRIVATE_BUCKET`: Name of the private bucket (for product files)
 
 ### Deploying to Cloud Services
 
