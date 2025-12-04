@@ -96,7 +96,7 @@ export default function ProfilePage() {
       setIsEditing(false);
       setFileToCrop(null);
       toast.success(t('toast.profilePictureUpdated'));
-    } catch (error) {
+    } catch {
       toast.error(t('toast.uploadFailed'));
     } finally {
       setLoading(false);

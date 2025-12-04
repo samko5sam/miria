@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
   const navLinkClasses = "text-gray-700 dark:text-white/80 font-bold hover:text-gray-900 dark:hover:text-white transition-colors";
   const activeNavLinkClasses = "text-gray-900 dark:text-white font-bold";
   return (
-    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm">
+    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm z-50">
       <div className="flex items-center justify-between">
         {/* Left Icon & Title */}
         <div className="flex items-center gap-3">
