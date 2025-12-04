@@ -4,6 +4,8 @@
   "login": "Login",
   "register": "Register",
   "admin": "Admin",
+  "role-seller": "Creator",
+  "role-buyer": "Customer",
   "logout": "Logout",
   "dashboard": "Dashboard",
   "profile": "Profile",
@@ -22,7 +24,8 @@
     "profilePictureUpdated": "Profile picture updated successfully!",
     "uploadFailed": "Failed to upload image",
     "imageTooLarge": "Image size should be less than 5MB",
-    "onlyImagesAllowed": "Only image files are allowed"
+    "onlyImagesAllowed": "Only image files are allowed",
+    "userNotFound": "User not found"
   },
   "profilePage": {
     "cropModal": {
@@ -37,7 +40,10 @@
       "cancel": "Cancel"
     },
     "memberSince": "Member Since",
-    "accountType": "Account Type"
+    "accountType": "Account Type",
+    "userNotFound": "User Not Found",
+    "userNotFoundMessage": "We couldn't find the user you're looking for.",
+    "backToHome": "Back to Home"
   },
   "loginPage": {
     "title": "Sign in to your account",
