@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
                 </button>
 
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-white/10 mb-2">
                       <p className="text-gray-900 dark:text-white font-bold truncate">{user.username}</p>
                     </div>
