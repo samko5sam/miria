@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* Light Mode (Default) */
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f6f8;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: rgba(0, 0, 0, 0.6);
+    --text-tertiary: rgba(0, 0, 0, 0.4);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --border-hover: rgba(0, 0, 0, 0.2);
+  }
+
+  /* Dark Mode */
+  .dark {
+    --bg-primary: #191022;
+    --bg-secondary: #1a1a1a;
+    --bg-card: rgba(0, 0, 0, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Apply theme colors to body */
+  body {
+    @apply bg-gradient-to-br transition-colors duration-300;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+
+  /* Light mode gradient */
+  :root body {
+    background-image: linear-gradient(to bottom right, #ffffff, #f7f6f8);
+  }
+
+  /* Dark mode gradient */
+  .dark body {
+    background-image: linear-gradient(to bottom right, #191022, #0f0818);
+  }
+}
+

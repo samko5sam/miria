@@ -27,6 +27,35 @@ def get_products():
         } for f in p.files]
     } for p in products])
 
+@api_bp.route('/products/my', methods=['GET'])
+@jwt_required()
+def get_my_products():
+    """Get all products for the current authenticated seller"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    if user.role not in ['seller', 'admin']:
+        return jsonify({"message": "Only sellers can view their products"}), 403
+    
+    products = Product.query.filter_by(user_id=current_user_id).all()
+    return jsonify([{
+        'id': p.id,
+        'name': p.name,
+        'description': p.description,
+        'price': p.price,
+        'user_id': p.user_id,
+        'created_at': p.created_at.isoformat() if p.created_at else None,
+        'files': [{
+            'id': f.id,
+            'filename': f.filename,
+            'file_size': f.file_size,
+            'content_type': f.content_type
+        } for f in p.files]
+    } for p in products])
+
 @api_bp.route('/products/<int:product_id>', methods=['GET'])
 def get_product(product_id):
     """Get a specific product"""
@@ -88,6 +117,37 @@ def create_product():
         "message": "Product created successfully",
         "product_id": product.id
     }), 201
+
+@api_bp.route('/products/<int:product_id>', methods=['DELETE'])
+@jwt_required()
+def delete_product(product_id):
+    """Delete a product and all its associated files"""
+    current_user_id = get_jwt_identity()
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    # Check if the current user owns this product
+    if product.user_id != int(current_user_id):
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    try:
+        # Delete all associated files from MinIO storage
+        for product_file in product.files:
+            # Extract object name from URL
+            object_name = product_file.file_url.split(f"{storage_service.private_bucket}/")[-1]
+            storage_service.delete_file(object_name, storage_service.private_bucket)
+        
+        # Delete product from database (cascade will delete ProductFile records)
+        db.session.delete(product)
+        db.session.commit()
+        
+        return jsonify({"message": "Product deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete product", "error": str(e)}), 500
+
 
 @api_bp.route('/products/<int:product_id>/files', methods=['POST'])
 @jwt_required()

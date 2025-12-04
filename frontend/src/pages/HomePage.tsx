@@ -11,8 +11,8 @@ const FeatureItem: React.FC<{
       <span className="material-symbols-outlined text-primary">{icon}</span>
     </div>
     <div>
-      <h4 className="text-white font-bold">{title}</h4>
-      <p className="text-white/70 text-sm">{description}</p>
+      <h4 className="text-gray-900 dark:text-white font-bold">{title}</h4>
+      <p className="text-gray-600 dark:text-white/70 text-sm">{description}</p>
     </div>
   </div>
 );
@@ -22,12 +22,12 @@ const HomePage: React.FC = () => {
     <>
       <main className="flex-1">
         {/* HeadlineText */}
-        <h1 className="text-white tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6">
+        <h1 className="text-gray-900 dark:text-white tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6">
           The Marketplace for Digital Creators
         </h1>
 
         {/* BodyText */}
-        <p className="text-white/70 text-base font-normal leading-normal pb-3 pt-1 px-4 text-center max-w-md mx-auto">
+        <p className="text-gray-600 dark:text-white/70 text-base font-normal leading-normal pb-3 pt-1 px-4 text-center max-w-md mx-auto">
           Discover and sell unique digital products, from art and templates to
           courses and more.
         </p>
@@ -58,7 +58,7 @@ const HomePage: React.FC = () => {
       </main>
 
       <section className="px-4 py-8">
-        <div className="bg-black/20 p-6 rounded-xl space-y-8 max-w-4xl mx-auto">
+        <div className="bg-white dark:bg-black/20 p-6 rounded-xl space-y-8 max-w-4xl mx-auto border border-gray-200 dark:border-white/5 shadow-sm dark:shadow-none">
           {/* For Buyers */}
           <div>
             <h3 className="text-primary text-sm font-bold uppercase tracking-widest mb-4">

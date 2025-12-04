@@ -7,6 +7,11 @@
   "logout": "登出",
   "dashboard": "儀表板",
   "profile": "個人檔案",
+  "settings": "設定",
+  "theme": "主題",
+  "lightMode": "日間模式",
+  "darkMode": "夜間模式",
+  "language": "語言",
   "toast": {
     "loginSuccess": "登入成功！",
     "loginError": "登入失敗，請檢查您的憑證。",
@@ -76,6 +81,35 @@
       "recentOrders": {
         "title": "最近訂單",
         "empty": "尚無訂單。"
+      }
+    },
+    "products": {
+      "myProducts": "我的產品",
+      "noProducts": "您尚未新增任何產品。",
+      "addFirstProduct": "新增您的第一個產品",
+      "addProduct": "新增產品",
+      "productName": "產品名稱",
+      "productNamePlaceholder": "輸入產品名稱",
+      "description": "描述",
+      "descriptionPlaceholder": "描述您的產品...",
+      "price": "價格",
+      "cancel": "取消",
+      "create": "建立產品",
+      "creating": "建立中...",
+      "createSuccess": "產品建立成功！",
+      "createError": "建立產品失敗",
+      "edit": "編輯",
+      "delete": "刪除",
+      "confirmDelete": "您確定要刪除此產品嗎？",
+      "deleteSuccess": "產品刪除成功！",
+      "deleteError": "刪除產品失敗",
+      "files": "個檔案",
+      "attachedFiles": "附加檔案",
+      "moreFiles": "個更多檔案",
+      "noFiles": "尚未上傳檔案",
+      "errors": {
+        "nameRequired": "產品名稱為必填",
+        "invalidPrice": "請輸入有效的價格"
       }
     }
   }

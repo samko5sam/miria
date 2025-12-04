@@ -2,30 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const languages = [
-  { code: 'en-US', label: 'English' },
-  { code: 'zh-TW', label: '繁體中文' },
+  { code: 'en-US', label: 'English', flag: '🇺🇸' },
+  { code: 'zh-TW', label: '繁體中文', flag: '🇹🇼' },
 ];
 
-const LanguageSwitcher: React.FC = () => {
+interface LanguageSwitcherProps {
+  inline?: boolean;
+}
+
+const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ inline = false }) => {
   const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLanguageChange = (langCode: string) => {
     i18n.changeLanguage(langCode);
-    setIsOpen(false); // 選擇後關閉選單
+    setIsOpen(false);
   };
 
-  // 處理點擊元件外部時關閉選單的邏輯
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-    // 監聽 mousedown 事件
     document.addEventListener('mousedown', handleClickOutside);
-    // 元件卸載時移除監聽
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -33,6 +34,31 @@ const LanguageSwitcher: React.FC = () => {
 
   const currentLanguage = languages.find(lang => i18n.language.startsWith(lang.code.split('-')[0])) || languages[0];
 
+  // Inline mode for embedding in menus
+  if (inline) {
+    return (
+      <div className="flex flex-col gap-1">
+        {languages.map((lang) => (
+          <button
+            key={lang.code}
+            onClick={() => handleLanguageChange(lang.code)}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${i18n.language.startsWith(lang.code.split('-')[0])
+                ? 'bg-primary/20 text-primary dark:text-primary font-medium'
+                : 'text-gray-700 dark:text-white/70 hover:bg-gray-100 dark:hover:bg-white/5'
+              }`}
+          >
+            <span className="text-lg">{lang.flag}</span>
+            <span>{lang.label}</span>
+            {i18n.language.startsWith(lang.code.split('-')[0]) && (
+              <span className="material-symbols-outlined text-base ml-auto">check</span>
+            )}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  // Original dropdown mode
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -46,7 +72,6 @@ const LanguageSwitcher: React.FC = () => {
         </span>
       </button>
 
-      {/* Dropdown Panel */}
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-48 origin-top-right rounded-lg bg-background-dark border border-white/20 shadow-lg z-20">
           <div className="py-1">

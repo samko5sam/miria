@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
-import LanguageSwitcher from './LanguageSwitcher';
+import SettingsMenu from './SettingsMenu';
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -32,15 +32,15 @@ const Navbar: React.FC = () => {
     };
   }, [isProfileMenuOpen]);
 
-  const navLinkClasses = "text-white/80 font-bold hover:text-white transition-colors";
-  const activeNavLinkClasses = "text-white font-bold";
+  const navLinkClasses = "text-gray-700 dark:text-white/80 font-bold hover:text-gray-900 dark:hover:text-white transition-colors";
+  const activeNavLinkClasses = "text-gray-900 dark:text-white font-bold";
   return (
-    <header className="relative p-4 border-b border-white/10">
+    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm">
       <div className="flex items-center justify-between">
         {/* Left Icon & Title */}
         <div className="flex items-center gap-3">
           <img src="/logo.png" alt="Miria Logo" className="w-8 h-8 object-contain rounded-sm" />
-          <Link to="/" className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+          <Link to="/" className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             Miria
           </Link>
         </div>
@@ -57,74 +57,76 @@ const Navbar: React.FC = () => {
           />
         </nav>
 
-        <div className="hidden md:flex items-center justify-end gap-6">
+        <div className="hidden md:flex items-center justify-end gap-4">
           {user ? (
-            <div className="relative" ref={profileMenuRef}>
-              <button
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white transition-colors focus:outline-none"
-              >
-                {user.profilePicture ? (
-                  <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold text-lg">
-                    {user.username?.charAt(0).toUpperCase()}
-                  </div>
-                )}
-              </button>
+            <>
+              <div className="relative" ref={profileMenuRef}>
+                <button
+                  onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                  className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white transition-colors focus:outline-none"
+                >
+                  {user.profilePicture ? (
+                    <img src={user.profilePicture} alt={user.username} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 text-white font-bold text-lg">
+                      {user.username?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                </button>
 
-              {isProfileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] border border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
-                  <div className="px-4 py-3 border-b border-white/10 mb-2">
-                    <p className="text-white font-bold truncate">{user.username}</p>
-                  </div>
-                  {(user.role === 'seller' || user.role === 'admin') && (
+                {isProfileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2">
+                    <div className="px-4 py-3 border-b border-gray-200 dark:border-white/10 mb-2">
+                      <p className="text-gray-900 dark:text-white font-bold truncate">{user.username}</p>
+                    </div>
+                    {(user.role === 'seller' || user.role === 'admin') && (
+                      <Link
+                        to="/dashboard"
+                        className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                      >
+                        {t('dashboard')}
+                      </Link>
+                    )}
                     <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
+                      to={`/profile/${user.username}`}
+                      className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
-                      {t('dashboard')}
+                      {t('profile')}
                     </Link>
-                  )}
-                  <Link
-                    to={`/profile/${user.username}`}
-                    className="block px-4 py-2 text-white/80 hover:bg-white/10 hover:text-white transition-colors"
-                    onClick={() => setIsProfileMenuOpen(false)}
-                  >
-                    {t('profile')}
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setIsProfileMenuOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-2 text-red-400 hover:bg-white/10 hover:text-red-300 transition-colors"
-                  >
-                    {t('logout')}
-                  </button>
-                </div>
-              )}
-            </div>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setIsProfileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-red-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-red-300 transition-colors"
+                    >
+                      {t('logout')}
+                    </button>
+                  </div>
+                )}
+              </div>
+              <SettingsMenu />
+            </>
           ) : (
             <>
               <Link to="/login" className={navLinkClasses}>
                 {t('login')}
               </Link>
-              <Link to="/register" className="bg-primary px-4 py-2 rounded-lg text-white text-sm font-bold hover:bg-opacity-90 transition-colors">
+              <Link to="/register" className="bg-primary px-4 py-2 rounded-lg text-white text-sm font-bold hover:bg-primary/90 transition-colors">
                 {t('register')}
               </Link>
+              <SettingsMenu />
             </>
           )}
-
-          <LanguageSwitcher />
         </div>
 
         {/* ======================================= */}
         {/* Mobile Menu Button */}
         {/* ======================================= */}
         <div className="md:hidden flex items-center gap-4">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open navigation menu">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Open navigation menu" className="text-gray-900 dark:text-white">
             <span className="material-symbols-outlined text-3xl">
               {isMenuOpen ? 'close' : 'menu'}
             </span>
@@ -136,7 +138,7 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu Panel */}
       {/* ======================================= */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-background-dark shadow-lg z-50">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-background-dark shadow-lg z-50 border-b border-gray-200 dark:border-white/10">
           <nav className="flex flex-col items-center gap-6 py-8">
             <NavLinks
               isMobile={true}
@@ -198,7 +200,7 @@ const Navbar: React.FC = () => {
               </div>
             )}
 
-            <LanguageSwitcher />
+            <SettingsMenu />
           </nav>
         </div>
       )}
@@ -214,12 +216,6 @@ const NavLinks: React.FC<{ isMobile?: boolean; navLinkClasses: string; activeNav
   user
 }) => (
   <>
-    <NavLink
-      to="/about"
-      className={({ isActive }) => `${isMobile ? 'text-lg' : ''} ${isActive ? activeNavLinkClasses : navLinkClasses}`}
-    >
-      {t('about')}
-    </NavLink>
     {user?.role === 'admin' && (
       <NavLink
         to="/admin"
