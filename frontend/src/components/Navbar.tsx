@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import SettingsMenu from './SettingsMenu';
+import CartButton from './CartButton';
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -62,6 +63,9 @@ const Navbar: React.FC = () => {
         <div className="hidden md:flex items-center justify-end gap-4">
           {user ? (
             <>
+              {/* Cart Icon */}
+              <CartButton />
+
               <div className="relative" ref={profileMenuRef}>
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
@@ -163,7 +167,12 @@ const Navbar: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="text-white font-bold text-xl mb-4">{user.username}</div>
+                <div className="text-gray-900 dark:text-white font-bold text-xl mb-4">{user.username}</div>
+
+                {/* Cart Icon for Mobile */}
+                <div className="w-full flex justify-center">
+                  <CartButton />
+                </div>
 
                 {(user.role === 'seller' || user.role === 'admin') && (
                   <Link

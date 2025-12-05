@@ -5,3 +5,4 @@ api_bp = Blueprint('api', __name__)
 from . import auth
 from . import user
 from . import product
+from . import cart
