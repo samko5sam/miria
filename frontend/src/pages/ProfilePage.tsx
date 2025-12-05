@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
@@ -9,12 +10,13 @@ import { compressImage, formatFileSize } from "../utils/imageCompression";
 import { useTranslation } from "react-i18next";
 
 export default function ProfilePage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { username } = useParams<{ username: string }>();
   const { user: currentUser } = useAuth();
   const navigate = useNavigate();
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userNotFound, setUserNotFound] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [showCropModal, setShowCropModal] = useState(false);
@@ -23,25 +25,37 @@ export default function ProfilePage() {
   const isOwnProfile = currentUser?.username === username;
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileWithRetry = async () => {
       if (!username) {
         navigate("/");
         return;
       }
 
-      try {
-        setLoading(true);
-        const data = await authService.getUserProfile(username);
-        setProfileUser(data);
-      } catch (error) {
-        toast.error("User not found");
-        navigate("/");
-      } finally {
-        setLoading(false);
+      setLoading(true);
+      let success = false;
+      for (let i = 0; i < 3; i++) {
+        try {
+          const data = await authService.getUserProfile(username);
+          setProfileUser(data);
+          setUserNotFound(false);
+          success = true;
+          break; // exit loop on success
+        } catch {
+          if (i < 2) {
+            await new Promise(res => setTimeout(res, 1000));
+          }
+        }
       }
+
+      if (!success) {
+        toast.error(t('toast.userNotFound'));
+        setUserNotFound(true);
+      }
+
+      setLoading(false);
     };
 
-    fetchProfile();
+    fetchProfileWithRetry();
   }, [username, navigate]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +110,7 @@ export default function ProfilePage() {
       setIsEditing(false);
       setFileToCrop(null);
       toast.success(t('toast.profilePictureUpdated'));
-    } catch (error) {
+    } catch {
       toast.error(t('toast.uploadFailed'));
     } finally {
       setLoading(false);
@@ -112,7 +126,7 @@ export default function ProfilePage() {
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Unknown";
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString(i18n.language, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -132,6 +146,19 @@ export default function ProfilePage() {
     }
   };
 
+  const getRoleTranslation = (role: string) => {
+    switch (role) {
+      case "admin":
+        return t('admin');
+      case "seller":
+        return t('role-seller');
+      case "buyer":
+        return t('role-buyer');
+      default:
+        return role;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -141,6 +168,20 @@ export default function ProfilePage() {
   }
 
   if (!profileUser) {
+    if (userNotFound) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center">
+          <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">{t('profilePage.userNotFound')}</h1>
+          <p className="text-lg mb-8 text-gray-600 dark:text-white/70">{t('profilePage.userNotFoundMessage')}</p>
+          <button
+            onClick={() => navigate('/')}
+            className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
+          >
+            {t('profilePage.backToHome')}
+          </button>
+        </div>
+      );
+    }
     return null;
   }
 
@@ -157,7 +198,7 @@ export default function ProfilePage() {
 
       <div className="max-w-4xl mx-auto">
         {/* Profile Card */}
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-700">
+        <div className="bg-white dark:bg-gradient-to-br dark:from-gray-900 dark:to-gray-800 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
           {/* Header Background */}
           <div className="h-48 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 relative">
             <div className="absolute inset-0 bg-black opacity-20"></div>
@@ -168,7 +209,7 @@ export default function ProfilePage() {
             {/* Profile Picture */}
             <div className="flex justify-center -mt-24 mb-6">
               <div className="relative">
-                <div className="w-48 h-48 rounded-full border-8 border-gray-900 overflow-hidden bg-gradient-to-br from-gray-700 to-gray-800 shadow-2xl">
+                <div className="w-48 h-48 rounded-full border-8 border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-800 shadow-2xl">
                   {(selectedImage || profileUser.profilePicture) ? (
                     <img
                       src={selectedImage || profileUser.profilePicture}
@@ -176,7 +217,7 @@ export default function ProfilePage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-6xl font-bold text-white">
+                    <div className="w-full h-full flex items-center justify-center text-6xl font-bold text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-700">
                       {profileUser.username?.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -209,8 +250,8 @@ export default function ProfilePage() {
 
             {/* Edit Mode */}
             {isEditing && isOwnProfile && (
-              <div className="mb-8 p-6 bg-gray-800 rounded-2xl border border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-white">
+              <div className="mb-8 p-6 bg-gray-100 dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                   {t('profilePage.edit.updateProfilePicture')}
                 </h3>
                 <div className="flex flex-col gap-4">
@@ -219,7 +260,7 @@ export default function ProfilePage() {
                     accept="image/*"
                     onChange={handleImageChange}
                     disabled={loading}
-                    className="block w-full text-sm text-gray-400
+                    className="block w-full text-sm text-gray-500 dark:text-gray-400
                       file:mr-4 file:py-3 file:px-6
                       file:rounded-full file:border-0
                       file:text-sm file:font-semibold
@@ -234,7 +275,7 @@ export default function ProfilePage() {
                       setIsEditing(false);
                       setSelectedImage(null);
                     }}
-                    className="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
+                    className="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-3 px-6 rounded-full transition-all duration-300"
                   >
                     {t('profilePage.edit.cancel')}
                   </button>
@@ -244,14 +285,14 @@ export default function ProfilePage() {
 
             {/* User Info */}
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-white mb-3">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-3">
                 {profileUser.username}
               </h1>
               <div className="flex items-center justify-center gap-3 mb-4">
                 <span
                   className={`${getRoleBadgeColor(profileUser.role)} text-white px-6 py-2 rounded-full text-sm font-semibold uppercase tracking-wider shadow-lg`}
                 >
-                  {profileUser.role}
+                  {getRoleTranslation(profileUser.role)}
                 </span>
               </div>
             </div>
@@ -259,7 +300,7 @@ export default function ProfilePage() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Member Since */}
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 hover:border-blue-500 transition-all duration-300">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300">
                 <div className="flex items-center gap-4">
                   <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-4 rounded-xl">
                     <svg
@@ -278,10 +319,10 @@ export default function ProfilePage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-sm font-medium">
+                    <p className="text-gray-500 dark:text-white/60 text-sm font-medium">
                       {t('profilePage.memberSince')}
                     </p>
-                    <p className="text-white text-xl font-bold">
+                    <p className="text-gray-900 dark:text-white text-xl font-bold">
                       {formatDate(profileUser.createdAt)}
                     </p>
                   </div>
@@ -289,7 +330,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Account Type */}
-              <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 hover:border-purple-500 transition-all duration-300">
+              <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800 dark:to-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300">
                 <div className="flex items-center gap-4">
                   <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-4 rounded-xl">
                     <svg
@@ -308,11 +349,11 @@ export default function ProfilePage() {
                     </svg>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-sm font-medium">
+                    <p className="text-gray-500 dark:text-white/60 text-sm font-medium">
                       {t('profilePage.accountType')}
                     </p>
-                    <p className="text-white text-xl font-bold capitalize">
-                      {profileUser.role}
+                    <p className="text-gray-900 dark:text-white text-xl font-bold capitalize">
+                      {getRoleTranslation(profileUser.role)}
                     </p>
                   </div>
                 </div>

@@ -4,6 +4,8 @@
   "login": "登入",
   "register": "註冊",
   "admin": "管理員",
+  "role-seller": "創作者",
+  "role-buyer": "顧客",
   "logout": "登出",
   "dashboard": "儀表板",
   "profile": "個人檔案",
@@ -22,7 +24,8 @@
     "profilePictureUpdated": "個人照片更新成功！",
     "uploadFailed": "上傳圖片失敗",
     "imageTooLarge": "圖片大小應小於 5MB",
-    "onlyImagesAllowed": "僅允許上傳圖片檔案"
+    "onlyImagesAllowed": "僅允許上傳圖片檔案",
+    "userNotFound": "找不到使用者"
   },
   "profilePage": {
     "cropModal": {
@@ -37,7 +40,10 @@
       "cancel": "取消"
     },
     "memberSince": "加入時間",
-    "accountType": "帳戶類型"
+    "accountType": "帳戶類型",
+    "userNotFound": "找不到使用者",
+    "userNotFoundMessage": "我們找不到您要尋找的使用者。",
+    "backToHome": "回到首頁"
   },
   "loginPage": {
     "title": "登入您的帳戶",
