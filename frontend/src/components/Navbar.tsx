@@ -35,11 +35,11 @@ const Navbar: React.FC = () => {
   const navLinkClasses = "text-gray-700 dark:text-white/80 font-bold hover:text-gray-900 dark:hover:text-white transition-colors";
   const activeNavLinkClasses = "text-gray-900 dark:text-white font-bold";
   return (
-    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm">
+    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm navbar-gradient-light dark:navbar-gradient-dark transition-all duration-300">
       <div className="flex items-center justify-between">
         {/* Left Icon & Title */}
         <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="Miria Logo" className="w-8 h-8 object-contain rounded-sm" />
+          <img src="/Miria_logo_v1_clearbg.png" alt="Miria Logo" className="w-8 h-8 object-contain rounded-sm" />
           <Link to="/" className="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
             Miria
           </Link>

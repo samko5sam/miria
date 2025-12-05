@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+
   /* Light Mode (Default) */
   :root {
     --bg-primary: #ffffff;
@@ -45,3 +46,135 @@
   }
 }
 
+@layer utilities {
+
+  /* Navbar Gradient Animation - Dark Mode (Right to Left Flow) */
+  @keyframes navbar-gradient-dark-flow {
+    0% {
+      background-position: 200% 50%;
+    }
+
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+
+  /* Navbar Gradient Animation - Light Mode (Right to Left Flow) */
+  @keyframes navbar-gradient-light-flow {
+    0% {
+      background-position: 200% 50%;
+    }
+
+    100% {
+      background-position: -200% 50%;
+    }
+  }
+
+  /* Settings Gear Rotation Animation */
+  @keyframes gear-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(180deg);
+    }
+  }
+
+  /* Navbar gradient - Dark Mode (No neon green) */
+  .navbar-gradient-dark {
+    background: linear-gradient(90deg,
+        rgba(45, 27, 78, 0.95) 0%,
+        rgba(74, 31, 127, 0.9) 20%,
+        rgba(107, 47, 181, 0.85) 40%,
+        rgba(107, 47, 181, 0.9) 50%,
+        rgba(107, 47, 181, 0.85) 60%,
+        rgba(74, 31, 127, 0.9) 80%,
+        rgba(45, 27, 78, 0.95) 100%);
+    background-size: 400% 100%;
+    background-position: 200% 50%;
+    position: relative;
+    animation: navbar-gradient-dark-flow 45s linear infinite;
+    animation-play-state: paused;
+    transition: animation-play-state 0.5s ease;
+  }
+
+  /* Hover triggers animation with smooth transition */
+  .navbar-gradient-dark:hover {
+    animation-play-state: running;
+  }
+
+  /* Subtle purple glow (no neon green) */
+  .navbar-gradient-dark::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      radial-gradient(ellipse at 50% 50%, rgba(107, 47, 181, 0.1) 0%, transparent 40%);
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
+
+  .navbar-gradient-dark:hover::before {
+    opacity: 1;
+  }
+
+  /* Navbar gradient - Light Mode (Light Purple & White) */
+  .navbar-gradient-light {
+    background: linear-gradient(90deg,
+        rgba(245, 240, 255, 0.95) 0%,
+        rgba(250, 245, 255, 0.9) 15%,
+        rgba(255, 255, 255, 0.85) 25%,
+        rgba(255, 255, 255, 0.8) 35%,
+        rgba(240, 230, 255, 0.5) 48%,
+        rgba(235, 220, 255, 0.6) 50%,
+        rgba(240, 230, 255, 0.5) 52%,
+        rgba(255, 255, 255, 0.8) 65%,
+        rgba(255, 255, 255, 0.85) 75%,
+        rgba(250, 245, 255, 0.9) 85%,
+        rgba(245, 240, 255, 0.95) 100%);
+    background-size: 400% 100%;
+    background-position: 200% 50%;
+    position: relative;
+    animation: navbar-gradient-light-flow 45s linear infinite;
+    animation-play-state: paused;
+    transition: animation-play-state 0.5s ease;
+  }
+
+  /* Hover triggers animation with smooth transition */
+  .navbar-gradient-light:hover {
+    animation-play-state: running;
+  }
+
+  /* Subtle purple highlight */
+  .navbar-gradient-light::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      radial-gradient(ellipse at 50% 50%, rgba(127, 19, 236, 0.06) 0%, transparent 35%);
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
+
+  .navbar-gradient-light:hover::before {
+    opacity: 1;
+  }
+
+  /* Settings gear rotation on hover */
+  .gear-icon {
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .gear-icon:hover {
+    animation: gear-rotate 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  }
+}

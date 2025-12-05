@@ -34,7 +34,7 @@ const SettingsMenu: React.FC = () => {
                 className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors focus:outline-none"
                 aria-label={t('settings')}
             >
-                <span className="material-symbols-outlined text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white text-2xl">
+                <span className="material-symbols-outlined text-gray-700 dark:text-white/80 hover:text-gray-900 dark:hover:text-white text-2xl gear-icon">
                     settings
                 </span>
             </button>
