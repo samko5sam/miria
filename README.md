@@ -1,4 +1,6 @@
-# Miria - The Creator's Digital Marketplace ✨
+
+
+# <img src="./frontend/public/Miria_logo_v1_withbg_for_github_readme.png" width="23" > Miria - The Creator's Digital Marketplace ✨
 
 <!--[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)-->
 [![Vite](https://img.shields.io/badge/Frontend-Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
