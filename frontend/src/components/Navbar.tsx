@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
   const navLinkClasses = "text-gray-700 dark:text-white/80 font-bold hover:text-gray-900 dark:hover:text-white transition-colors";
   const activeNavLinkClasses = "text-gray-900 dark:text-white font-bold";
   return (
-    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm navbar-gradient-light dark:navbar-gradient-dark transition-all duration-300">
+    <header className="relative p-4 border-b border-gray-200 dark:border-white/10 bg-white/80 dark:bg-transparent backdrop-blur-sm navbar-gradient-light dark:navbar-gradient-dark transition-all duration-300 z-50">
       <div className="flex items-center justify-between">
         {/* Left Icon & Title */}
         <div className="flex items-center gap-3">
@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
                 </button>
 
                 {isProfileMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl py-2 animate-in fade-in slide-in-from-top-2 overflow-hidden">
                     <div className="px-4 py-3 border-b border-gray-200 dark:border-white/10 mb-2">
                       <p className="text-gray-900 dark:text-white font-bold truncate">{user.username}</p>
                     </div>
@@ -140,7 +140,7 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu Panel */}
       {/* ======================================= */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-background-dark shadow-lg z-50 border-b border-gray-200 dark:border-white/10">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-background-dark shadow-lg border-b border-gray-200 dark:border-white/10">
           <nav className="flex flex-col items-center gap-6 py-8">
             <NavLinks
               isMobile={true}
