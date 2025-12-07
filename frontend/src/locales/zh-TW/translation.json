@@ -25,7 +25,15 @@
     "uploadFailed": "上傳圖片失敗",
     "imageTooLarge": "圖片大小應小於 5MB",
     "onlyImagesAllowed": "僅允許上傳圖片檔案",
-    "userNotFound": "找不到使用者"
+    "userNotFound": "找不到使用者",
+    "addedToCart": "已加入購物車",
+    "addToCartFailed": "加入購物車失敗",
+    "cartUpdated": "購物車已更新",
+    "updateCartFailed": "更新購物車失敗",
+    "itemRemoved": "已從購物車移除",
+    "removeItemFailed": "移除商品失敗",
+    "cartCleared": "購物車已清空",
+    "clearCartFailed": "清空購物車失敗"
   },
   "profilePage": {
     "cropModal": {
@@ -138,7 +146,8 @@
     "clearCart": "清空購物車",
     "confirmClear": "您確定要清空整個購物車嗎？",
     "cartItemCount": "{{count}} 個商品",
-    "cartItemCount_plural": "{{count}} 個商品"
+    "cartItemCount_plural": "{{count}} 個商品",
+    "unknownStore": "未知商店"
   },
   "checkout": {
     "title": "結帳",

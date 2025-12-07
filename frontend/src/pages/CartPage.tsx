@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import TestCartButton from '../components/TestCartButton';
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
   const { cart, loading, error, removeFromCart, updateCartItem, clearCart } = useCart();
-  const { user } = useAuth();
-  const [promoCode, setPromoCode] = useState('');
-  const [discount, setDiscount] = useState(0);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  const discount = 0;
 
   // Calculate totals
   const subtotal = cart?.total_price || 0;
@@ -31,18 +29,7 @@ const CartPage: React.FC = () => {
     setShowClearConfirm(false);
   };
 
-  const handleApplyPromo = () => {
-    // Simple promo code logic - in a real app this would call an API
-    if (promoCode === 'DISCOUNT10') {
-      setDiscount(subtotal * 0.1);
-      return;
-    }
-    if (promoCode === 'FREESHIP') {
-      setDiscount(5);
-      return;
-    }
-    setDiscount(0);
-  };
+
 
   if (loading) {
     return (
@@ -60,28 +47,13 @@ const CartPage: React.FC = () => {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">{t('cart.title')}</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">{t('loginPage.title')}</p>
-          <Link
-            to="/login"
-            className="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors"
-          >
-            {t('login')}
-          </Link>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-center">{t('cart.title')}</h1>
 
-      {/*<TestCartButton />*/}
+      <TestCartButton />
 
       {cart && cart.items.length === 0 ? (
         <div className="text-center py-12">
@@ -97,57 +69,72 @@ const CartPage: React.FC = () => {
       ) : (
         <div className="space-y-6">
           {/* Cart Items */}
-          <div className="space-y-4">
-            {cart?.items.map((item) => (
-              <div
-                key={item.id}
-                className="flex flex-col md:flex-row gap-4 rounded-xl bg-white dark:bg-zinc-900/50 p-4 justify-between items-center border border-gray-200 dark:border-white/10"
-              >
-                <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                    {item.product_name.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex flex-col justify-center gap-1 flex-1">
-                    <p className="text-gray-900 dark:text-white text-base font-medium leading-normal">
-                      {item.product_name}
-                    </p>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">
-                      ${item.product_price.toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                    <button
-                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                      disabled={item.quantity <= 1}
-                      className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer disabled:opacity-50"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
-                      className="text-base font-medium leading-normal w-12 p-0 text-center bg-transparent focus:outline-0 focus:ring-0 focus:border-none border-none"
-                    />
-                    <button
-                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                      className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <p className="text-gray-900 dark:text-white text-base font-bold leading-normal">
-                    ${(item.product_price * item.quantity).toFixed(2)}
-                  </p>
-                  <button
-                    onClick={() => handleRemoveItem(item.id)}
-                    className="text-red-500 hover:text-red-600 transition-colors"
+          {/* Cart Items Grouped by Store */}
+          <div className="space-y-6">
+            {Object.entries(
+              cart?.items.reduce((acc, item) => {
+                const storeName = item.store_name || t('cart.unknownStore');
+                if (!acc[storeName]) acc[storeName] = [];
+                acc[storeName].push(item);
+                return acc;
+              }, {} as Record<string, typeof cart.items>) || {}
+            ).map(([storeName, items]) => (
+              <div key={storeName} className="space-y-4">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white px-2 border-l-4 border-primary">
+                  {storeName}
+                </h3>
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-col md:flex-row gap-4 rounded-xl bg-white dark:bg-zinc-900/50 p-4 justify-between items-center border border-gray-200 dark:border-white/10"
                   >
-                    <span className="material-symbols-outlined">delete</span>
-                  </button>
-                </div>
+                    <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
+                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl overflow-hidden relative">
+                        {item.product_name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex flex-col justify-center gap-1 flex-1">
+                        <Link to={`/products/${item.product_id}`} className="text-gray-900 dark:text-white text-base font-medium leading-normal hover:underline">
+                          {item.product_name}
+                        </Link>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">
+                          ${item.product_price.toFixed(2)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2 text-gray-900 dark:text-white">
+                        <button
+                          onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                          disabled={item.quantity <= 1}
+                          className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer disabled:opacity-50"
+                        >
+                          -
+                        </button>
+                        <input
+                          type="number"
+                          value={item.quantity}
+                          onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
+                          className="text-base font-medium leading-normal w-12 p-0 text-center bg-transparent focus:outline-0 focus:ring-0 focus:border-none border-none"
+                        />
+                        <button
+                          onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                          className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <p className="text-gray-900 dark:text-white text-base font-bold leading-normal w-24 text-right">
+                        ${(item.product_price * item.quantity).toFixed(2)}
+                      </p>
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="text-red-500 hover:text-red-600 transition-colors p-2"
+                      >
+                        <span className="material-symbols-outlined">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>

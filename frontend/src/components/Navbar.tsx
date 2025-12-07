@@ -61,10 +61,9 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="hidden md:flex items-center justify-end gap-4">
+          <CartButton />
           {user ? (
             <>
-              {/* Cart Icon */}
-              <CartButton />
 
               <div className="relative" ref={profileMenuRef}>
                 <button
@@ -154,6 +153,8 @@ const Navbar: React.FC = () => {
               user={user}
             />
 
+
+
             <hr className="w-3/4 border-white/20 my-4" />
 
             {user ? (
@@ -169,8 +170,8 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="text-gray-900 dark:text-white font-bold text-xl mb-4">{user.username}</div>
 
-                {/* Cart Icon for Mobile */}
-                <div className="w-full flex justify-center">
+                {/* Cart Icon for Mobile (Logged In) */}
+                <div className="w-full flex justify-center mb-4">
                   <CartButton />
                 </div>
 
@@ -202,6 +203,11 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center gap-4 w-full px-8">
+                {/* Cart Icon for Mobile (Logged Out) */}
+                <div className="w-full flex justify-center mb-4">
+                  <CartButton />
+                </div>
+
                 <Link to="/login" className={`text-lg ${navLinkClasses} w-full text-center py-2`}>
                   {t('login')}
                 </Link>

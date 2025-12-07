@@ -1,21 +1,20 @@
 import React from 'react';
+
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
+import { productService } from '../services/productService';
 import toast from 'react-hot-toast';
 
 const TestCartButton: React.FC = () => {
   const { addToCart } = useCart();
-  const { user } = useAuth();
 
   const handleTestAddToCart = async () => {
-    if (!user) {
-      toast.error('Please login to test cart functionality');
-      return;
-    }
+
 
     try {
-      // Add a test product to cart (product ID 1)
-      await addToCart(3, 1);
+      // Fetch a real product (ID 1 for testing)
+      // You might want to ensure product ID 1 exists in your DB or change this ID
+      const product = await productService.getProduct(3);
+      await addToCart(product, 1);
       toast.success('Test product added to cart!');
     } catch {
       toast.error('Failed to add test product to cart');

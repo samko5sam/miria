@@ -25,7 +25,15 @@
     "uploadFailed": "Failed to upload image",
     "imageTooLarge": "Image size should be less than 5MB",
     "onlyImagesAllowed": "Only image files are allowed",
-    "userNotFound": "User not found"
+    "userNotFound": "User not found",
+    "addedToCart": "Item added to cart",
+    "addToCartFailed": "Failed to add item to cart",
+    "cartUpdated": "Cart updated",
+    "updateCartFailed": "Failed to update cart",
+    "itemRemoved": "Item removed from cart",
+    "removeItemFailed": "Failed to remove item from cart",
+    "cartCleared": "Cart cleared",
+    "clearCartFailed": "Failed to clear cart"
   },
   "profilePage": {
     "cropModal": {
@@ -138,7 +146,9 @@
     "remove": "Remove",
     "clearCart": "Clear Cart",
     "confirmClear": "Are you sure you want to clear your entire cart?",
-    "cartItemCount": "{{count}} item",  "cartItemCount_plural": "{{count}} items"
+    "cartItemCount": "{{count}} item",
+    "cartItemCount_plural": "{{count}} items",
+    "unknownStore": "Unknown Store"
   },
   "checkout": {
     "title": "Checkout",

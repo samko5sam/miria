@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import api_bp
 from extensions import db
-from models import Cart, CartItem, Product, User
+from models import Cart, CartItem, Product, User, Store
 from datetime import datetime
 
 @api_bp.route('/cart', methods=['GET'])
@@ -40,7 +40,9 @@ def get_cart():
                 'product_price': product.price,
                 'quantity': item.quantity,
                 'total': item_total,
-                'created_at': item.created_at.isoformat() if item.created_at else None
+                'created_at': item.created_at.isoformat() if item.created_at else None,
+                'store_name': product.user.store.name if product.user and product.user.store else 'Unknown Store',
+                'store_id': product.user.store.id if product.user and product.user.store else None
             })
             total_price += item_total
 
@@ -200,3 +202,78 @@ def clear_cart():
     db.session.commit()
 
     return jsonify({"message": "Cart cleared successfully"})
+
+@api_bp.route('/cart/merge', methods=['POST'])
+@jwt_required()
+def merge_cart():
+    """Merge local cart items into user's cloud cart"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Find or create cart for the user
+    cart = Cart.query.filter_by(user_id=current_user_id).first()
+    if not cart:
+        cart = Cart()
+        cart.user_id = current_user_id
+        db.session.add(cart)
+        db.session.commit()
+
+    data = request.get_json()
+    local_items = data.get('items', [])
+    
+    if not isinstance(local_items, list):
+         return jsonify({"message": "Items must be a list"}), 400
+
+    merged_count = 0
+    
+    for local_item in local_items:
+        product_id = local_item.get('product_id')
+        quantity = local_item.get('quantity')
+        
+        if not product_id or not quantity:
+            continue
+            
+        try:
+            quantity = int(quantity)
+            if quantity <= 0:
+                continue
+        except ValueError:
+            continue
+
+        # Check if product exists
+        product = Product.query.get(product_id)
+        if not product:
+            continue
+            
+        # Check if item already exists in cart
+        existing_item = CartItem.query.filter_by(cart_id=cart.id, product_id=product_id).first()
+        
+        if existing_item:
+            # For merge, we can decide strategy. 
+            # Strategy: Max(cloud, local) or Sum? 
+            # Usually users expect "Added locally" + "Added on cloud" = Sum. 
+            # But if it's "Sync", maybe max? 
+            # Let's go with ADD, but checking if it gets ridiculous?
+            # Actually, standard ecommerce merge is often just adding the local qty to cloud qty.
+            existing_item.quantity += quantity
+        else:
+            new_item = CartItem(
+                cart_id=cart.id,
+                product_id=product_id,
+                quantity=quantity
+            )
+            db.session.add(new_item)
+        
+        merged_count += 1
+
+    cart.updated_at = datetime.utcnow()
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Cart merged successfully",
+        "merged_count": merged_count
+    })
+
