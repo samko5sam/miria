@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { apiClient } from "../utils/apiUtils";
 
 export interface ProductFile {
   id: number;
@@ -28,15 +26,9 @@ export const productService = {
     description: string,
     price: number
   ): Promise<{ message: string; product_id: number }> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${API_URL}/products`,
-      { name, description, price },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.post(
+      `/products`,
+      { name, description, price }
     );
     return response.data;
   },
@@ -44,13 +36,9 @@ export const productService = {
   /**
    * Get all products for the current seller
    */
+
   getMyProducts: async (): Promise<Product[]> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${API_URL}/products/my`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/products/my`);
     return response.data;
   },
 
@@ -58,7 +46,7 @@ export const productService = {
    * Get all products (public)
    */
   getAllProducts: async (): Promise<Product[]> => {
-    const response = await axios.get(`${API_URL}/products`);
+    const response = await apiClient.get(`/products`);
     return response.data;
   },
 
@@ -66,20 +54,16 @@ export const productService = {
    * Get a specific product by ID
    */
   getProduct: async (productId: number): Promise<Product> => {
-    const response = await axios.get(`${API_URL}/products/${productId}`);
+    const response = await apiClient.get(`/products/${productId}`);
     return response.data;
   },
 
   /**
    * Delete a product
    */
+
   deleteProduct: async (productId: number): Promise<{ message: string }> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.delete(`${API_URL}/products/${productId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.delete(`/products/${productId}`);
     return response.data;
   },
 
@@ -90,16 +74,14 @@ export const productService = {
     productId: number,
     file: File
   ): Promise<{ message: string; file: ProductFile }> => {
-    const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await axios.post(
-      `${API_URL}/products/${productId}/files`,
+    const response = await apiClient.post(
+      `/products/${productId}/files`,
       formData,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       }
@@ -114,14 +96,8 @@ export const productService = {
     productId: number,
     fileId: number
   ): Promise<{ message: string }> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.delete(
-      `${API_URL}/products/${productId}/files/${fileId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.delete(
+      `/products/${productId}/files/${fileId}`
     );
     return response.data;
   },
@@ -133,14 +109,8 @@ export const productService = {
     productId: number,
     fileId: number
   ): Promise<{ download_url: string }> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(
-      `${API_URL}/products/${productId}/files/${fileId}/download`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.get(
+      `/products/${productId}/files/${fileId}/download`
     );
     return response.data;
   },

@@ -1,7 +1,5 @@
-import axios from "axios";
 import type { Product } from "./productService";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { apiClient } from "../utils/apiUtils";
 
 export interface CartItem {
   id: number;
@@ -34,11 +32,7 @@ export const cartService = {
   getCart: async (): Promise<Cart> => {
     const token = localStorage.getItem("token");
     if (token) {
-      const response = await axios.get(`${API_URL}/cart`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.get(`/cart`);
       return response.data;
     } else {
       // Local cart
@@ -71,14 +65,9 @@ export const cartService = {
   ): Promise<{ message: string; cart_item_id: number }> => {
     const token = localStorage.getItem("token");
     if (token) {
-      const response = await axios.post(
-        `${API_URL}/cart/items`,
-        { product_id: product.id, quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await apiClient.post(
+        `/cart/items`,
+        { product_id: product.id, quantity }
       );
       return response.data;
     } else {
@@ -130,14 +119,9 @@ export const cartService = {
   ): Promise<{ message: string; item_id: number; new_quantity: number }> => {
     const token = localStorage.getItem("token");
     if (token) {
-      const response = await axios.put(
-        `${API_URL}/cart/items/${itemId}`,
-        { quantity },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await apiClient.put(
+        `/cart/items/${itemId}`,
+        { quantity }
       );
       return response.data;
     } else {
@@ -167,13 +151,8 @@ export const cartService = {
   removeFromCart: async (itemId: number): Promise<{ message: string }> => {
     const token = localStorage.getItem("token");
     if (token) {
-      const response = await axios.delete(
-        `${API_URL}/cart/items/${itemId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await apiClient.delete(
+        `/cart/items/${itemId}`
       );
       return response.data;
     } else {
@@ -192,11 +171,7 @@ export const cartService = {
   clearCart: async (): Promise<{ message: string }> => {
     const token = localStorage.getItem("token");
     if (token) {
-      const response = await axios.delete(`${API_URL}/cart/clear`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await apiClient.delete(`/cart/clear`);
       return response.data;
     } else {
       localStorage.removeItem(LOCAL_CART_KEY);
@@ -221,14 +196,9 @@ export const cartService = {
       quantity: item.quantity,
     }));
 
-    const response = await axios.post(
-      `${API_URL}/cart/merge`,
-      { items: mergeItems },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.post(
+      `/cart/merge`,
+      { items: mergeItems }
     );
     
     // Clear local cart after successful merge
