@@ -25,7 +25,15 @@
     "uploadFailed": "上傳圖片失敗",
     "imageTooLarge": "圖片大小應小於 5MB",
     "onlyImagesAllowed": "僅允許上傳圖片檔案",
-    "userNotFound": "找不到使用者"
+    "userNotFound": "找不到使用者",
+    "addedToCart": "已加入購物車",
+    "addToCartFailed": "加入購物車失敗",
+    "cartUpdated": "購物車已更新",
+    "updateCartFailed": "更新購物車失敗",
+    "itemRemoved": "已從購物車移除",
+    "removeItemFailed": "移除商品失敗",
+    "cartCleared": "購物車已清空",
+    "clearCartFailed": "清空購物車失敗"
   },
   "profilePage": {
     "cropModal": {
@@ -118,5 +126,45 @@
         "invalidPrice": "請輸入有效的價格"
       }
     }
+  },
+  "cart": {
+    "title": "我的購物車",
+    "emptyCart": "您的購物車是空的",
+    "emptyCartDescription": "看起來您還沒有將任何商品加入購物車。",
+    "browseProducts": "瀏覽商品",
+    "item": "商品",
+    "price": "價格",
+    "quantity": "數量",
+    "total": "總計",
+    "subtotal": "小計",
+    "discount": "折扣",
+    "promoCode": "優惠碼",
+    "promoCodePlaceholder": "輸入優惠碼",
+    "apply": "套用",
+    "checkout": "前往結帳",
+    "remove": "移除",
+    "clearCart": "清空購物車",
+    "confirmClear": "您確定要清空整個購物車嗎？",
+    "cartItemCount": "{{count}} 個商品",
+    "cartItemCount_plural": "{{count}} 個商品",
+    "unknownStore": "未知商店"
+  },
+  "checkout": {
+    "title": "結帳",
+    "contactInfo": "我們應該將您的檔案發送到哪裡？",
+    "emailLabel": "電子郵件地址",
+    "emailDescription": "您的下載連結和收據將發送到此處。",
+    "paymentMethod": "付款方式",
+    "creditCard": "信用卡/簽帳卡",
+    "paypal": "PayPal",
+    "orderSummary": "訂單摘要",
+    "digitalProduct": "數位產品",
+    "taxes": "稅金",
+    "discountCode": "折扣碼",
+    "total": "總計",
+    "securePayment": "安全 SSL 加密付款",
+    "terms": "服務條款",
+    "privacy": "隱私權政策",
+    "payButton": "付款 {{amount}}"
   }
 }

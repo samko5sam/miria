@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import { apiClient } from "../utils/apiUtils";
 
 export interface Store {
   id: number;
@@ -11,26 +9,15 @@ export interface Store {
 
 export const storeService = {
   registerStore: async (name: string, description: string): Promise<{ message: string; store: Store; user_role: string }> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.post(
-      `${API_URL}/stores/`,
-      { name, description },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.post(
+      `/stores/`,
+      { name, description }
     );
     return response.data;
   },
 
   getMyStore: async (): Promise<Store> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${API_URL}/stores/my`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await apiClient.get(`/stores/my`);
     return response.data;
   },
 };

@@ -25,7 +25,15 @@
     "uploadFailed": "Failed to upload image",
     "imageTooLarge": "Image size should be less than 5MB",
     "onlyImagesAllowed": "Only image files are allowed",
-    "userNotFound": "User not found"
+    "userNotFound": "User not found",
+    "addedToCart": "Item added to cart",
+    "addToCartFailed": "Failed to add item to cart",
+    "cartUpdated": "Cart updated",
+    "updateCartFailed": "Failed to update cart",
+    "itemRemoved": "Item removed from cart",
+    "removeItemFailed": "Failed to remove item from cart",
+    "cartCleared": "Cart cleared",
+    "clearCartFailed": "Failed to clear cart"
   },
   "profilePage": {
     "cropModal": {
@@ -119,5 +127,45 @@
         "invalidPrice": "Please enter a valid price"
       }
     }
+  },
+  "cart": {
+    "title": "My Cart",
+    "emptyCart": "Your cart is empty",
+    "emptyCartDescription": "Looks like you haven't added anything to your cart yet.",
+    "browseProducts": "Browse Products",
+    "item": "Item",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "promoCode": "Promo Code",
+    "promoCodePlaceholder": "Enter promo code",
+    "apply": "Apply",
+    "checkout": "Proceed to Checkout",
+    "remove": "Remove",
+    "clearCart": "Clear Cart",
+    "confirmClear": "Are you sure you want to clear your entire cart?",
+    "cartItemCount": "{{count}} item",
+    "cartItemCount_plural": "{{count}} items",
+    "unknownStore": "Unknown Store"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "contactInfo": "Where should we send your files?",
+    "emailLabel": "Email Address",
+    "emailDescription": "Your download links and receipt will be sent here.",
+    "paymentMethod": "Payment",
+    "creditCard": "Credit/Debit Card",
+    "paypal": "PayPal",
+    "orderSummary": "Order Summary",
+    "digitalProduct": "Digital Product",
+    "taxes": "Taxes",
+    "discountCode": "Discount Code",
+    "total": "Total",
+    "securePayment": "Secure SSL Encrypted Payment",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "payButton": "Pay {{amount}}"
   }
 }

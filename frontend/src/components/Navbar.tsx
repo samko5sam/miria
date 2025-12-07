@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import SettingsMenu from './SettingsMenu';
+import CartButton from './CartButton';
 
 const Navbar: React.FC = () => {
   const { t } = useTranslation();
@@ -60,8 +61,10 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="hidden md:flex items-center justify-end gap-4">
+          <CartButton />
           {user ? (
             <>
+
               <div className="relative" ref={profileMenuRef}>
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
@@ -150,6 +153,8 @@ const Navbar: React.FC = () => {
               user={user}
             />
 
+
+
             <hr className="w-3/4 border-white/20 my-4" />
 
             {user ? (
@@ -163,7 +168,12 @@ const Navbar: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="text-white font-bold text-xl mb-4">{user.username}</div>
+                <div className="text-gray-900 dark:text-white font-bold text-xl mb-4">{user.username}</div>
+
+                {/* Cart Icon for Mobile (Logged In) */}
+                <div className="w-full flex justify-center mb-4">
+                  <CartButton />
+                </div>
 
                 {(user.role === 'seller' || user.role === 'admin') && (
                   <Link
@@ -193,6 +203,11 @@ const Navbar: React.FC = () => {
               </div>
             ) : (
               <div className="flex flex-col items-center gap-4 w-full px-8">
+                {/* Cart Icon for Mobile (Logged Out) */}
+                <div className="w-full flex justify-center mb-4">
+                  <CartButton />
+                </div>
+
                 <Link to="/login" className={`text-lg ${navLinkClasses} w-full text-center py-2`}>
                   {t('login')}
                 </Link>

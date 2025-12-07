@@ -1,11 +1,9 @@
-import axios from "axios";
+import { apiClient } from "../utils/apiUtils";
 import type { User } from "../types";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export const authService = {
   login: async (username: string, password: string): Promise<void> => {
-    const response = await axios.post(`${API_URL}/login`, {
+    const response = await apiClient.post(`/login`, {
       username,
       password,
     });
@@ -21,7 +19,7 @@ export const authService = {
     email: string,
     password: string,
   ): Promise<User> => {
-    const response = await axios.post(`${API_URL}/register`, {
+    const response = await apiClient.post(`/register`, {
       username,
       email,
       password,
@@ -37,11 +35,7 @@ export const authService = {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const response = await axios.get(`${API_URL}/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await apiClient.get(`/profile`);
         const allowedRoles = ["seller", "buyer", "admin"] as const;
         type AllowedRole = typeof allowedRoles[number];
 
@@ -66,7 +60,7 @@ export const authService = {
   },
 
   getUserProfile: async (username: string): Promise<User> => {
-    const response = await axios.get(`${API_URL}/profile/${username}`);
+    const response = await apiClient.get(`/profile/${username}`);
     return {
       id: response.data.id || "unknown",
       username: response.data.username,
@@ -78,15 +72,9 @@ export const authService = {
   },
 
   updateProfile: async (profilePicture: string): Promise<User> => {
-    const token = localStorage.getItem("token");
-    const response = await axios.put(
-      `${API_URL}/profile`,
-      { profile_picture: profilePicture },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+    const response = await apiClient.put(
+      `/profile`,
+      { profile_picture: profilePicture }
     );
     return {
       id: response.data.id || "unknown",
@@ -99,13 +87,11 @@ export const authService = {
   },
 
   uploadProfilePicture: async (file: File): Promise<string> => {
-    const token = localStorage.getItem("token");
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await axios.post(`${API_URL}/profile/picture`, formData, {
+    const response = await apiClient.post(`/profile/picture`, formData, {
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
     });

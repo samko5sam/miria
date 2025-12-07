@@ -19,6 +19,8 @@ def get_products():
         'price': p.price,
         'user_id': p.user_id,
         'created_at': p.created_at.isoformat() if p.created_at else None,
+        'store_name': p.user.store.name if p.user and p.user.store else 'Unknown Store',
+        'store_id': p.user.store.id if p.user and p.user.store else None,
         'files': [{
             'id': f.id,
             'filename': f.filename,
@@ -48,6 +50,8 @@ def get_my_products():
         'price': p.price,
         'user_id': p.user_id,
         'created_at': p.created_at.isoformat() if p.created_at else None,
+        'store_name': p.user.store.name if p.user and p.user.store else 'Unknown Store',
+        'store_id': p.user.store.id if p.user and p.user.store else None,
         'files': [{
             'id': f.id,
             'filename': f.filename,
@@ -70,6 +74,8 @@ def get_product(product_id):
         'price': product.price,
         'user_id': product.user_id,
         'created_at': product.created_at.isoformat() if product.created_at else None,
+        'store_name': product.user.store.name if product.user and product.user.store else 'Unknown Store',
+        'store_id': product.user.store.id if product.user and product.user.store else None,
         'files': [{
             'id': f.id,
             'filename': f.filename,
