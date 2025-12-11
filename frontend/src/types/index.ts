@@ -28,6 +28,7 @@ export interface Order {
   id: number;
   order_id: string; // Lemon Squeezy Order ID
   amount_paid: number;
+  status: 'paid' | 'unpaid' | 'cancelled';
   created_at: string;
   product: Product;
 }

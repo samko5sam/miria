@@ -188,7 +188,18 @@
     "noFiles": "No files attached to this product.",
     "failedToLoad": "Failed to load orders",
     "failedToGetDownloadUrl": "Failed to get download URL",
-    "failedToDownload": "Failed to download file"
+    "failedToDownload": "Failed to download file",
+    "unpaid": "Unpaid",
+    "cancelled": "Cancelled",
+    "payNow": "Pay Now",
+    "cancel": "Cancel",
+    "confirmCancel": "Are you sure you want to cancel this order?",
+    "orderCancelled": "Order cancelled",
+    "filter": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "all": "All"
+    }
   },
   "nav": {
     "myOrders": "My Orders"

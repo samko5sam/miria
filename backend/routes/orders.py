@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import api_bp
 from extensions import db
@@ -7,15 +7,22 @@ from models import Order, User, Product, ProductFile
 @api_bp.route('/my-orders', methods=['GET'])
 @jwt_required()
 def get_my_orders():
-    """Get all paid orders for the current user"""
+    """Get orders for the current user, filtered by status"""
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     
     if not user:
         return jsonify({"message": "User not found"}), 404
 
-    # Fetch orders by email
-    orders = Order.query.filter_by(customer_email=user.email).order_by(Order.created_at.desc()).all()
+    status = request.args.get('status', 'paid')
+    
+    # Fetch orders by email and status
+    query = Order.query.filter_by(customer_email=user.email)
+    
+    if status != 'all':
+        query = query.filter_by(status=status)
+        
+    orders = query.order_by(Order.created_at.desc()).all()
     
     orders_data = []
     for order in orders:
@@ -26,6 +33,7 @@ def get_my_orders():
                 'id': order.id,
                 'order_id': order.lemon_squeezy_order_id,
                 'amount_paid': order.amount_paid,
+                'status': order.status,
                 'created_at': order.created_at.isoformat(),
                 'product': {
                     'id': product.id,

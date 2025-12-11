@@ -10,15 +10,16 @@ const OrdersPage: React.FC = () => {
   const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>('paid'); // 'all', 'paid', 'unpaid'
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [filter]);
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const data = await orderService.getMyOrders();
+      const data = await orderService.getMyOrders(filter);
       setOrders(data);
     } catch (error) {
       console.error('Failed to fetch orders', error);
@@ -38,6 +39,37 @@ const OrdersPage: React.FC = () => {
     }
   };
 
+  const handlePay = async (orderId: number) => {
+    try {
+      const { checkout_url } = await orderService.payOrder(orderId);
+      window.location.href = checkout_url;
+    } catch (error) {
+      console.error('Failed to pay order', error);
+      toast.error("Failed to initiate payment");
+    }
+  };
+
+  const handleCancel = async (orderId: number) => {
+    if (!window.confirm(t('orders.confirmCancel'))) return;
+    try {
+      await orderService.cancelOrder(orderId);
+      toast.success(t('orders.orderCancelled', 'Order cancelled'));
+      fetchOrders();
+    } catch (error) {
+      console.error("Failed to cancel order", error);
+      toast.error("Failed to cancel order");
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'paid': return <div className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold uppercase">{t('orders.paid')}</div>;
+      case 'unpaid': return <div className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 rounded-full text-xs font-semibold uppercase">{t('orders.unpaid')}</div>;
+      case 'cancelled': return <div className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-xs font-semibold uppercase">{t('orders.cancelled')}</div>;
+      default: return null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -48,7 +80,23 @@ const OrdersPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl min-h-screen">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">{t('orders.title')}</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('orders.title')}</h1>
+        <div className="flex bg-gray-100 dark:bg-zinc-800 rounded-lg p-1">
+          {['paid', 'unpaid', 'all'].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${filter === f
+                ? 'bg-white dark:bg-zinc-700 text-gray-900 dark:text-white shadow-sm'
+                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                }`}
+            >
+              {t(`orders.filter.${f}`, f.charAt(0).toUpperCase() + f.slice(1))}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {orders.length === 0 ? (
         <div className="text-center py-12 bg-white dark:bg-zinc-900/50 rounded-xl border border-gray-200 dark:border-white/10">
@@ -95,49 +143,66 @@ const OrdersPage: React.FC = () => {
                   <p className="text-lg font-bold text-gray-900 dark:text-white">
                     ${order.amount_paid.toFixed(2)}
                   </p>
-                  <div className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold uppercase">
-                    {t('orders.paid')}
-                  </div>
+                  {getStatusBadge(order.status)}
+
+                  {order.status === 'unpaid' && (
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        onClick={() => handlePay(order.id)}
+                        className="text-sm px-3 py-1 bg-primary text-white rounded hover:bg-primary/90"
+                      >
+                        {t('orders.payNow')}
+                      </button>
+                      <button
+                        onClick={() => handleCancel(order.id)}
+                        className="text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
+                        {t('orders.cancel')}
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">
-                  {t('orders.downloads')}
-                </h3>
+              {order.status === 'paid' && (
+                <div className="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider mb-3">
+                    {t('orders.downloads')}
+                  </h3>
 
-                {order.product.files.length > 0 ? (
-                  <div className="grid gap-3">
-                    {order.product.files.map((file) => (
-                      <div
-                        key={file.id}
-                        className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800/50 rounded-lg border border-gray-200 dark:border-white/5"
-                      >
-                        <div className="flex items-center gap-3 overflow-hidden">
-                          <span className="material-symbols-outlined text-gray-400">description</span>
-                          <div className="flex flex-col min-w-0">
-                            <span className="text-sm font-medium text-gray-900 dark:text-white truncate" title={file.filename}>
-                              {file.filename.split('/').pop()?.split('_').slice(1).join('_') || file.filename}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {(file.file_size / (1024 * 1024)).toFixed(2)} MB • {file.content_type}
-                            </span>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => handleDownload(order.product.id, file.id)}
-                          className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors flex-shrink-0"
+                  {order.product.files.length > 0 ? (
+                    <div className="grid gap-3">
+                      {order.product.files.map((file) => (
+                        <div
+                          key={file.id}
+                          className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800/50 rounded-lg border border-gray-200 dark:border-white/5"
                         >
-                          <span className="material-symbols-outlined text-[18px]">download</span>
-                          {t('orders.download')}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 italic">{t('orders.noFiles')}</p>
-                )}
-              </div>
+                          <div className="flex items-center gap-3 overflow-hidden">
+                            <span className="material-symbols-outlined text-gray-400">description</span>
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-sm font-medium text-gray-900 dark:text-white truncate" title={file.filename}>
+                                {file.filename.split('/').pop()?.split('_').slice(1).join('_') || file.filename}
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {(file.file_size / (1024 * 1024)).toFixed(2)} MB • {file.content_type}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => handleDownload(order.product.id, file.id)}
+                            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors flex-shrink-0"
+                          >
+                            <span className="material-symbols-outlined text-[18px]">download</span>
+                            {t('orders.download')}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500 italic">{t('orders.noFiles')}</p>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>

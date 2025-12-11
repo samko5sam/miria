@@ -187,7 +187,18 @@
     "noFiles": "此產品未附加檔案。",
     "failedToLoad": "無法載入訂單",
     "failedToGetDownloadUrl": "無法取得下載連結",
-    "failedToDownload": "下載檔案失敗"
+    "failedToDownload": "下載檔案失敗",
+    "unpaid": "未付款",
+    "cancelled": "已取消",
+    "payNow": "立即付款",
+    "cancel": "取消",
+    "confirmCancel": "確定要取消此訂單嗎？",
+    "orderCancelled": "訂單已取消",
+    "filter": {
+      "paid": "已付款",
+      "unpaid": "未付款",
+      "all": "全部"
+    }
   },
   "nav": {
     "myOrders": "我的訂單"
