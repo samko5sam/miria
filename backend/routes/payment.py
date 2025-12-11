@@ -41,6 +41,15 @@ def create_checkout_session():
 
     try:
         for item in cart.items:
+            # 1. Quantity Check
+            if item.quantity > 1:
+                return jsonify({"message": "One product is only be able to buy and own one for an account.", "code": "quantity_limit"}), 400
+
+            # 2. Ownership Check
+            existing_order = Order.query.filter_by(user_id=user.id, product_id=item.product_id, status='paid').first()
+            if existing_order:
+                 return jsonify({"message": "You already own this product.", "code": "already_owned"}), 400
+
             product = Product.query.get(item.product_id)
             if product:
                 total_amount += product.price * item.quantity
@@ -48,6 +57,7 @@ def create_checkout_session():
                 
                 # Create Order Immediately
                 new_order = Order(
+                    user_id=user.id,
                     product_id=item.product_id,
                     customer_email=user.email,
                     amount_paid=product.price * item.quantity,
@@ -207,6 +217,21 @@ def pay_order(order_id):
          
     if order.status == 'paid':
         return jsonify({"message": "Order already paid"}), 400
+    
+    # Check if they already own it via another order
+    # Note: order.user_id might be None for old orders, but for new ones it is set.
+    # If order.user_id is set, use it. If not, fallback to email check? 
+    # Current plan: prefer user_id check if available.
+    check_user_id = order.user_id if order.user_id else current_user_id
+    
+    existing_paid = Order.query.filter(
+        Order.user_id == check_user_id,
+        Order.product_id == order.product_id,
+        Order.status == 'paid'
+    ).first()
+    
+    if existing_paid:
+         return jsonify({"message": "You already own this product.", "code": "already_owned"}), 400
         
     # Create single item checkout
     store_id = os.getenv('LEMONSQUEEZY_STORE_ID')

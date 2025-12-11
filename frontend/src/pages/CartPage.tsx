@@ -6,7 +6,7 @@ import TestCartButton from '../components/TestCartButton';
 
 const CartPage: React.FC = () => {
   const { t } = useTranslation();
-  const { cart, loading, error, removeFromCart, updateCartItem, clearCart } = useCart();
+  const { cart, loading, error, removeFromCart, clearCart } = useCart();
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const discount = 0;
@@ -14,11 +14,6 @@ const CartPage: React.FC = () => {
   // Calculate totals
   const subtotal = cart?.total_price || 0;
   const total = subtotal - discount;
-
-  const handleQuantityChange = async (itemId: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    await updateCartItem(itemId, newQuantity);
-  };
 
   const handleRemoveItem = async (itemId: number) => {
     await removeFromCart(itemId);
@@ -53,7 +48,9 @@ const CartPage: React.FC = () => {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold mb-8 text-center">{t('cart.title')}</h1>
 
-      <TestCartButton />
+      <div className="hidden flex gap-4 pb-4">
+        <TestCartButton />
+      </div>
 
       {cart && cart.items.length === 0 ? (
         <div className="text-center py-12">
@@ -103,25 +100,11 @@ const CartPage: React.FC = () => {
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-2 text-gray-900 dark:text-white">
-                        <button
-                          onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                          disabled={item.quantity <= 1}
-                          className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer disabled:opacity-50"
-                        >
-                          -
-                        </button>
-                        <input
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value) || 1)}
-                          className="text-base font-medium leading-normal w-12 p-0 text-center bg-transparent focus:outline-0 focus:ring-0 focus:border-none border-none"
-                        />
-                        <button
-                          onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                          className="text-base font-medium leading-normal flex h-7 w-7 items-center justify-center rounded-full bg-gray-200 dark:bg-zinc-800 cursor-pointer"
-                        >
-                          +
-                        </button>
+                        <div className="flex items-center gap-2 text-gray-900 dark:text-white">
+                          <span className="text-base font-medium leading-normal">
+                            {t('cart.quantity')}: {item.quantity}
+                          </span>
+                        </div>
                       </div>
                       <p className="text-gray-900 dark:text-white text-base font-bold leading-normal w-24 text-right">
                         ${(item.product_price * item.quantity).toFixed(2)}

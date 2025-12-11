@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import api_bp
 from extensions import db
-from models import Cart, CartItem, Product, User, Store
+from models import Cart, CartItem, Product, User, Store, Order
 from datetime import datetime
 
 @api_bp.route('/cart', methods=['GET'])
@@ -78,6 +78,17 @@ def add_to_cart():
     if not product:
         return jsonify({"message": "Product not found"}), 404
 
+    # Check if user already owns the product
+    # Prefer user_id check if available, matching payment.py logic
+    existing_paid = Order.query.filter(
+        Order.user_id == user.id,
+        Order.product_id == product_id,
+        Order.status == 'paid'
+    ).first()
+    
+    if existing_paid:
+        return jsonify({"message": "You already own this product.", "code": "already_owned"}), 400
+
     # Find or create cart for the user
     cart = Cart.query.filter_by(user_id=current_user_id).first()
     if not cart:
@@ -90,14 +101,14 @@ def add_to_cart():
     existing_item = CartItem.query.filter_by(cart_id=cart.id, product_id=product_id).first()
 
     if existing_item:
-        # Update quantity if item already exists
-        existing_item.quantity += int(quantity)
+        # Prevent adding again
+        return jsonify({"message": "This item is already in your cart.", "code": "item_already_in_cart"}), 409
     else:
         # Add new item to cart
         new_item = CartItem(
             cart_id=cart.id,
             product_id=product_id,
-            quantity=int(quantity)
+            quantity=1 # Force quantity to 1
         )
         db.session.add(new_item)
 
@@ -252,18 +263,14 @@ def merge_cart():
         existing_item = CartItem.query.filter_by(cart_id=cart.id, product_id=product_id).first()
         
         if existing_item:
-            # For merge, we can decide strategy. 
-            # Strategy: Max(cloud, local) or Sum? 
-            # Usually users expect "Added locally" + "Added on cloud" = Sum. 
-            # But if it's "Sync", maybe max? 
-            # Let's go with ADD, but checking if it gets ridiculous?
-            # Actually, standard ecommerce merge is often just adding the local qty to cloud qty.
-            existing_item.quantity += quantity
+            # Limit quantity to 1 during merge for general users
+            existing_item.quantity = 1
         else:
+            # New item, limit quantity to 1
             new_item = CartItem(
                 cart_id=cart.id,
                 product_id=product_id,
-                quantity=quantity
+                quantity=1
             )
             db.session.add(new_item)
         

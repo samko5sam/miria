@@ -192,6 +192,13 @@ const Navbar: React.FC = () => {
                   </Link>
                 )}
                 <Link
+                  to="/my-orders"
+                  className={`text-lg ${navLinkClasses}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t('nav.myOrders')}
+                </Link>
+                <Link
                   to={`/profile/${user.username}`}
                   className={`text-lg ${navLinkClasses}`}
                   onClick={() => setIsMenuOpen(false)}

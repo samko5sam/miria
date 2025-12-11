@@ -33,7 +33,10 @@
     "itemRemoved": "Item removed from cart",
     "removeItemFailed": "Failed to remove item from cart",
     "cartCleared": "Cart cleared",
-    "clearCartFailed": "Failed to clear cart"
+    "clearCartFailed": "Failed to clear cart",
+    "quantityLimit": "You can only purchase one copy of this product.",
+    "alreadyOwned": "You already own this product.",
+    "itemAlreadyInCart": "This item is already in your cart."
   },
   "profilePage": {
     "cropModal": {

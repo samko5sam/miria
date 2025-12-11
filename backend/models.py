@@ -36,6 +36,7 @@ class ProductFile(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True) # Check if we can make it false later
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
     customer_email = db.Column(db.String(120), nullable=False)
     amount_paid = db.Column(db.Float, nullable=False)

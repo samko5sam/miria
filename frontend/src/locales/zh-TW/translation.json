@@ -33,7 +33,10 @@
     "itemRemoved": "已從購物車移除",
     "removeItemFailed": "移除商品失敗",
     "cartCleared": "購物車已清空",
-    "clearCartFailed": "清空購物車失敗"
+    "clearCartFailed": "清空購物車失敗",
+    "quantityLimit": "此商品僅限購買一份。",
+    "alreadyOwned": "您已擁有此商品。",
+    "itemAlreadyInCart": "此商品已在購物車中。"
   },
   "profilePage": {
     "cropModal": {
