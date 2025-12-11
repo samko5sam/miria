@@ -2,7 +2,7 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import api_bp
 from extensions import db
-from models import Product, ProductFile, User
+from models import Product, ProductFile, User, Order
 from services.storage import StorageService
 import uuid
 
@@ -258,6 +258,27 @@ def delete_product_file(product_id, file_id):
 @jwt_required()
 def get_product_file_download_url(product_id, file_id):
     """Get a presigned URL to download a product file"""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+        
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    # Check if the user is the seller or has bought the product
+    is_seller = product.user_id == user.id
+    # Check if a paid order exists for this user and product
+    has_bought = Order.query.filter_by(
+        customer_email=user.email, 
+        product_id=product_id
+    ).first() is not None
+    
+    if not is_seller and not has_bought:
+        return jsonify({"message": "Unauthorized"}), 403
+
     product_file = ProductFile.query.get(file_id)
     
     if not product_file or product_file.product_id != product_id:

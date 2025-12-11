@@ -167,5 +167,23 @@
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
     "payButton": "Pay {{amount}}"
+  },
+  "orders": {
+    "title": "My Orders",
+    "noOrders": "No orders found",
+    "noOrdersDescription": "You haven't purchased any products yet.",
+    "browseProducts": "Browse Products",
+    "orderId": "Order ID",
+    "date": "Date",
+    "paid": "Paid",
+    "downloads": "Downloads",
+    "download": "Download",
+    "noFiles": "No files attached to this product.",
+    "failedToLoad": "Failed to load orders",
+    "failedToGetDownloadUrl": "Failed to get download URL",
+    "failedToDownload": "Failed to download file"
+  },
+  "nav": {
+    "myOrders": "My Orders"
   }
 }

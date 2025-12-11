@@ -18,6 +18,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { CartProvider } from './context/CartContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import SellerGuard from './components/SellerGuard';
+import OrdersPage from './pages/OrdersPage';
 import './i18n';
 
 createRoot(document.getElementById('root')!).render(
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="profile/:username" element={<ProfilePage />} />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="checkout" element={<CheckoutPage />} />
+                <Route path="my-orders" element={<OrdersPage />} />
 
                 <Route element={<SellerGuard />}>
                   <Route path="dashboard" element={<SellerDashboardPage />} />

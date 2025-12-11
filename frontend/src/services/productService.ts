@@ -1,21 +1,5 @@
 import { apiClient } from "../utils/apiUtils";
-
-export interface ProductFile {
-  id: number;
-  filename: string;
-  file_size: number;
-  content_type: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  user_id: number;
-  created_at: string;
-  files: ProductFile[];
-}
+import type { Product, ProductFile } from "../types";
 
 export const productService = {
   /**

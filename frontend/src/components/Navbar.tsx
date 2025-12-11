@@ -94,6 +94,13 @@ const Navbar: React.FC = () => {
                       </Link>
                     )}
                     <Link
+                      to="/my-orders"
+                      className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                    >
+                      {t('nav.myOrders')}
+                    </Link>
+                    <Link
                       to={`/profile/${user.username}`}
                       className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                       onClick={() => setIsProfileMenuOpen(false)}

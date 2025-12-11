@@ -166,5 +166,23 @@
     "terms": "服務條款",
     "privacy": "隱私權政策",
     "payButton": "付款 {{amount}}"
+  },
+  "orders": {
+    "title": "我的訂單",
+    "noOrders": "找不到訂單",
+    "noOrdersDescription": "您尚未購買任何產品。",
+    "browseProducts": "瀏覽產品",
+    "orderId": "訂單編號",
+    "date": "日期",
+    "paid": "已付款",
+    "downloads": "下載",
+    "download": "下載",
+    "noFiles": "此產品未附加檔案。",
+    "failedToLoad": "無法載入訂單",
+    "failedToGetDownloadUrl": "無法取得下載連結",
+    "failedToDownload": "下載檔案失敗"
+  },
+  "nav": {
+    "myOrders": "我的訂單"
   }
 }
