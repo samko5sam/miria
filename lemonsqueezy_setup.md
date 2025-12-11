@@ -18,9 +18,9 @@ Since our platform sells various dynamic products, we use a single "generic" pro
     *   **Name**: "Miria Marketplace Purchase" (or similar).
     *   **Description**: "Purchase from Miria".
 4.  **Pricing**:
-    *   Select **"Pay what you want"**.
-    *   Set **Minimum price** to `$0` (or a low amount like `$0.50` if you want to enforce a minimum).
-    *   *Important*: The backend will override this price with the user's cart total.
+    *   Select **"Standard pricing"** (Single payment).
+    *   Set the price to anything (e.g., `$10`).
+    *   *Important*: The backend will override this price with the user's cart total using `custom_price`. **Do NOT enable "Pay what you want"**, as this allows the user to edit the price on the checkout page.
 5.  **Files**: You don't need to upload files here since our app handles delivery.
 6.  **Confirmation Modal / Email**: You can customize these to link back to the user's profile on Miria.
 7.  Click **Publish product**.

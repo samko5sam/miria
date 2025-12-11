@@ -169,36 +169,36 @@ def handle_webhook():
         if user_id and cart_id:
             # Payment successful, create Order and clear Cart
             try:
-                user = User.query.get(user_id)
-                cart = Cart.query.get(cart_id)
+                print(f"DEBUG: Processing webhook for user_id={user_id}, cart_id={cart_id}")
+                user = User.query.get(int(user_id))
+                print(f"DEBUG: Found user: {user}")
+                cart = Cart.query.get(int(cart_id))
+                print(f"DEBUG: Found cart: {cart}")
                 
                 if cart and cart.items:
-                    # Create one order per product or one bulk order?
-                    # Our Order model is single product per row?
-                    # "product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)"
-                    # Yes, the current Order model links to a single product. 
-                    # This means we need to create multiple Order rows for a cart checkout.
-                    
+                    print(f"DEBUG: Cart items count: {len(cart.items)}")
                     for item in cart.items:
+                        print(f"DEBUG: Processing item: {item.product_id}")
                         new_order = Order(
                             product_id=item.product_id,
-                            customer_email=user.email, # Or from webhook payload
-                            amount_paid=item.product.price * item.quantity, # Simplified
-                            lemon_squeezy_order_id=data.get('id'),
+                            customer_email=user.email,
+                            amount_paid=item.product.price * item.quantity,
+                            lemon_squeezy_order_id=str(data.get('id')),
                             tappay_trade_id="LEMON_SQUEEZY" 
                         )
                         db.session.add(new_order)
                     
-                    # Clear cart
-                    # We can use the logic from existing routes or just direct DB delete
+                    print("DEBUG: Orders created in session")
                     for item in cart.items:
                         db.session.delete(item)
                     
                     db.session.commit()
-                    print(f"Order created for User {user_id}")
+                    print(f"Order created successfully for User {user_id}")
                     
             except Exception as e:
+                import traceback
                 print(f"Error processing webhook: {str(e)}")
+                print(traceback.format_exc())
                 return jsonify({"message": "Error processing order"}), 500
 
     return jsonify({"received": True})
