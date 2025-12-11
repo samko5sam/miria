@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { apiClient } from '../utils/apiUtils';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,7 @@ const CheckoutPage: React.FC = () => {
     e.preventDefault();
 
     if (!cart || cart.items.length === 0) {
-      toast.error('Your cart is empty');
+      toast.error(t('cart.emptyCart'));
       return;
     }
 
@@ -32,11 +32,11 @@ const CheckoutPage: React.FC = () => {
       if (checkout_url) {
         window.location.href = checkout_url;
       } else {
-        throw new Error('No checkout URL returned');
+        throw new Error(t('checkout.errors.noUrl'));
       }
     } catch (error: any) {
       console.error('Checkout error:', error);
-      const message = error.response?.data?.message || 'Failed to start checkout. Please try again.';
+      const message = error.response?.data?.message || t('checkout.errors.failed');
       toast.error(message);
       setIsProcessing(false);
     }
@@ -80,7 +80,7 @@ const CheckoutPage: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">{t('checkout.title')}</h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">Your cart is empty</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">{t('cart.emptyCart')}</p>
           <Link
             to="/"
             className="bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors"
@@ -124,20 +124,18 @@ const CheckoutPage: React.FC = () => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <span className="text-xs text-gray-500 dark:text-gray-400 font-medium px-2">
-                    Secured by Lemon Squeezy
+                    {t('checkout.securedByLemonSqueezy')}
                   </span>
-                  <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyQevac8NTYZuqtD7Q3kV467n4lWlIDDTUF6Waq0iIol6CnHYBdqkfvRD8jOdWia1ravvJET-_5Tn8ai5ovGuJlPeG50CIEvtF0NLMsqLe9Xmlz0YsqILzUdoe7IJD098_JWwnpn7tI7edm1eAIhrncHVr_VsJjVW5mZ4pNY7IJE8Iz8nzc2NSxdTod_nDfcidktrty5_2JokngDqRwYJk7A9VrN3OPRwdhsHPtyiae3Z5_d8aL0AwGwnGbtGmiGw3NvCg_Lo7VLQQ" alt="Visa" />
-                  <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5WN1yDKjuvC8CgfMUz7jSRkdG8GYFWrBuq3QK4S1g1Zpd-ISr_ay2EBkXGNFO9i7it-s64XWYNNIGRmQdIhRad6f4EQYNQ8LxsSK9Ai-6JCwyqOSy_X35E1WYpJlPzBzbEOcAd6qK8-DPZ2cSVEpO17kEvaPLp6OPkaD8zCls77eqz4oXZ-fXSnrjCnO839Q-2Pd9S3ODp02SrIwYuakj_k5PHVp2yEtLN0wMxqDZCn1JaslCwBrn59Fz9qcP0kmNKu7ILif1R-Vx" alt="Mastercard" />
                 </div>
               </div>
               <div className="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
                 <p className="text-gray-600 dark:text-gray-300 mb-2">
-                  You will be redirected to our secure payment partner, <strong>Lemon Squeezy</strong>, to complete your purchase.
+                  <Trans i18nKey="checkout.redirectMessage" components={{ 1: <strong>Lemon Squeezy</strong> }} />
                 </p>
                 <div className="flex justify-center text-sm text-gray-500 dark:text-gray-400">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-sm">lock</span>
-                    SSL Encrypted Transaction
+                    {t('checkout.sslEncrypted')}
                   </span>
                 </div>
               </div>

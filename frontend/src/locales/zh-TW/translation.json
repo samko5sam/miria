@@ -155,7 +155,7 @@
     "emailLabel": "電子郵件地址",
     "emailDescription": "您的下載連結和收據將發送到此處。",
     "paymentMethod": "付款方式",
-    "creditCard": "信用卡/簽帳卡",
+    "creditCard": "信用卡/簽帳卡/PayPal",
     "paypal": "PayPal",
     "orderSummary": "訂單摘要",
     "digitalProduct": "數位產品",
@@ -165,7 +165,14 @@
     "securePayment": "安全 SSL 加密付款",
     "terms": "服務條款",
     "privacy": "隱私權政策",
-    "payButton": "付款 {{amount}}"
+    "payButton": "付款 {{amount}}",
+    "errors": {
+      "noUrl": "未返回結帳網址",
+      "failed": "無法開始結帳。請再試一次。"
+    },
+    "securedByLemonSqueezy": "由 Lemon Squeezy 提供安全保障",
+    "redirectMessage": "您將被重新導向至我們安全的支付合作夥伴 <1>Lemon Squeezy</1> 以完成購買。",
+    "sslEncrypted": "SSL 加密交易"
   },
   "orders": {
     "title": "我的訂單",

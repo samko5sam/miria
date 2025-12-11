@@ -156,7 +156,7 @@
     "emailLabel": "Email Address",
     "emailDescription": "Your download links and receipt will be sent here.",
     "paymentMethod": "Payment",
-    "creditCard": "Credit/Debit Card",
+    "creditCard": "Credit/Debit Card/PayPal",
     "paypal": "PayPal",
     "orderSummary": "Order Summary",
     "digitalProduct": "Digital Product",
@@ -166,7 +166,14 @@
     "securePayment": "Secure SSL Encrypted Payment",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
-    "payButton": "Pay {{amount}}"
+    "payButton": "Pay {{amount}}",
+    "errors": {
+      "noUrl": "No checkout URL returned",
+      "failed": "Failed to start checkout. Please try again."
+    },
+    "securedByLemonSqueezy": "Secured by Lemon Squeezy",
+    "redirectMessage": "You will be redirected to our secure payment partner, <1>Lemon Squeezy</1>, to complete your purchase.",
+    "sslEncrypted": "SSL Encrypted Transaction"
   },
   "orders": {
     "title": "My Orders",
