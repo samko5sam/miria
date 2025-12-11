@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
+import { apiClient } from '../utils/apiUtils';
 import { useTranslation } from 'react-i18next';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const CheckoutPage: React.FC = () => {
   const { t } = useTranslation();
-  const { cart, loading, error, clearCart } = useCart();
+  const { cart, loading, error } = useCart();
   const { user } = useAuth();
-  const navigate = useNavigate();
 
-  const [email, setEmail] = useState(user?.email || '');
-  const [paymentMethod, setPaymentMethod] = useState('credit_card');
-  const [cardNumber, setCardNumber] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [cvc, setCvc] = useState('');
-  const [discountCode, setDiscountCode] = useState('');
+
+
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,19 +25,19 @@ const CheckoutPage: React.FC = () => {
 
     setIsProcessing(true);
 
-    // Simulate payment processing
     try {
-      // In a real app, this would call a payment API
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await apiClient.post('/checkout');
+      const { checkout_url } = response.data;
 
-      // Clear cart after successful payment
-      await clearCart();
-
-      toast.success('Payment successful! Your order is being processed.');
-      navigate('/');
-    } catch {
-      toast.error('Payment failed. Please try again.');
-    } finally {
+      if (checkout_url) {
+        window.location.href = checkout_url;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      const message = error.response?.data?.message || 'Failed to start checkout. Please try again.';
+      toast.error(message);
       setIsProcessing(false);
     }
   };
@@ -98,7 +94,7 @@ const CheckoutPage: React.FC = () => {
 
   // Calculate totals
   const subtotal = cart.total_price;
-  const taxes = subtotal * 0.07; // 7% tax
+  const taxes = 0; // 0% tax
   const total = subtotal + taxes;
 
   return (
@@ -106,29 +102,7 @@ const CheckoutPage: React.FC = () => {
       <h1 className="text-3xl font-bold mb-8 text-center">{t('checkout.title')}</h1>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Contact Information Section */}
-        <section>
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-            {t('checkout.contactInfo')}
-          </h2>
-          <div className="mt-4">
-            <label className="flex w-full flex-col">
-              <p className="pb-2 text-base font-medium text-gray-700 dark:text-gray-200">
-                {t('checkout.emailLabel')}
-              </p>
-              <input
-                className="form-input h-14 w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-4 text-base font-normal leading-normal text-gray-900 placeholder:text-gray-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-primary"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </label>
-            <p className="px-1 pt-2 text-sm font-normal text-gray-500 dark:text-gray-400">
-              {t('checkout.emailDescription')}
-            </p>
-          </div>
-        </section>
+
 
         {/* Payment Method Section */}
         <section className="pt-8">
@@ -137,6 +111,7 @@ const CheckoutPage: React.FC = () => {
           </h2>
           <div className="mt-4 flex flex-col space-y-3">
             {/* Credit Card Option */}
+            {/* Credit Card Option - Redirect Notice */}
             <div className="rounded-lg border-2 border-primary bg-primary/10 p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -148,58 +123,27 @@ const CheckoutPage: React.FC = () => {
                   </label>
                 </div>
                 <div className="flex items-center space-x-1">
+                  <span className="text-xs text-gray-500 dark:text-gray-400 font-medium px-2">
+                    Secured by Lemon Squeezy
+                  </span>
                   <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyQevac8NTYZuqtD7Q3kV467n4lWlIDDTUF6Waq0iIol6CnHYBdqkfvRD8jOdWia1ravvJET-_5Tn8ai5ovGuJlPeG50CIEvtF0NLMsqLe9Xmlz0YsqILzUdoe7IJD098_JWwnpn7tI7edm1eAIhrncHVr_VsJjVW5mZ4pNY7IJE8Iz8nzc2NSxdTod_nDfcidktrty5_2JokngDqRwYJk7A9VrN3OPRwdhsHPtyiae3Z5_d8aL0AwGwnGbtGmiGw3NvCg_Lo7VLQQ" alt="Visa" />
                   <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5WN1yDKjuvC8CgfMUz7jSRkdG8GYFWrBuq3QK4S1g1Zpd-ISr_ay2EBkXGNFO9i7it-s64XWYNNIGRmQdIhRad6f4EQYNQ8LxsSK9Ai-6JCwyqOSy_X35E1WYpJlPzBzbEOcAd6qK8-DPZ2cSVEpO17kEvaPLp6OPkaD8zCls77eqz4oXZ-fXSnrjCnO839Q-2Pd9S3ODp02SrIwYuakj_k5PHVp2yEtLN0wMxqDZCn1JaslCwBrn59Fz9qcP0kmNKu7ILif1R-Vx" alt="Mastercard" />
-                  <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz7PtrMnm8liHWS69Fo1wcbMSNfDG3rInKWXFSmZQBFY0sw5434jwbRQIkoWkEaaPTlrt1sXGBMhaViNx0luNfHq6QJqEYLlWCxlShKfFukmFVT9vHAiW7AkZEDW-j4651tt_pwIF09zzDRxZ85BcUPPAFmet_VpBhoJj-VPEsMBvBuTbMDgfVFO-KkIStYQC2aiH8Qbc0Qo-5Qa4GsEsmiQIKZkiOj7MMilcUcdupWMFBKxc5BSxI7M3-VvfoBEKJrDf_jcIyyY8g" alt="American Express" />
                 </div>
               </div>
-              <div className="mt-4 space-y-4">
-                <div className="relative">
-                  <input
-                    className="form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pr-12 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-500"
-                    placeholder="Card Number"
-                    value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
-                    required
-                  />
-                  <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">credit_card</span>
-                </div>
-                <div className="flex space-x-4">
-                  <input
-                    className="form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-500"
-                    placeholder="MM / YY"
-                    value={expiry}
-                    onChange={(e) => setExpiry(e.target.value)}
-                    required
-                  />
-                  <div className="relative flex-1">
-                    <input
-                      className="form-input h-14 w-full rounded-lg border border-gray-300 bg-white p-4 pr-12 text-gray-900 placeholder:text-gray-400 focus:border-primary focus:outline-0 focus:ring-2 focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-500"
-                      placeholder="CVC"
-                      value={cvc}
-                      onChange={(e) => setCvc(e.target.value)}
-                      required
-                    />
-                    <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500">lock</span>
-                  </div>
+              <div className="mt-4 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-center">
+                <p className="text-gray-600 dark:text-gray-300 mb-2">
+                  You will be redirected to our secure payment partner, <strong>Lemon Squeezy</strong>, to complete your purchase.
+                </p>
+                <div className="flex justify-center text-sm text-gray-500 dark:text-gray-400">
+                  <span className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-sm">lock</span>
+                    SSL Encrypted Transaction
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* PayPal Option */}
-            <button
-              type="button"
-              onClick={() => setPaymentMethod('paypal')}
-              className="flex h-14 w-full items-center justify-between rounded-lg border border-gray-300 bg-white p-4 text-gray-900 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="flex size-5 items-center justify-center rounded-full border border-gray-400 dark:border-gray-500">
-                  {paymentMethod === 'paypal' && <div className="size-2.5 rounded-full bg-primary"></div>}
-                </div>
-                <span className="ml-3 font-medium">{t('checkout.paypal')}</span>
-              </div>
-              <img className="h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0tVdF6yUsTYVjqGm_cDo0NaU3cefKgcsumbRwicZHhjmxP-MqTujkR7SVBsW1A7SYDdxCYOUhDiWZaP7rY5RQvIKsc7PvP6xAbN8XK_DFoBJdxk9he5J1C9mAtnyCHA0YZ2NpdTGFW5EkaZyAOVhNS7jrP2mRwLjZvIY0fFg7Lb_z_qry-A5k0oG8iUa4otzi6pYY8tJmVpx70B8_X5MhBqyq1VsK3XBpckkBeWH1GUileFy02Ri_OnIKhwLLcb2abYa8GGhux9OD" alt="PayPal" />
-            </button>
+
           </div>
         </section>
 

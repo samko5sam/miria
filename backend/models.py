@@ -40,6 +40,7 @@ class Order(db.Model):
     customer_email = db.Column(db.String(120), nullable=False)
     amount_paid = db.Column(db.Float, nullable=False)
     tappay_trade_id = db.Column(db.String(120), nullable=True)
+    lemon_squeezy_order_id = db.Column(db.String(120), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Store(db.Model):
