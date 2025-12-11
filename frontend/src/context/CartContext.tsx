@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from './AuthContext';
 import { cartService } from '../services/cartService';
 import type { Cart } from '../services/cartService';
-import type { Product } from '../services/productService';
+import type { Product } from '../types';
 import toast from 'react-hot-toast';
 
 interface CartContextType {

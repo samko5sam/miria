@@ -1,4 +1,4 @@
-import type { Product } from "./productService";
+import type { Product } from "../types";
 import { apiClient } from "../utils/apiUtils";
 
 export interface CartItem {

@@ -3,7 +3,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { storeService } from '../services/storeService';
 import { productService } from '../services/productService';
 import type { Store } from '../services/storeService';
-import type { Product } from '../services/productService';
+import type { Product } from '../types';
 import AddProductModal from '../components/AddProductModal';
 import ProductCard from '../components/ProductCard';
 import toast from 'react-hot-toast';
