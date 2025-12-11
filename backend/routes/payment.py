@@ -84,7 +84,8 @@ def create_checkout_session():
                     "name": ", ".join(description)[:100], 
                     "description": "Purchase from Miria Marketplace",
                     "receipt_button_text": "Return to Store",
-                    "receipt_link_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/profile"
+                    "receipt_link_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/my-orders",
+                    "redirect_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/my-orders"
                 }
             },
             "relationships": {
@@ -229,7 +230,8 @@ def pay_order(order_id):
                     "name": f"Payment for Order #{order.id} - {product.name}",
                     "description": "Miria Marketplace",
                     "receipt_button_text": "Return to Store",
-                    "receipt_link_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/profile"
+                    "receipt_link_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/my-orders",
+                    "redirect_url": os.getenv("FRONTEND_URL", "http://localhost:5173") + "/my-orders"
                 }
             },
             "relationships": {
