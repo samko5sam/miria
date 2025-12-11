@@ -233,6 +233,12 @@ const NavLinks: React.FC<{ isMobile?: boolean; navLinkClasses: string; activeNav
   user
 }) => (
   <>
+    <NavLink
+      to="/discover"
+      className={({ isActive }) => `${isMobile ? 'text-lg' : ''} ${isActive ? activeNavLinkClasses : navLinkClasses}`}
+    >
+      {t('discover.title')}
+    </NavLink>
     {user?.role === 'admin' && (
       <NavLink
         to="/admin"

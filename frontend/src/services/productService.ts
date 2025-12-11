@@ -14,6 +14,8 @@ export interface Product {
   price: number;
   user_id: number;
   created_at: string;
+  store_name?: string;
+  store_id?: string;
   files: ProductFile[];
 }
 
@@ -43,10 +45,14 @@ export const productService = {
   },
 
   /**
-   * Get all products (public)
+   * Get all products (public) with optional filtering and sorting
    */
-  getAllProducts: async (): Promise<Product[]> => {
-    const response = await apiClient.get(`/products`);
+  getAllProducts: async (search?: string, sort?: string): Promise<Product[]> => {
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (sort) params.append('sort', sort);
+    
+    const response = await apiClient.get(`/products?${params.toString()}`);
     return response.data;
   },
 

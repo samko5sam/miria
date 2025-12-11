@@ -167,5 +167,16 @@
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
     "payButton": "Pay {{amount}}"
+  },
+  "discover": {
+    "title": "Discover",
+    "searchPlaceholder": "Search products...",
+    "noProducts": "No products found.",
+    "errorFetching": "Failed to fetch products",
+    "sort": {
+      "newest": "Newest",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low"
+    }
   }
 }
