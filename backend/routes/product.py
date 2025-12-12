@@ -477,11 +477,15 @@ def get_product_file_download_url(product_id, file_id):
     # Extract object name from URL
     object_name = product_file.file_url.split(f"{storage_service.private_bucket}/")[-1]
     
-    # Generate presigned URL (valid for 1 hour)
+    # Extract original filename (remove timestamp prefix if present)
+    filename = product_file.filename
+    
+    # Generate presigned URL (valid for 1 hour) with proper filename
     presigned_url = storage_service.generate_presigned_url(
         object_name, 
         storage_service.private_bucket,
-        expiration=3600
+        expiration=3600,
+        filename=filename
     )
     
     if presigned_url:

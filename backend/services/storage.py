@@ -48,15 +48,21 @@ class StorageService:
             current_app.logger.error(f"Error uploading file: {e}")
             return None
 
-    def generate_presigned_url(self, object_name, bucket_name, expiration=3600):
+    def generate_presigned_url(self, object_name, bucket_name, expiration=3600, filename=None):
         """Generate a presigned URL for downloading a file"""
         if not self.s3_client:
             return None
             
         try:
+            params = {'Bucket': bucket_name, 'Key': object_name}
+            
+            # Add Content-Disposition to force download
+            if filename:
+                params['ResponseContentDisposition'] = f'attachment; filename="{filename}"'
+            
             response = self.s3_client.generate_presigned_url(
                 'get_object',
-                Params={'Bucket': bucket_name, 'Key': object_name},
+                Params=params,
                 ExpiresIn=expiration
             )
             return response

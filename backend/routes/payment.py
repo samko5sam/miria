@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import requests
 import json
+from datetime import datetime
 from flask import request, jsonify, redirect
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from . import api_bp
@@ -137,6 +138,76 @@ def create_checkout_session():
     except requests.exceptions.RequestException as e:
         print(f"Lemon Squeezy Connection Error: {str(e)}")
         return jsonify({"message": f"Failed to create checkout session: {str(e)}"}), 500
+
+
+@api_bp.route('/checkout/test', methods=['POST'])
+@jwt_required()
+def test_checkout():
+    """Test checkout endpoint that bypasses Lemon Squeezy (Development Only)"""
+    # Only allow in development mode
+    flask_env = os.getenv('FLASK_ENV', 'production')
+    if flask_env != 'development':
+        return jsonify({"message": "Test checkout is only available in development mode"}), 403
+    
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    
+    cart = Cart.query.filter_by(user_id=current_user_id).first()
+    if not cart or not cart.items:
+        return jsonify({"message": "Cart is empty"}), 400
+    
+    print(f"TEST CHECKOUT: Processing for user {user.id}, cart {cart.id}")
+    
+    created_order_ids = []
+    
+    try:
+        for item in cart.items:
+            # 1. Quantity Check
+            if item.quantity > 1:
+                return jsonify({"message": "One product is only able to buy and own one for an account.", "code": "quantity_limit"}), 400
+            
+            # 2. Ownership Check
+            existing_order = Order.query.filter_by(user_id=user.id, product_id=item.product_id, status='paid').first()
+            if existing_order:
+                return jsonify({"message": "You already own this product.", "code": "already_owned"}), 400
+            
+            product = Product.query.get(item.product_id)
+            if product:
+                # Create Order and mark as PAID immediately
+                new_order = Order(
+                    user_id=user.id,
+                    product_id=item.product_id,
+                    customer_email=user.email,
+                    amount_paid=product.price * item.quantity,
+                    status='paid',  # Directly set to paid for testing
+                    tappay_trade_id="TEST_CHECKOUT",
+                    lemon_squeezy_order_id=f"test_{user.id}_{item.product_id}_{int(datetime.utcnow().timestamp())}"
+                )
+                db.session.add(new_order)
+                db.session.flush()
+                created_order_ids.append(new_order.id)
+                print(f"TEST CHECKOUT: Created paid order {new_order.id} for product {product.name}")
+        
+        # Clear Cart
+        for item in cart.items:
+            db.session.delete(item)
+        
+        db.session.commit()
+        print(f"TEST CHECKOUT: Successfully created {len(created_order_ids)} paid orders and cleared cart")
+        
+        return jsonify({
+            "message": "Test checkout completed successfully",
+            "order_ids": created_order_ids,
+            "redirect_url": "/my-orders"
+        }), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"TEST CHECKOUT ERROR: {str(e)}")
+        return jsonify({"message": f"Failed to process test checkout: {str(e)}"}), 500
 
 
 @api_bp.route('/webhook', methods=['POST'])

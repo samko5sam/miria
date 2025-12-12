@@ -38,6 +38,7 @@ def get_cart():
                 'product_id': item.product_id,
                 'product_name': product.name,
                 'product_price': product.price,
+                'product_image_url': product.image_url,
                 'quantity': item.quantity,
                 'total': item_total,
                 'created_at': item.created_at.isoformat() if item.created_at else None,
