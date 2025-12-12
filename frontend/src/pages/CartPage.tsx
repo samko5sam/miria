@@ -86,8 +86,20 @@ const CartPage: React.FC = () => {
                     className="flex flex-col md:flex-row gap-4 rounded-xl bg-white dark:bg-zinc-900/50 p-4 justify-between items-center border border-gray-200 dark:border-white/10"
                   >
                     <div className="flex flex-col md:flex-row items-start gap-4 flex-1">
-                      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-xl overflow-hidden relative">
-                        {item.product_name.charAt(0).toUpperCase()}
+                      <div className="w-20 h-20 rounded-lg flex items-center justify-center overflow-hidden bg-gray-100 dark:bg-white/5">
+                        {item.product_image_url ? (
+                          <img
+                            src={item.product_image_url}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                            <span className="text-3xl font-bold text-primary/30">
+                              {item.product_name.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div className="flex flex-col justify-center gap-1 flex-1">
                         <Link to={`/products/${item.product_id}`} className="text-gray-900 dark:text-white text-base font-medium leading-normal hover:underline">

@@ -20,8 +20,14 @@ export interface Product {
   description: string;
   price: number;
   user_id: number;
+  image_url?: string;
+  is_active: boolean;
   created_at: string;
+  updated_at?: string;
+  store_name?: string;
+  store_id?: number;
   files: ProductFile[];
+  files_count?: number; // For public store view
 }
 
 export interface Order {

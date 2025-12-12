@@ -6,6 +6,7 @@ export interface CartItem {
   product_id: number;
   product_name: string;
   product_price: number;
+  product_image_url?: string;
   quantity: number;
   total: number;
   created_at: string;
@@ -93,6 +94,7 @@ export const cartService = {
           product_id: product.id,
           product_name: product.name,
           product_price: product.price,
+          product_image_url: product.image_url,
           quantity: quantity,
           total: product.price * quantity,
           created_at: new Date().toISOString(),
@@ -200,10 +202,10 @@ export const cartService = {
       `/cart/merge`,
       { items: mergeItems }
     );
-    
+
     // Clear local cart after successful merge
     localStorage.removeItem(LOCAL_CART_KEY);
-    
+
     return response.data;
   },
 };

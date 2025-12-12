@@ -3,15 +3,16 @@ import { apiClient } from '../utils/apiUtils';
 import { useTranslation, Trans } from 'react-i18next';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const CheckoutPage: React.FC = () => {
   const { t } = useTranslation();
   const { cart, loading, error } = useCart();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-
+  const isDevelopment = import.meta.env.DEV;
 
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -37,6 +38,27 @@ const CheckoutPage: React.FC = () => {
     } catch (error: any) {
       console.error('Checkout error:', error);
       const message = error.response?.data?.message || t('checkout.errors.failed');
+      toast.error(message);
+      setIsProcessing(false);
+    }
+  };
+
+  const handleTestCheckout = async () => {
+    if (!cart || cart.items.length === 0) {
+      toast.error(t('cart.emptyCart'));
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const response = await apiClient.post('/checkout/test');
+      toast.success(response.data.message || 'Test checkout completed!');
+      // Redirect to my orders
+      navigate('/my-orders');
+    } catch (error: any) {
+      console.error('Test checkout error:', error);
+      const message = error.response?.data?.message || 'Test checkout failed';
       toast.error(message);
       setIsProcessing(false);
     }
@@ -213,6 +235,19 @@ const CheckoutPage: React.FC = () => {
               t('checkout.payButton', { amount: total.toFixed(2) })
             )}
           </button>
+
+          {/* Test Checkout Button (Development Only) */}
+          {isDevelopment && (
+            <button
+              type="button"
+              onClick={handleTestCheckout}
+              disabled={isProcessing}
+              className="flex h-12 w-full items-center justify-center rounded-xl bg-yellow-500 dark:bg-yellow-600 font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-70 mt-2"
+            >
+              🧪 Test Checkout (Skip Payment)
+            </button>
+          )}
+
           <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-gray-500 dark:text-gray-400">
             <span className="material-symbols-outlined text-sm">lock</span>
             <span>{t('checkout.securePayment')}</span>

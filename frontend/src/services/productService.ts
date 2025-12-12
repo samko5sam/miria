@@ -98,4 +98,64 @@ export const productService = {
     );
     return response.data;
   },
+
+  /**
+   * Update a product
+   */
+  updateProduct: async (
+    productId: number,
+    name: string,
+    description: string,
+    price: number
+  ): Promise<{ message: string; product: Product }> => {
+    const response = await apiClient.put(
+      `/products/${productId}`,
+      { name, description, price }
+    );
+    return response.data;
+  },
+
+  /**
+   * Upload a product image
+   */
+  uploadProductImage: async (
+    productId: number,
+    image: File
+  ): Promise<{ message: string; image_url: string }> => {
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const response = await apiClient.post(
+      `/products/${productId}/image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  },
+
+  /**
+   * Delete a product image
+   */
+  deleteProductImage: async (
+    productId: number
+  ): Promise<{ message: string }> => {
+    const response = await apiClient.delete(`/products/${productId}/image`);
+    return response.data;
+  },
+
+  /**
+   * Toggle product active status
+   */
+  toggleProductStatus: async (
+    productId: number
+  ): Promise<{ message: string; is_active: boolean }> => {
+    const response = await apiClient.patch(
+      `/products/${productId}/toggle-status`
+    );
+    return response.data;
+  },
 };

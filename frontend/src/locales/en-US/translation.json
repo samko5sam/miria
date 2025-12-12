@@ -125,6 +125,12 @@
       "attachedFiles": "Attached Files",
       "moreFiles": "more files",
       "noFiles": "No files uploaded yet",
+      "editProduct": "Edit Product",
+      "productImage": "Product Image",
+      "update": "Update Product",
+      "updating": "Updating...",
+      "updateSuccess": "Product updated successfully!",
+      "updateError": "Failed to update product",
       "errors": {
         "nameRequired": "Product name is required",
         "invalidPrice": "Please enter a valid price"

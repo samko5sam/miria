@@ -32,7 +32,17 @@ const OrdersPage: React.FC = () => {
   const handleDownload = async (productId: number, fileId: number) => {
     try {
       const { download_url } = await productService.getProductFileDownloadUrl(productId, fileId);
-      window.open(download_url, '_blank');
+
+      // Create a hidden anchor element and trigger download
+      const link = document.createElement('a');
+      link.href = download_url;
+      link.setAttribute('download', ''); // Force download
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('Download started');
     } catch (error) {
       console.error('Failed to get download URL', error);
       toast.error(t('orders.failedToDownload'));

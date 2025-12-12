@@ -124,6 +124,12 @@
       "attachedFiles": "附加檔案",
       "moreFiles": "個更多檔案",
       "noFiles": "尚未上傳檔案",
+      "editProduct": "編輯產品",
+      "productImage": "產品圖片",
+      "update": "更新產品",
+      "updating": "更新中...",
+      "updateSuccess": "產品更新成功！",
+      "updateError": "更新產品失敗",
       "errors": {
         "nameRequired": "產品名稱為必填",
         "invalidPrice": "請輸入有效的價格"

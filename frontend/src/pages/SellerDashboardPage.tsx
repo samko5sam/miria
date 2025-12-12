@@ -5,6 +5,7 @@ import { productService } from '../services/productService';
 import type { Store } from '../services/storeService';
 import type { Product } from '../types';
 import AddProductModal from '../components/AddProductModal';
+import EditProductModal from '../components/EditProductModal';
 import ProductCard from '../components/ProductCard';
 import toast from 'react-hot-toast';
 
@@ -13,6 +14,8 @@ const SellerDashboardPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { t } = useTranslation();
 
   const fetchData = async () => {
@@ -50,6 +53,14 @@ const SellerDashboardPage: React.FC = () => {
       fetchData();
     } catch (error: any) {
       toast.error(error.response?.data?.message || t('seller.products.deleteError'));
+    }
+  };
+
+  const handleEditProduct = (productId: number) => {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+      setSelectedProduct(product);
+      setIsEditModalOpen(true);
     }
   };
 
@@ -137,6 +148,7 @@ const SellerDashboardPage: React.FC = () => {
                 key={product.id}
                 product={product}
                 onDelete={handleDeleteProduct}
+                onEdit={handleEditProduct}
               />
             ))}
           </div>
@@ -159,6 +171,16 @@ const SellerDashboardPage: React.FC = () => {
         onClose={() => setIsAddModalOpen(false)}
         onProductAdded={handleProductAdded}
       />
+
+      {/* Edit Product Modal */}
+      {selectedProduct && (
+        <EditProductModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          onProductUpdated={fetchData}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };

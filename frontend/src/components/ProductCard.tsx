@@ -29,6 +29,34 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete, onEdit }) 
 
     return (
         <div className="bg-white dark:bg-black/20 rounded-xl border border-gray-200 dark:border-white/5 overflow-hidden hover:border-gray-300 dark:hover:border-white/10 transition-all duration-300 group shadow-sm dark:shadow-none">
+            {/* Product Image */}
+            {product.image_url ? (
+                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-white/5 relative">
+                    <img
+                        src={product.image_url}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                    />
+                    {/* Status Badge */}
+                    {!product.is_active && (
+                        <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
+                            Unpublished
+                        </div>
+                    )}
+                </div>
+            ) : (
+                <div className="aspect-video w-full bg-gradient-to-br from-gray-100 to-gray-50 dark:from-white/5 dark:to-white/2 flex items-center justify-center relative">
+                    <span className="material-symbols-outlined text-6xl text-gray-300 dark:text-white/10">
+                        image
+                    </span>
+                    {/* Status Badge */}
+                    {!product.is_active && (
+                        <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
+                            Unpublished
+                        </div>
+                    )}
+                </div>
+            )}
             {/* Card Header */}
             <div className="p-6 border-b border-gray-200 dark:border-white/5">
                 <div className="flex items-start justify-between gap-4">
