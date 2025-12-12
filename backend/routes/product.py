@@ -18,7 +18,10 @@ def get_products():
         'description': p.description,
         'price': p.price,
         'user_id': p.user_id,
+        'image_url': p.image_url,
+        'is_active': p.is_active,
         'created_at': p.created_at.isoformat() if p.created_at else None,
+        'updated_at': p.updated_at.isoformat() if p.updated_at else None,
         'store_name': p.user.store.name if p.user and p.user.store else 'Unknown Store',
         'store_id': p.user.store.id if p.user and p.user.store else None,
         'files': [{
@@ -49,7 +52,10 @@ def get_my_products():
         'description': p.description,
         'price': p.price,
         'user_id': p.user_id,
+        'image_url': p.image_url,
+        'is_active': p.is_active,
         'created_at': p.created_at.isoformat() if p.created_at else None,
+        'updated_at': p.updated_at.isoformat() if p.updated_at else None,
         'store_name': p.user.store.name if p.user and p.user.store else 'Unknown Store',
         'store_id': p.user.store.id if p.user and p.user.store else None,
         'files': [{
@@ -73,7 +79,10 @@ def get_product(product_id):
         'description': product.description,
         'price': product.price,
         'user_id': product.user_id,
+        'image_url': product.image_url,
+        'is_active': product.is_active,
         'created_at': product.created_at.isoformat() if product.created_at else None,
+        'updated_at': product.updated_at.isoformat() if product.updated_at else None,
         'store_name': product.user.store.name if product.user and product.user.store else 'Unknown Store',
         'store_id': product.user.store.id if product.user and product.user.store else None,
         'files': [{
@@ -153,6 +162,187 @@ def delete_product(product_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Failed to delete product", "error": str(e)}), 500
+
+@api_bp.route('/products/<int:product_id>', methods=['PUT'])
+@jwt_required()
+def update_product(product_id):
+    """Update a product's basic information"""
+    current_user_id = get_jwt_identity()
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    # Check if the current user owns this product
+    if product.user_id != int(current_user_id):
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    data = request.get_json()
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+    
+    # Update fields if provided
+    if name is not None:
+        if not name.strip():
+            return jsonify({"message": "Name cannot be empty"}), 400
+        product.name = name.strip()
+    
+    if description is not None:
+        product.description = description.strip()
+    
+    if price is not None:
+        try:
+            price_float = float(price)
+            if price_float < 0:
+                return jsonify({"message": "Price must be positive"}), 400
+            product.price = price_float
+        except ValueError:
+            return jsonify({"message": "Invalid price"}), 400
+    
+    try:
+        db.session.commit()
+        return jsonify({
+            "message": "Product updated successfully",
+            "product": {
+                "id": product.id,
+                "name": product.name,
+                "description": product.description,
+                "price": product.price,
+                "image_url": product.image_url,
+                "is_active": product.is_active
+            }
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to update product", "error": str(e)}), 500
+
+@api_bp.route('/products/<int:product_id>/image', methods=['POST'])
+@jwt_required()
+def upload_product_image(product_id):
+    """Upload a product image"""
+    current_user_id = get_jwt_identity()
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    if product.user_id != int(current_user_id):
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    if 'image' not in request.files:
+        return jsonify({"message": "No image file provided"}), 400
+    
+    image = request.files['image']
+    
+    if image.filename == '':
+        return jsonify({"message": "No selected file"}), 400
+    
+    # Validate image type
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+    if '.' not in image.filename or \
+       image.filename.rsplit('.', 1)[1].lower() not in allowed_extensions:
+        return jsonify({"message": "Invalid file type. Allowed: png, jpg, jpeg, gif, webp"}), 400
+    
+    # Check file size (max 5MB for images)
+    image.seek(0, 2)  # Seek to end
+    file_size = image.tell()
+    image.seek(0)  # Reset to beginning
+    
+    max_size = 5 * 1024 * 1024  # 5MB
+    if file_size > max_size:
+        return jsonify({"message": "Image size exceeds maximum of 5MB"}), 400
+    
+    try:
+        # Delete old image if exists
+        if product.image_url:
+            old_object_name = product.image_url.split(f"{storage_service.public_bucket}/")[-1]
+            storage_service.delete_file(old_object_name, storage_service.public_bucket)
+        
+        # Generate a unique filename for the image
+        # Structure: product_images/{product_id}/{uuid}_{filename}
+        filename = f"product_images/{product_id}/{uuid.uuid4()}_{image.filename}"
+        
+        # Upload to MinIO public bucket
+        object_name = storage_service.upload_file(
+            image, 
+            filename, 
+            storage_service.public_bucket,
+            image.content_type
+        )
+        
+        if object_name:
+            # Get public URL
+            full_url = storage_service.get_public_url(object_name)
+            
+            # Update product image_url
+            product.image_url = full_url
+            db.session.commit()
+            
+            return jsonify({
+                "message": "Image uploaded successfully",
+                "image_url": full_url
+            }), 200
+        else:
+            return jsonify({"message": "Failed to upload image"}), 500
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to upload image", "error": str(e)}), 500
+
+@api_bp.route('/products/<int:product_id>/image', methods=['DELETE'])
+@jwt_required()
+def delete_product_image(product_id):
+    """Delete a product image"""
+    current_user_id = get_jwt_identity()
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    if product.user_id != int(current_user_id):
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    if not product.image_url:
+        return jsonify({"message": "Product has no image"}), 404
+    
+    try:
+        # Delete from MinIO public bucket
+        object_name = product.image_url.split(f"{storage_service.public_bucket}/")[-1]
+        storage_service.delete_file(object_name, storage_service.public_bucket)
+        
+        # Update product
+        product.image_url = None
+        db.session.commit()
+        
+        return jsonify({"message": "Image deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete image", "error": str(e)}), 500
+
+@api_bp.route('/products/<int:product_id>/toggle-status', methods=['PATCH'])
+@jwt_required()
+def toggle_product_status(product_id):
+    """Toggle product active status (publish/unpublish)"""
+    current_user_id = get_jwt_identity()
+    product = Product.query.get(product_id)
+    
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    
+    if product.user_id != int(current_user_id):
+        return jsonify({"message": "Unauthorized"}), 403
+    
+    try:
+        product.is_active = not product.is_active
+        db.session.commit()
+        
+        return jsonify({
+            "message": f"Product {'published' if product.is_active else 'unpublished'} successfully",
+            "is_active": product.is_active
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to update product status", "error": str(e)}), 500
 
 
 @api_bp.route('/products/<int:product_id>/files', methods=['POST'])
