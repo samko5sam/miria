@@ -17,6 +17,7 @@ interface CartContextType {
   removeFromCart: (itemId: number) => Promise<void>;
   clearCart: () => Promise<void>;
   refreshCart: () => Promise<void>;
+  isInCart: (productId: number) => boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -61,10 +62,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       await cartService.addToCart(product, quantity);
       await fetchCart(true);
-      toast.success(t('toast.addedToCart'));
-    } catch {
-      toast.error(t('toast.addToCartFailed'));
+      // Toast is handled by the calling component to avoid duplicates
+    } catch (error) {
+      // Re-throw to let calling component handle specific errors
+      throw error;
     }
+  };
+
+  const isInCart = (productId: number): boolean => {
+    if (!cart) return false;
+    return cart.items.some(item => item.product_id === productId);
   };
 
   const updateCartItem = async (itemId: number, quantity: number) => {
@@ -139,7 +146,9 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateCartItem,
         removeFromCart,
         clearCart,
+        clearCart,
         refreshCart,
+        isInCart,
       }}
     >
       {children}

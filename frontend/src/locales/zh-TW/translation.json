@@ -242,6 +242,7 @@
     "noProductsAvailable": "尚無產品",
     "filesIncluded": "個檔案",
     "addToCart": "加入購物車",
+    "inCart": "已在購物車",
     "addedToCart": "{{name}} 已加入購物車",
     "addToCartError": "加入購物車失敗"
   },

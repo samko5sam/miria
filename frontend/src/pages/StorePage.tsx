@@ -12,7 +12,7 @@ const StorePage: React.FC = () => {
     const { storeId } = useParams<{ storeId: string }>();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { addToCart } = useCart();
+    const { addToCart, isInCart } = useCart();
     const [store, setStore] = useState<Store | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -57,7 +57,12 @@ const StorePage: React.FC = () => {
             await addToCart(product);
             toast.success(t('store.addedToCart', { name: product.name }));
         } catch (error: any) {
-            toast.error(error.response?.data?.message || t('store.addToCartError'));
+            const message = error.response?.data?.message;
+            if (message) {
+                toast.error(message);
+            } else {
+                toast.error(t('store.addToCartError'));
+            }
         }
     };
 
@@ -161,10 +166,16 @@ const StorePage: React.FC = () => {
                                 {/* Add to Cart Button */}
                                 <button
                                     onClick={() => handleAddToCart(product)}
-                                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-all"
+                                    disabled={isInCart(product.id)}
+                                    className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-bold rounded-lg transition-all ${isInCart(product.id)
+                                            ? 'bg-gray-400 cursor-not-allowed text-white'
+                                            : 'bg-primary hover:bg-primary/90 text-white'
+                                        }`}
                                 >
-                                    <span className="material-symbols-outlined">shopping_cart</span>
-                                    {t('store.addToCart')}
+                                    <span className="material-symbols-outlined">
+                                        {isInCart(product.id) ? 'shopping_cart_checkout' : 'shopping_cart'}
+                                    </span>
+                                    {isInCart(product.id) ? t('store.inCart') : t('store.addToCart')}
                                 </button>
                             </div>
                         </div>

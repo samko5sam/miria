@@ -11,7 +11,7 @@ const ProductPage: React.FC = () => {
     const { productId } = useParams<{ productId: string }>();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { addToCart } = useCart();
+    const { addToCart, isInCart } = useCart();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -45,7 +45,13 @@ const ProductPage: React.FC = () => {
             await addToCart(product);
             toast.success(t('store.addedToCart', { name: product.name }));
         } catch (error: any) {
-            toast.error(error.response?.data?.message || t('store.addToCartError'));
+            const message = error.response?.data?.message;
+            // If already in cart, show specific toast, otherwise default error
+            if (message) {
+                toast.error(message);
+            } else {
+                toast.error(t('store.addToCartError'));
+            }
         }
     };
 
@@ -106,10 +112,16 @@ const ProductPage: React.FC = () => {
                     {/* Add to Cart Button */}
                     <button
                         onClick={handleAddToCart}
-                        className="w-full md:w-auto min-w-[300px] flex items-center justify-center gap-3 px-8 py-4 bg-primary hover:bg-primary/90 text-white text-lg font-bold rounded-xl shadow-lg shadow-primary/30 transform active:scale-95 transition-all duration-300"
+                        disabled={isInCart(product.id)}
+                        className={`w-full md:w-auto min-w-[300px] flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold rounded-xl shadow-lg transform active:scale-95 transition-all duration-300 ${isInCart(product.id)
+                                ? 'bg-gray-400 cursor-not-allowed text-white shadow-none'
+                                : 'bg-primary hover:bg-primary/90 text-white shadow-primary/30'
+                            }`}
                     >
-                        <span className="material-symbols-outlined text-2xl">shopping_cart</span>
-                        {t('store.addToCart')}
+                        <span className="material-symbols-outlined text-2xl">
+                            {isInCart(product.id) ? 'shopping_cart_checkout' : 'shopping_cart'}
+                        </span>
+                        {isInCart(product.id) ? t('store.inCart') : t('store.addToCart')}
                     </button>
 
                     {/* Description */}
