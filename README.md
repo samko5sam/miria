@@ -10,6 +10,8 @@
 
 **Miria** is an elegant and intuitive web platform that empowers independent creators to sell digital products directly to their audience. From e-books and software to music and online courses, Miria provides the tools to build a business around your passion.
 
+### Final Presentation Video：https://youtu.be/ukVWaWkLZDw
+
 ---
 
 ## Table of Contents
