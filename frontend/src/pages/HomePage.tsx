@@ -47,9 +47,9 @@ const HomePage: React.FC = () => {
         {/* ButtonGroup */}
         <div className="flex justify-center">
           <div className="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch px-4 py-3">
-            <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
+            <Link to="/discover" className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="truncate">Explore Products</span>
-            </button>
+            </Link>
             <Link to="/dashboard" className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-gray-200 dark:bg-white/10 text-gray-900 dark:text-white text-base font-bold leading-normal tracking-[0.015em] w-full transition-transform hover:scale-[1.02] active:scale-[0.98]">
               <span className="truncate">Become a Creator</span>
             </Link>
