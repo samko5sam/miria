@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { storeService, type Store } from '../services/storeService';
 import type { Product } from '../types';
@@ -117,28 +117,30 @@ const StorePage: React.FC = () => {
                             className="bg-white dark:bg-black/20 rounded-xl border border-gray-200 dark:border-white/5 overflow-hidden hover:border-gray-300 dark:hover:border-white/10 transition-all duration-300 shadow-sm dark:shadow-none group"
                         >
                             {/* Product Image */}
-                            {product.image_url ? (
-                                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-white/5">
+                            <Link to={`/products/${product.id}`} className="block aspect-video w-full overflow-hidden bg-gray-100 dark:bg-white/5 cursor-pointer">
+                                {product.image_url ? (
                                     <img
                                         src={product.image_url}
                                         alt={product.name}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
-                                </div>
-                            ) : (
-                                <div className="aspect-video w-full bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/10 dark:to-primary/5 flex items-center justify-center">
-                                    <span className="material-symbols-outlined text-6xl text-primary/30 dark:text-primary/20">
-                                        image
-                                    </span>
-                                </div>
-                            )}
+                                ) : (
+                                    <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/10 dark:to-primary/5 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                        <span className="material-symbols-outlined text-6xl text-primary/30 dark:text-primary/20">
+                                            image
+                                        </span>
+                                    </div>
+                                )}
+                            </Link>
 
                             {/* Product Info */}
                             <div className="p-6 space-y-4">
                                 <div>
-                                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">
-                                        {product.name}
-                                    </h3>
+                                    <Link to={`/products/${product.id}`} className="block">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 line-clamp-2 hover:text-primary transition-colors">
+                                            {product.name}
+                                        </h3>
+                                    </Link>
                                     <p className="text-2xl font-bold text-primary">{formatPrice(product.price)}</p>
                                 </div>
 

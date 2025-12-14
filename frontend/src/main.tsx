@@ -14,6 +14,7 @@ import SellerRegistrationPage from './pages/SellerRegistrationPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import StorePage from './pages/StorePage';
+import ProductPage from './pages/ProductPage';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { CartProvider } from './context/CartContext';
@@ -39,6 +40,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="checkout" element={<CheckoutPage />} />
                 <Route path="my-orders" element={<OrdersPage />} />
                 <Route path="store/:storeId" element={<StorePage />} />
+                <Route path="products/:productId" element={<ProductPage />} />
 
                 <Route element={<SellerGuard />}>
                   <Route path="dashboard" element={<SellerDashboardPage />} />

@@ -244,5 +244,13 @@
     "addToCart": "加入購物車",
     "addedToCart": "{{name}} 已加入購物車",
     "addToCartError": "加入購物車失敗"
+  },
+  "product": {
+    "failedToLoad": "無法載入產品",
+    "soldBy": "賣家：",
+    "description": "產品描述",
+    "noDescription": "此產品沒有描述",
+    "filesIncluded": "包含檔案",
+    "noFiles": "此產品沒有包含任何檔案"
   }
 }

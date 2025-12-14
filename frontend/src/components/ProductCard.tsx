@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { Product } from '../types';
 
@@ -30,38 +31,42 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onDelete, onEdit }) 
     return (
         <div className="bg-white dark:bg-black/20 rounded-xl border border-gray-200 dark:border-white/5 overflow-hidden hover:border-gray-300 dark:hover:border-white/10 transition-all duration-300 group shadow-sm dark:shadow-none">
             {/* Product Image */}
-            {product.image_url ? (
-                <div className="aspect-video w-full overflow-hidden bg-gray-100 dark:bg-white/5 relative">
-                    <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                    />
-                    {/* Status Badge */}
-                    {!product.is_active && (
-                        <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            Unpublished
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className="aspect-video w-full bg-gradient-to-br from-gray-100 to-gray-50 dark:from-white/5 dark:to-white/2 flex items-center justify-center relative">
-                    <span className="material-symbols-outlined text-6xl text-gray-300 dark:text-white/10">
-                        image
-                    </span>
-                    {/* Status Badge */}
-                    {!product.is_active && (
-                        <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
-                            Unpublished
-                        </div>
-                    )}
-                </div>
-            )}
+            <Link to={`/products/${product.id}`} className="block aspect-video w-full overflow-hidden bg-gray-100 dark:bg-white/5 relative cursor-pointer">
+                {product.image_url ? (
+                    <>
+                        <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {/* Status Badge */}
+                        {!product.is_active && (
+                            <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
+                                Unpublished
+                            </div>
+                        )}
+                    </>
+                ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-50 dark:from-white/5 dark:to-white/2 flex items-center justify-center relative group-hover:scale-105 transition-transform duration-300">
+                        <span className="material-symbols-outlined text-6xl text-gray-300 dark:text-white/10">
+                            image
+                        </span>
+                        {/* Status Badge */}
+                        {!product.is_active && (
+                            <div className="absolute top-2 right-2 bg-gray-800/80 text-white px-3 py-1 rounded-full text-xs font-medium">
+                                Unpublished
+                            </div>
+                        )}
+                    </div>
+                )}
+            </Link>
             {/* Card Header */}
             <div className="p-6 border-b border-gray-200 dark:border-white/5">
                 <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate mb-1">{product.name}</h3>
+                        <Link to={`/products/${product.id}`} className="block">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate mb-1 hover:text-primary transition-colors">{product.name}</h3>
+                        </Link>
                         <p className="text-2xl font-bold text-primary">{formatPrice(product.price)}</p>
                     </div>
 
