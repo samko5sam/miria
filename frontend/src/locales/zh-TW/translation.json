@@ -6,9 +6,6 @@
   "admin": "管理員",
   "role-seller": "創作者",
   "role-buyer": "顧客",
-  "logout": "登出",
-  "dashboard": "儀表板",
-  "profile": "個人檔案",
   "settings": "設定",
   "theme": "主題",
   "lightMode": "日間模式",
@@ -121,6 +118,7 @@
       "deleteSuccess": "產品刪除成功！",
       "deleteError": "刪除產品失敗",
       "files": "個檔案",
+      "files_plural": "個檔案",
       "attachedFiles": "附加檔案",
       "moreFiles": "個更多檔案",
       "noFiles": "尚未上傳檔案",
@@ -130,6 +128,28 @@
       "updating": "更新中...",
       "updateSuccess": "產品更新成功！",
       "updateError": "更新產品失敗",
+      "invalidFileType": "檔案類型無效。允許的類型：PNG, JPG, JPEG, GIF, WEBP",
+      "imageTooLarge": "圖片大小超過最大限制 5MB",
+      "compressionFailed": "壓縮圖片失敗",
+      "imageRemoved": "圖片已成功移除",
+      "removeImageFailed": "移除圖片失敗",
+      "fileUploaded": "檔案上傳成功",
+      "uploadFileFailed": "上傳檔案失敗",
+      "confirmDeleteFile": "您確定要刪除此檔案嗎？",
+      "fileDeleted": "檔案已成功刪除",
+      "deleteFileFailed": "刪除檔案失敗",
+      "published": "產品已發佈",
+      "unpublished": "產品已取消發佈",
+      "statusUpdateFailed": "更新狀態失敗",
+      "removeImage": "移除圖片",
+      "productFiles": "產品檔案",
+      "uploading": "上傳中...",
+      "addFile": "+ 新增檔案",
+      "productStatus": "產品狀態",
+      "statusPublished": "已發佈 - 顧客可見",
+      "statusUnpublished": "未發佈 - 在商店中隱藏",
+      "statusPublishedLabel": "已發佈",
+      "statusUnpublishedLabel": "未發佈",
       "errors": {
         "nameRequired": "產品名稱為必填",
         "invalidPrice": "請輸入有效的價格"
@@ -210,6 +230,19 @@
     }
   },
   "nav": {
+    "logout": "登出",
+    "profile": "個人檔案",
+    "dashboard": "儀表板",
     "myOrders": "我的訂單"
+  },
+  "store": {
+    "failedToLoad": "無法載入商店",
+    "searchPlaceholder": "搜尋產品...",
+    "noProductsFound": "找不到符合搜尋的產品",
+    "noProductsAvailable": "尚無產品",
+    "filesIncluded": "個檔案",
+    "addToCart": "加入購物車",
+    "addedToCart": "{{name}} 已加入購物車",
+    "addToCartError": "加入購物車失敗"
   }
 }

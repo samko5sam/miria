@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { productService } from '../services/productService';
@@ -39,13 +40,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
             // Validate file type
             const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
             if (!allowedTypes.includes(file.type)) {
-                toast.error('Invalid file type. Allowed: PNG, JPG, JPEG, GIF, WEBP');
+                toast.error(t('seller.products.invalidFileType'));
                 return;
             }
 
             // Validate file size (5MB before compression)
             if (file.size > 5 * 1024 * 1024) {
-                toast.error('Image size exceeds maximum of 5MB');
+                toast.error(t('seller.products.imageTooLarge'));
                 return;
             }
 
@@ -59,7 +60,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                 // Show compression info if size was reduced
                 if (percentSmaller > 5) {
                     toast.success(
-                        `Image compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)} (${percentSmaller}% smaller)`
+                        t('toast.imageCompressed', { original: formatFileSize(originalSize), compressed: formatFileSize(compressedSize), percent: percentSmaller })
                     );
                 }
 
@@ -71,7 +72,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                 reader.readAsDataURL(compressedFile);
             } catch (error) {
                 console.error('Image compression failed:', error);
-                toast.error('Failed to compress image');
+                toast.error(t('seller.products.compressionFailed'));
             }
         }
     };
@@ -80,12 +81,12 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
         if (product.image_url) {
             try {
                 await productService.deleteProductImage(product.id);
-                toast.success('Image removed successfully');
+                toast.success(t('seller.products.imageRemoved'));
                 setImagePreview(null);
                 setImage(null);
                 onProductUpdated();
             } catch (error: any) {
-                toast.error(error.response?.data?.message || 'Failed to remove image');
+                toast.error(error.response?.data?.message || t('seller.products.removeImageFailed'));
             }
         } else {
             setImagePreview(null);
@@ -135,24 +136,24 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
         setUploadingFile(true);
         try {
             await productService.uploadProductFile(product.id, file);
-            toast.success('File uploaded successfully');
+            toast.success(t('seller.products.fileUploaded'));
             onProductUpdated();
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to upload file');
+            toast.error(error.response?.data?.message || t('seller.products.uploadFileFailed'));
         } finally {
             setUploadingFile(false);
         }
     };
 
     const handleDeleteFile = async (fileId: number) => {
-        if (!window.confirm('Are you sure you want to delete this file?')) return;
+        if (!window.confirm(t('seller.products.confirmDeleteFile'))) return;
 
         try {
             await productService.deleteProductFile(product.id, fileId);
-            toast.success('File deleted successfully');
+            toast.success(t('seller.products.fileDeleted'));
             onProductUpdated();
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to delete file');
+            toast.error(error.response?.data?.message || t('seller.products.deleteFileFailed'));
         }
     };
 
@@ -160,10 +161,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
         try {
             const response = await productService.toggleProductStatus(product.id);
             setIsActive(response.is_active); // Update local state immediately
-            toast.success(response.is_active ? 'Product published' : 'Product unpublished');
+            toast.success(response.is_active ? t('seller.products.published') : t('seller.products.unpublished'));
             onProductUpdated();
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to update status');
+            toast.error(error.response?.data?.message || t('seller.products.statusUpdateFailed'));
         }
     };
 
@@ -217,7 +218,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                                         onClick={handleRemoveImage}
                                         className="text-sm text-red-600 dark:text-red-400 hover:underline"
                                     >
-                                        Remove image
+                                        {t('seller.products.removeImage')}
                                     </button>
                                 )}
                             </div>
@@ -286,7 +287,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     {/* Files Management */}
                     <div className="border-t border-gray-200 dark:border-white/10 pt-4">
                         <div className="flex items-center justify-between mb-3">
-                            <h3 className="text-sm font-medium text-gray-700 dark:text-white/80">Product Files</h3>
+                            <h3 className="text-sm font-medium text-gray-700 dark:text-white/80">{t('seller.products.productFiles')}</h3>
                             <label className="cursor-pointer text-sm text-primary hover:text-primary/80 font-medium">
                                 <input
                                     type="file"
@@ -294,7 +295,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                                     disabled={uploadingFile}
                                     className="hidden"
                                 />
-                                {uploadingFile ? 'Uploading...' : '+ Add File'}
+                                {uploadingFile ? t('seller.products.uploading') : t('seller.products.addFile')}
                             </label>
                         </div>
                         <div className="space-y-2">
@@ -320,7 +321,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                                 </div>
                             ))}
                             {product.files.length === 0 && (
-                                <p className="text-sm text-gray-500 dark:text-white/50 text-center py-4">No files uploaded yet</p>
+                                <p className="text-sm text-gray-500 dark:text-white/50 text-center py-4">{t('seller.products.noFiles')}</p>
                             )}
                         </div>
                     </div>
@@ -329,9 +330,9 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                     <div className="border-t border-gray-200 dark:border-white/10 pt-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="text-sm font-medium text-gray-700 dark:text-white/80">Product Status</h3>
+                                <h3 className="text-sm font-medium text-gray-700 dark:text-white/80">{t('seller.products.productStatus')}</h3>
                                 <p className="text-xs text-gray-500 dark:text-white/50">
-                                    {isActive ? 'Published - visible to customers' : 'Unpublished - hidden from store'}
+                                    {isActive ? t('seller.products.statusPublished') : t('seller.products.statusUnpublished')}
                                 </p>
                             </div>
                             <button
@@ -342,7 +343,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                                     : 'bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-white/70 hover:bg-gray-200 dark:hover:bg-white/10'
                                     }`}
                             >
-                                {isActive ? 'Published' : 'Unpublished'}
+                                {isActive ? t('seller.products.statusPublishedLabel') : t('seller.products.statusUnpublishedLabel')}
                             </button>
                         </div>
                     </div>
