@@ -14,7 +14,7 @@ def get_products():
     sort_by = request.args.get('sort', 'newest')
     search_query = request.args.get('search', '').strip()
 
-    query = Product.query
+    query = Product.query.filter_by(is_active=True)
 
     # Search
     if search_query:
