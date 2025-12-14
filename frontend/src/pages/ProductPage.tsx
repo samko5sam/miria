@@ -88,7 +88,7 @@ const ProductPage: React.FC = () => {
                 </div>
 
                 {/* Product Info */}
-                <div className="space-y-8 lg:py-8">
+                <div className="space-y-8 lg:py-8 min-w-0">
                     {/* Store Info */}
                     {product.store_name && product.store_id && (
                         <div className="flex items-center gap-2 text-sm">
@@ -114,8 +114,8 @@ const ProductPage: React.FC = () => {
                         onClick={handleAddToCart}
                         disabled={isInCart(product.id)}
                         className={`w-full md:w-auto min-w-[300px] flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold rounded-xl shadow-lg transform active:scale-95 transition-all duration-300 ${isInCart(product.id)
-                                ? 'bg-gray-400 cursor-not-allowed text-white shadow-none'
-                                : 'bg-primary hover:bg-primary/90 text-white shadow-primary/30'
+                            ? 'bg-gray-400 cursor-not-allowed text-white shadow-none'
+                            : 'bg-primary hover:bg-primary/90 text-white shadow-primary/30'
                             }`}
                     >
                         <span className="material-symbols-outlined text-2xl">
@@ -131,7 +131,7 @@ const ProductPage: React.FC = () => {
                             {t('product.description')}
                         </h3>
                         {product.description ? (
-                            <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-white/70 whitespace-pre-line">
+                            <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-white/70 whitespace-pre-line break-words">
                                 {product.description}
                             </div>
                         ) : (
