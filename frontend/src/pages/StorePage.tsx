@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -28,7 +30,7 @@ const StorePage: React.FC = () => {
                 setStore(storeData);
                 setProducts(productsData);
             } catch (error: any) {
-                toast.error(error.response?.data?.message || 'Failed to load store');
+                toast.error(error.response?.data?.message || t('store.failedToLoad'));
                 navigate('/');
             } finally {
                 setLoading(false);
@@ -53,9 +55,9 @@ const StorePage: React.FC = () => {
     const handleAddToCart = async (product: Product) => {
         try {
             await addToCart(product);
-            toast.success(`${product.name} added to cart`);
+            toast.success(t('store.addedToCart', { name: product.name }));
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Failed to add to cart');
+            toast.error(error.response?.data?.message || t('store.addToCartError'));
         }
     };
 
@@ -91,7 +93,7 @@ const StorePage: React.FC = () => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search products..."
+                        placeholder={t('store.searchPlaceholder')}
                         className="w-full pl-12 pr-4 py-3 rounded-lg bg-gray-100 dark:bg-white/5 border-0 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                     />
                 </div>
@@ -104,7 +106,7 @@ const StorePage: React.FC = () => {
                         inventory_2
                     </span>
                     <p className="text-gray-500 dark:text-white/50 text-lg">
-                        {searchQuery ? 'No products found matching your search' : 'No products available yet'}
+                        {searchQuery ? t('store.noProductsFound') : t('store.noProductsAvailable')}
                     </p>
                 </div>
             ) : (
@@ -150,7 +152,7 @@ const StorePage: React.FC = () => {
                                 {product.files_count !== undefined && product.files_count > 0 && (
                                     <div className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-white/60">
                                         <span className="material-symbols-outlined text-base">attach_file</span>
-                                        <span>{product.files_count} files included</span>
+                                        <span>{product.files_count} {t('store.filesIncluded')}</span>
                                     </div>
                                 )}
 
@@ -160,7 +162,7 @@ const StorePage: React.FC = () => {
                                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary hover:bg-primary/90 text-white font-bold rounded-lg transition-all"
                                 >
                                     <span className="material-symbols-outlined">shopping_cart</span>
-                                    Add to Cart
+                                    {t('store.addToCart')}
                                 </button>
                             </div>
                         </div>

@@ -90,7 +90,7 @@ const Navbar: React.FC = () => {
                         className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                         onClick={() => setIsProfileMenuOpen(false)}
                       >
-                        {t('dashboard')}
+                        {t('nav.dashboard')}
                       </Link>
                     )}
                     <Link
@@ -105,7 +105,7 @@ const Navbar: React.FC = () => {
                       className="block px-4 py-2 text-gray-700 dark:text-white/80 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
-                      {t('profile')}
+                      {t('nav.profile')}
                     </Link>
                     <button
                       onClick={() => {
@@ -114,7 +114,7 @@ const Navbar: React.FC = () => {
                       }}
                       className="w-full text-left px-4 py-2 text-red-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-red-300 transition-colors"
                     >
-                      {t('logout')}
+                      {t('nav.logout')}
                     </button>
                   </div>
                 )}
@@ -188,7 +188,7 @@ const Navbar: React.FC = () => {
                     className={`text-lg ${navLinkClasses}`}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    {t('dashboard')}
+                    {t('nav.dashboard')}
                   </Link>
                 )}
                 <Link
@@ -203,7 +203,7 @@ const Navbar: React.FC = () => {
                   className={`text-lg ${navLinkClasses}`}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  {t('profile')}
+                  {t('nav.profile')}
                 </Link>
                 <button
                   onClick={() => {
@@ -212,7 +212,7 @@ const Navbar: React.FC = () => {
                   }}
                   className={`text-lg ${navLinkClasses} text-red-400 hover:text-red-300`}
                 >
-                  {t('logout')}
+                  {t('nav.logout')}
                 </button>
               </div>
             ) : (
