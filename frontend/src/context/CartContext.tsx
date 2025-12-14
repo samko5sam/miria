@@ -146,7 +146,6 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         updateCartItem,
         removeFromCart,
         clearCart,
-        clearCart,
         refreshCart,
         isInCart,
       }}
