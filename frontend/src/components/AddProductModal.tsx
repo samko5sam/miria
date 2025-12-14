@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { productService } from '../services/productService';
 import toast from 'react-hot-toast';
+import { compressImage, formatFileSize } from '../utils/imageCompression';
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -13,8 +14,66 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [price, setPrice] = useState('');
+    const [image, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [files, setFiles] = useState<File[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const { t } = useTranslation();
+
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                toast.error(t('seller.products.invalidFileType'));
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                toast.error(t('seller.products.imageTooLarge'));
+                return;
+            }
+
+            try {
+                const originalSize = file.size;
+                const compressedFile = await compressImage(file, 1200, 1200, 0.85);
+                const compressedSize = compressedFile.size;
+                const percentSmaller = Math.round((1 - compressedSize / originalSize) * 100);
+
+                if (percentSmaller > 5) {
+                    toast.success(
+                        t('toast.imageCompressed', { original: formatFileSize(originalSize), compressed: formatFileSize(compressedSize), percent: percentSmaller })
+                    );
+                }
+
+                setImage(compressedFile);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setImagePreview(reader.result as string);
+                };
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.error('Image compression failed:', error);
+                toast.error(t('seller.products.compressionFailed'));
+            }
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setImage(null);
+        setImagePreview(null);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            setFiles(prev => [...prev, selectedFile]);
+        }
+    };
+
+    const handleRemoveFile = (index: number) => {
+        setFiles(prev => prev.filter((_, i) => i !== index));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -33,13 +92,28 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
 
         setIsLoading(true);
         try {
-            await productService.createProduct(name.trim(), description.trim(), priceNum);
+            // 1. Create Product
+            const { product_id } = await productService.createProduct(name.trim(), description.trim(), priceNum);
+
+            // 2. Upload Image
+            if (image) {
+                await productService.uploadProductImage(product_id, image);
+            }
+
+            // 3. Upload Files
+            for (const file of files) {
+                await productService.uploadProductFile(product_id, file);
+            }
+
             toast.success(t('seller.products.createSuccess'));
 
             // Reset form
             setName('');
             setDescription('');
             setPrice('');
+            setImage(null);
+            setImagePreview(null);
+            setFiles([]);
 
             // Notify parent and close modal
             onProductAdded();
@@ -56,6 +130,9 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
             setName('');
             setDescription('');
             setPrice('');
+            setImage(null);
+            setImagePreview(null);
+            setFiles([]);
             onClose();
         }
     };
@@ -79,6 +156,38 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                    {/* Product Image */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-white/80 mb-2">
+                            {t('seller.products.productImage')}
+                        </label>
+                        <div className="flex items-center gap-4">
+                            {imagePreview && (
+                                <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-200 dark:border-white/10">
+                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                </div>
+                            )}
+                            <div className="flex-1 space-y-2">
+                                <input
+                                    type="file"
+                                    accept="image/png,image/jpeg,image/jpg,image/gif,image/webp"
+                                    onChange={handleImageChange}
+                                    disabled={isLoading}
+                                    className="block w-full text-sm text-gray-500 dark:text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary/90 disabled:opacity-50"
+                                />
+                                {imagePreview && (
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="text-sm text-red-600 dark:text-red-400 hover:underline"
+                                    >
+                                        {t('seller.products.removeImage')}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Product Name */}
                     <div>
                         <label htmlFor="product-name" className="block text-sm font-medium text-gray-700 dark:text-white/80 mb-2">
@@ -135,6 +244,48 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ isOpen, onClose, onPr
                                 placeholder="0.00"
                                 className="block w-full appearance-none rounded-lg border-0 bg-gray-100 dark:bg-white/5 pl-8 pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-white/40 shadow-sm focus:bg-gray-50 dark:focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                             />
+                        </div>
+                    </div>
+
+                    {/* Files Management */}
+                    <div className="border-t border-gray-200 dark:border-white/10 pt-4">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-sm font-medium text-gray-700 dark:text-white/80">{t('seller.products.productFiles')}</h3>
+                            <label className="cursor-pointer text-sm text-primary hover:text-primary/80 font-medium">
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    disabled={isLoading}
+                                    className="hidden"
+                                />
+                                {t('seller.products.addFile')}
+                            </label>
+                        </div>
+                        <div className="space-y-2">
+                            {files.map((file, index) => (
+                                <div
+                                    key={index}
+                                    className="flex items-center justify-between bg-gray-100 dark:bg-white/5 rounded-lg px-4 py-2"
+                                >
+                                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                                        <span className="material-symbols-outlined text-base text-gray-500 dark:text-white/60">description</span>
+                                        <span className="text-sm text-gray-700 dark:text-white/70 truncate">{file.name}</span>
+                                        <span className="text-xs text-gray-500 dark:text-white/50">
+                                            {formatFileSize(file.size)}
+                                        </span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveFile(index)}
+                                        className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
+                                    >
+                                        <span className="material-symbols-outlined text-lg">delete</span>
+                                    </button>
+                                </div>
+                            ))}
+                            {files.length === 0 && (
+                                <p className="text-sm text-gray-500 dark:text-white/50 text-center py-4">{t('seller.products.noFiles')}</p>
+                            )}
                         </div>
                     </div>
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { productService } from '../services/productService';
-import type { Product } from '../types';
+import type { Product, ProductFile } from '../types';
 import toast from 'react-hot-toast';
 import { compressImage, formatFileSize } from '../utils/imageCompression';
 
@@ -22,6 +22,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
     const [isLoading, setIsLoading] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
     const [isActive, setIsActive] = useState(true);
+    const [localFiles, setLocalFiles] = useState<ProductFile[]>([]);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -31,6 +32,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
             setPrice(product.price.toString());
             setImagePreview(product.image_url || null);
             setIsActive(product.is_active);
+            setLocalFiles(product.files || []);
         }
     }, [product, isOpen]);
 
@@ -135,9 +137,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
 
         setUploadingFile(true);
         try {
-            await productService.uploadProductFile(product.id, file);
+            const { file: newFile } = await productService.uploadProductFile(product.id, file);
+            setLocalFiles(prev => [...prev, newFile]);
             toast.success(t('seller.products.fileUploaded'));
-            onProductUpdated();
+            onProductUpdated(); // Still refresh parent to keep sync
         } catch (error: any) {
             toast.error(error.response?.data?.message || t('seller.products.uploadFileFailed'));
         } finally {
@@ -150,6 +153,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
 
         try {
             await productService.deleteProductFile(product.id, fileId);
+            setLocalFiles(prev => prev.filter(f => f.id !== fileId));
             toast.success(t('seller.products.fileDeleted'));
             onProductUpdated();
         } catch (error: any) {
@@ -299,7 +303,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                             </label>
                         </div>
                         <div className="space-y-2">
-                            {product.files.map((file) => (
+                            {localFiles.map((file) => (
                                 <div
                                     key={file.id}
                                     className="flex items-center justify-between bg-gray-100 dark:bg-white/5 rounded-lg px-4 py-2"
@@ -320,7 +324,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({ isOpen, onClose, on
                                     </button>
                                 </div>
                             ))}
-                            {product.files.length === 0 && (
+                            {localFiles.length === 0 && (
                                 <p className="text-sm text-gray-500 dark:text-white/50 text-center py-4">{t('seller.products.noFiles')}</p>
                             )}
                         </div>
