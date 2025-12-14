@@ -244,5 +244,16 @@
     "addToCart": "Add to Cart",
     "addedToCart": "{{name}} added to cart",
     "addToCartError": "Failed to add to cart"
+  },
+  "discover": {
+    "title": "Discover",
+    "searchPlaceholder": "Search products...",
+    "noProducts": "No products found.",
+    "errorFetching": "Failed to fetch products",
+    "sort": {
+      "newest": "Newest",
+      "priceLow": "Price: Low to High",
+      "priceHigh": "Price: High to Low"
+    }
   }
 }

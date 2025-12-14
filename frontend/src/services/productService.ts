@@ -27,10 +27,14 @@ export const productService = {
   },
 
   /**
-   * Get all products (public)
+   * Get all products (public) with optional filtering and sorting
    */
-  getAllProducts: async (): Promise<Product[]> => {
-    const response = await apiClient.get(`/products`);
+  getAllProducts: async (search?: string, sort?: string): Promise<Product[]> => {
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (sort) params.append('sort', sort);
+    
+    const response = await apiClient.get(`/products?${params.toString()}`);
     return response.data;
   },
 

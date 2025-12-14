@@ -253,5 +253,16 @@
     "noDescription": "此產品沒有描述",
     "filesIncluded": "包含檔案",
     "noFiles": "此產品沒有包含任何檔案"
+  },
+  "discover": {
+    "title": "探索",
+    "searchPlaceholder": "搜尋商品...",
+    "noProducts": "找不到商品。",
+    "errorFetching": "無法取得商品列表",
+    "sort": {
+      "newest": "最新上架",
+      "priceLow": "價格：由低到高",
+      "priceHigh": "價格：由高到低"
+    }
   }
 }

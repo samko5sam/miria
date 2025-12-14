@@ -10,8 +10,26 @@ storage_service = StorageService()
 
 @api_bp.route('/products', methods=['GET'])
 def get_products():
-    """Get all products"""
-    products = Product.query.all()
+    """Get products with optional sorting and searching"""
+    sort_by = request.args.get('sort', 'newest')
+    search_query = request.args.get('search', '').strip()
+
+    query = Product.query
+
+    # Search
+    if search_query:
+        query = query.filter(Product.name.ilike(f'%{search_query}%'))
+
+    # Sort
+    if sort_by == 'price_low':
+        query = query.order_by(Product.price.asc())
+    elif sort_by == 'price_high':
+        query = query.order_by(Product.price.desc())
+    else:  # newest or default
+        query = query.order_by(Product.created_at.desc())
+    
+    products = query.all()
+    
     return jsonify([{
         'id': p.id,
         'name': p.name,
